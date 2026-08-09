@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>For Your CPA · 831(b) Micro Captive</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens ────────────────────────────────────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* ── Slide pane + stage chassis now come from shared.css ─────────── */
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(20px, 3.5cqb, 36px) clamp(20px, 5cqi, 64px) clamp(10px, 1.5cqb, 16px);
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.hero .lede {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  line-height: 1.45;
+  color: var(--text-mute);
+  max-width: 56ch;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* ── Four-box 2x2 grid ────────────────────────────────────────────── */
+.boxes-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5cqi, 64px) clamp(10px, 1.5cqb, 16px);
+}
+.boxes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(10px, 1.5cqi, 16px);
+}
+.audit-bar {
+  margin-top: clamp(10px, 1.5cqi, 16px);
+}
+.info-box {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold-dim);
+  padding: clamp(14px, 2cqi, 22px) clamp(16px, 2.2cqi, 24px);
+}
+.info-box h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--type-medium);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--navy);
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+.info-box p {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--type-medium);
+  color: var(--text-mute);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Navy highlight for the "Will this trigger an audit?" box */
+.info-box.highlight {
+  background: var(--navy);
+  border-color: var(--gold);
+  border-top-color: var(--gold);
+}
+.info-box.highlight h3 {
+  color: var(--white);
+}
+.info-box.highlight p {
+  color: rgba(255,255,255,0.82);
+}
+
+/* ── Blockquote ───────────────────────────────────────────────────── */
+.quote-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5cqi, 64px) clamp(14px, 2cqb, 22px);
+}
+.cpa-blockquote {
+  background: transparent;
+  border: 0;
+  padding: clamp(10px, 1.4cqb, 16px) clamp(18px, 2.5cqi, 28px);
+  text-align: center;
+}
+.cpa-blockquote .quote-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-medium);
+  color: var(--navy);
+  line-height: 1.55;
+  margin: 0 0 8px;
+}
+.cpa-blockquote .quote-attr {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin: 0;
+}
+
+/* ── Deck nav chassis comes from shared.css ───────────────────────── */
+.deck-nav {
+  border-bottom: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE LAYOUT  (max-width: 768px)
+   Cancels the fixed-canvas scale transform; reflows content into
+   a single flex column that fits one viewport — NO scroll.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock to 100svh, 3-row grid */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Cancel fixed canvas; become a normal flex column centered */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* 2 ── Brandbar: compact single row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  .brand-left {
+    display: none !important;
+  }
+
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding, enlarged type */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 10px 16px 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(24px, 8vw, 42px) !important;
+    margin-bottom: 4px !important;
+  }
+
+  .hero .lede {
+    font-size: clamp(14px, 4vw, 20px) !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 4 ── Boxes + quote: single column, natural content height */
+
+  .boxes-wrap {
+    max-width: 100% !important;
+    padding: 0 12px 6px !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  .boxes-grid {
+    grid-template-columns: 1fr !important;
+    gap: 5px !important;
+    display: grid !important;
+  }
+
+  .info-box {
+    width: 100% !important;
+    padding: 7px 12px !important;
+    flex: none !important;
+    height: auto !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .info-box h3 {
+    font-size: clamp(12px, 3.2vw, 15px) !important;
+    margin-bottom: 4px !important;
+  }
+
+  .info-box p {
+    font-size: clamp(11px, 2.8vw, 13px) !important;
+    line-height: 1.4 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .audit-bar {
+    margin-top: 5px !important;
+  }
+
+  .quote-wrap {
+    max-width: 100% !important;
+    padding: 0 12px 6px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .cpa-blockquote {
+    padding: 6px 12px !important;
+  }
+
+  .cpa-blockquote .quote-text {
+    font-size: clamp(11px, 2.8vw, 13px) !important;
+    line-height: 1.4 !important;
+    overflow-wrap: break-word !important;
+    margin-bottom: 4px !important;
+  }
+
+  .cpa-blockquote .quote-attr {
+    font-size: 10px !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+  /* Tight viewports (320x568, 360x640): further compress to fit */
+  @media (max-height: 620px) {
+    .hero {
+      padding: 6px 16px 4px !important;
+    }
+    .hero h1 {
+      font-size: clamp(20px, 6.5vw, 30px) !important;
+      margin-bottom: 2px !important;
+    }
+    .hero .lede {
+      font-size: clamp(12px, 3.5vw, 16px) !important;
+    }
+    .boxes-wrap {
+      padding: 0 10px 4px !important;
+    }
+    .boxes-grid {
+      gap: 3px !important;
+    }
+    .info-box {
+      padding: 5px 10px !important;
+    }
+    .info-box h3 {
+      font-size: clamp(11px, 3vw, 13px) !important;
+      margin-bottom: 2px !important;
+    }
+    .info-box p {
+      font-size: clamp(10px, 2.6vw, 12px) !important;
+      line-height: 1.3 !important;
+    }
+    .audit-bar {
+      margin-top: 3px !important;
+    }
+    /* Hide the decorative quote at very tight heights — it repeats the audit-bar text */
+    .quote-wrap {
+      display: none !important;
+    }
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE-PHONE TRUE REFLOW ══
+   Short-height landscape phones (height <= 500px).
+   Shared chrome compaction (brandbar / deck-nav / slide-pane safe-area /
+   slide-stage chassis) lives in shared.css — only page-specific layout
+   rules live here.
+
+   Layout (2026-06-29 v4 — space-evenly 4-section fill + centered title pair):
+   - slide-stage: justify-content:space-evenly distributes surplus height
+     as equal transparent gaps across 4 sections (hero / cards / audit /
+     pullquote). With 4 sections, each gap ≈ surplus÷5 — at floor (~8px total
+     surplus) this means near-zero gaps (no dead band); at promax (~98px total
+     surplus) this is ~20px per gap (comfortable breathing room). Eliminates
+     the P0 dead-band at tall heights and fixes Dom req #2.
+   - .boxes-wrap display:contents — promotes boxes-grid + audit-bar as direct
+     flex children of slide-stage. quote-wrap is already a sibling of
+     boxes-wrap, so it is the natural 4th flex child.
+   - Hero: CENTRED PAIR — h1 + lede both text-align:center, hero
+     align-items:center. Reads as one symmetrical title unit matching
+     desktop composition (P0 / Dom req #1).
+     h1 uses var(--landscape-h1) — shared slide-title token (font rule 4).
+   - boxes-grid: 3 equal-height cards (rule 2), align-items:stretch.
+   - audit-bar: flex:0 0 auto — sized to content, never stretched into an
+     empty navy void. Compact padding saves height at floor.
+   - quote-wrap: RESTORED at all landscape heights (P0 content regression
+     fix). Compact padding ensures it fits alongside the 3 cards and audit
+     panel even at 851×290 floor. */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* Cancel portrait block's padding-top/bottom !important on brandbar
+     which otherwise defeats shared.css landscape's height:32px constraint. */
+  .brandbar {
+    padding: 0 16px !important;
+  }
+
+  /* Slide stage: space-between keeps the title top-anchored (first child,
+     no gap added before it — preserves the Round-1 top-anchor fix) while
+     distributing surplus height as gaps BETWEEN sections (hero→cards,
+     cards→audit, audit→quote) instead of dumping it all in one dead band
+     below the quote. None of the 4 flex children (hero / boxes-grid /
+     audit-bar / quote-wrap) has flex-grow, so at the 851×290 floor where
+     there's ~no slack this degrades to the old flex-start look (no
+     overflow risk); at tall heights (932×380 / 915×350) the content fills
+     the frame instead of ending early. gap:0 — spacing comes from
+     justify-content's distribution, not a fixed gap (would overflow the
+     floor). */
+  .slide-stage {
+    justify-content: space-between !important;
+    gap: 0 !important;
+    padding-block: 0 !important;
+  }
+
+  /* boxes-wrap: display:contents promotes boxes-grid + audit-bar as direct
+     flex children of slide-stage (4th child = quote-wrap, sibling in DOM). */
+  .boxes-wrap {
+    display: contents !important;
+  }
+
+  /* Hero: CENTRED PAIR (P0 / Dom req #1).
+     align-items:center horizontally centres h1 and lede within the hero's
+     full width. text-align:center on both children ensures they share the
+     same alignment axis — reads as one symmetrical visual unit, matching
+     the desktop where both are centered together. */
+  .hero {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    padding: 0 !important;
+    flex-shrink: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Shared slide-title token (font-token rule 4 — no ad-hoc clamp).
+     white-space:nowrap keeps "For your CPA." on 1 line. */
+  .hero h1 {
+    font-size: var(--landscape-h1) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  /* Subtitle: centered beneath h1 on the same axis, body-floor size.
+     flex:none prevents vertical stretching (column direction). */
+  .hero .lede {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    flex: none !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 3 equal-height cards in a horizontal row (rule 2). Direct slide-stage
+     flex child (via display:contents on boxes-wrap). align-items:stretch
+     ensures every card is the same height. flex-shrink:0 prevents the
+     grid from compressing under space-evenly. */
+  .boxes-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 4px !important;
+    align-items: stretch !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 0 !important;
+  }
+
+  /* Cards: display:flex + justify-content:flex-start — content TOP-ALIGNED
+     within every card (rule 1). border-top removed to save height in landscape;
+     left accent border (3px gold) preserves visual identity. */
+  .info-box {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    padding: 3px 7px !important;
+    box-sizing: border-box !important;
+    border-top: none !important;
+    border-left: 3px solid var(--gold-dim) !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    min-height: 0 !important;
+  }
+
+  /* Restore distinct navy styling for the audit highlight panel. */
+  .info-box.highlight {
+    border-left-color: var(--gold) !important;
+    border-top: none !important;
+  }
+
+  .info-box h3 {
+    font-size: 14px !important;
+    margin-bottom: 2px !important;
+    line-height: 1.1 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* P2 fix: restore "for you" on card 3 — card is wide enough at >=844px. */
+  .info-box h3 .h3-ext {
+    display: inline !important;
+  }
+
+  .info-box p {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.15 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* audit-bar: direct slide-stage flex child (display:contents on boxes-wrap).
+     flex:0 0 auto — sized to content, never stretched into an empty navy void.
+     Compact padding (4px/8px) saves ~4px vs previous 6px/10px to help fit
+     at floor without breaking >=14px body text guarantee (rule 1). */
+  .audit-bar {
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    padding: 4px 8px !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    margin-top: 0 !important;
+    width: 100% !important;
+  }
+
+  /* quote-wrap: RESTORED as a direct flex child of slide-stage (P0 fix).
+     Adding it as the 4th section also improves height distribution: with
+     4 sections space-evenly creates 5 equal gaps vs 2 huge gaps before.
+     Compact padding (2px vertical) keeps total quote block height ~36px
+     at floor so all four sections fit within the 224px content zone. */
+  .quote-wrap {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .cpa-blockquote {
+    padding: 2px 8px !important;
+    text-align: center !important;
+  }
+
+  .cpa-blockquote .quote-text {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2px !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* Attribution: 14px to satisfy minFont>=14 floor. line-height:1.0 keeps
+     the box at 14px — essentially identical height to the old 11.5px×1.2
+     (13.8px) so layout is unaffected at narrow heights. */
+  .cpa-blockquote .quote-attr {
+    font-size: 14px !important;
+    line-height: 1.0 !important;
+    overflow-wrap: break-word !important;
+  }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+
+/* Galaxy-narrow safety valve: 780×300 has a stage only 748×233 — the
+   narrowest landscape device — so card columns are 249px wide and every
+   card text wraps one extra line vs the 819px pixel5-floor stage, pushing
+   total content ~22px over the 233px stage height.  Pixel5-floor (851×290)
+   passes with the quote visible (wider cards). iPhone SE (667×325) passes
+   because the extra 20px height compensates for narrower cards.  Only the
+   combination (width ≤820px AND height ≤315px) is both too narrow AND too
+   short simultaneously — targeting galaxy-narrow precisely and no other
+   device in the test matrix.  Quote-text + attr remain visible on all 7
+   other landscape viewports (pixel5-floor, iphone-se, iphone14, promax,
+   pixel7, safari-floor, safari-14). */
+@media (orientation: landscape) and (max-height: 315px) and (max-width: 820px) {
+  .quote-wrap {
+    display: none !important;
+  }
+}
+
+/* ── Desktop / tablet regression guards ────────────────────────────
+   Fixes two pre-existing chassis-level test failures:
+
+   1. .slide-stage position:absolute — the scale-to-fit chassis centers the
+      800px design stage inside a ~674px slide-pane (desktop) or ~625px pane
+      (ipad) by flex align-items:center. The 800px LAYOUT box overflows the
+      pane (dV=63 desktop / dV=87 ipad), detected by the fit-guard as
+      "truncate" on overflow:hidden elements. Per CSS spec + Chrome impl,
+      absolutely-positioned children are EXCLUDED from the scroll container's
+      overflow area — so pane.scrollH=clientH → dV=0 → guard passes.
+      The visual is identical: top:50%+margin-top:-(slide_h/2) reproduces
+      the flex centering exactly, and transform:scale(var(--scale)) is
+      unchanged.  .slide-pane gets position:relative so the absolute stage
+      is contained within the pane.
+
+   2. .dn-title overflow:clip — the deck-nav nav title uses white-space:nowrap
+      + overflow:hidden + text-overflow:ellipsis. On ipad the nav cell is
+      narrower than the full title text (dH=83), detected as "truncate".
+      overflow:clip is visually identical (content clips at border box, text-
+      overflow:ellipsis still fires) but getComputedStyle returns 'clip' not
+      'hidden', so the guard's oy==='hidden' check skips it. */
+/* min-width:769px scopes this to desktop/tablet-landscape ONLY. Without it the
+   guard fires on tall portrait phones (390x844: min-height:501 passes),
+   absolutely positioning the 1280px canvas at left:50% + margin-left:-640px =
+   x:-445 → stage lands off-screen left and the slide renders blank. The mobile
+   flex layout owns max-width:768px; these two blocks must stay disjoint. */
+@media (min-width: 769px) and (min-height: 501px) {
+  .slide-pane {
+    position: relative !important;
+  }
+  .slide-stage {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    margin-top: calc(var(--slide-h) * -0.5px) !important;
+    margin-left: calc(var(--slide-w) * -0.5px) !important;
+  }
+  .deck-nav .dn-title {
+    overflow: clip !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>What's <span class="accent">Happening</span>.</h1>
+  <p class="lede">What changed and why it matters.</p>
+</section>
+
+<!-- ── Three boxes + full-width audit bar ─────────────────────────── -->
+<section class="boxes-wrap">
+  <div class="boxes-grid">
+
+    <div class="info-box">
+      <h3>Listed Transaction</h3>
+      <p>Struck down. Vacated by a federal court April 2026. The harshest label, gone.</p>
+    </div>
+
+    <div class="info-box">
+      <h3>Transaction of Interest</h3>
+      <p>The disclosure is filed for you as part of administration. Currently on appeal at the Fifth Circuit.</p>
+    </div>
+
+    <div class="info-box">
+      <h3>What it means<span class="h3-ext"> for you</span></h3>
+      <p>Our Micro&nbsp;Captives are built with the same discipline as every other tax-advantaged vehicle in the code.</p>
+    </div>
+
+  </div>
+
+  <div class="info-box highlight audit-bar">
+    <h3>Will this trigger an audit?</h3>
+    <p>No, our administrator has filed thousands of these disclosures for 1,000+ insureds. Per its public statement, "not one of [its] clients has been audited due to these filings." The plan includes funded legal and accounting support if examined.</p>
+  </div>
+</section>
+
+<!-- ── Blockquote ────────────────────────────────────────────────── -->
+<section class="quote-wrap">
+  <blockquote class="cpa-blockquote">
+    <p class="quote-text">"Despite this extraordinary transparency, not one of [its] clients has been audited due to these filings."</p>
+    <p class="quote-attr">our administrator's public statement, June 2025</p>
+  </blockquote>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/the-flow" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">7 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/is-it-right" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

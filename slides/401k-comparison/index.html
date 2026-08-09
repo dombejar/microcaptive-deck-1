@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>401(k) vs. Micro Captive · 831(b) Micro Captive · Pomeroy Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* -- Design tokens (verbatim from the-flow) ----------------------- */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+  --green:      #1F7A3A;
+  --green-bg:   #EEF7F1;
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* -- Brand bar ----------------------------------------------------- */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav .current {
+  color: var(--navy);
+  border-bottom: 1px solid var(--gold-dim);
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* ── Slide pane + stage chassis now come from shared.css ─────────── */
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 14px clamp(20px, 5cqi, 64px) 10px;
+}
+.hero .eyebrow {
+  display: inline-block;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.02em;
+  margin-bottom: 0;
+  max-width: 32ch;
+  text-wrap: balance;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* .hero h1 .accent inherits from shared .accent (italic + weight 500 + gold-dim). */
+
+/* ── Comparison panel ─────────────────────────────────────────────── */
+.compare-wrap {
+  max-width: var(--content-w);
+  margin: 8px auto 0;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.compare {
+  border: 1px solid var(--border);
+  background: var(--white);
+  /* Normalize the table's VISUAL height across every vehicle (Dom 2026-07-17):
+     the block occupies a CONSTANT height regardless of selection, so switching
+     never reflows/jumps the centered layout and no variant looks cramped. The
+     header keeps its natural height; the data rows flex to fill the remainder
+     (see .compare-row flex:1).
+     The lock MUST be >= the tallest variant's natural content height, else the
+     8-row rows (which can't flex-shrink below min-content) OVERFLOW the fixed
+     box downward and collide with the closer line below (R2 regression: 400px
+     was BELOW the true 8-row height ~434px, so every 8-row vehicle overflowed
+     34px and overlapped the closer by 20px; only the 7-row 401(k) fit). 448px
+     = the measured 8-row natural height (~434px) + a font-variance buffer, so
+     all six vehicles fill exactly (8-row) or relax their rows (7-row 401(k))
+     to the same height, and the closer keeps ~15px clearance below the last
+     row within the 800px stage budget. */
+  display: flex;
+  flex-direction: column;
+  height: 448px;
+}
+
+/* Column header row */
+.compare-head {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  border-bottom: 1px solid var(--border);
+}
+.compare-head .col-label {
+  padding: 16px 22px 14px;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  border-right: 1px solid var(--border);
+}
+.compare-head .col-label:last-child { border-right: 0; }
+.compare-head .col-401,
+.compare-head .col-cap {
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--weight-bold);
+  font-size: var(--type-medium);
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+.compare-head .col-401 { color: var(--navy); }
+.compare-head .col-cap {
+  color: var(--navy);
+  background: var(--gold-bg);
+}
+.compare-head .col-dim {
+  background: var(--bg-soft);
+  font-size: var(--type-small);
+  letter-spacing: 0.16em;
+  color: var(--navy-dim);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Comparison rows */
+.compare-row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.55s ease-out, transform 0.55s ease-out;
+}
+.compare-row.reveal { opacity: 1; transform: translateY(0); }
+.compare-row:last-child { border-bottom: 0; }
+/* Rows flex to fill the fixed-height .compare (see height:400px above), so the
+   table reads the same height whether a vehicle has 7 or 8 rows. */
+.compare-row { flex: 1; }
+
+.compare-row .cell {
+  padding: 11px 22px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.compare-row .cell:last-child { border-right: 0; }
+
+.compare-row .cell.dim {
+  background: var(--bg-soft);
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--navy-dim);
+}
+
+/* Educational compare - both columns read as sister columns. Micro Captive column carries a gold-tint wash. */
+.compare-row .cell.k401,
+.compare-row .cell.cap {
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--weight-bold);
+  font-size: var(--type-medium);
+  color: var(--navy);
+}
+.compare-row .cell.cap {
+  background: var(--gold-bg);
+}
+
+/* Annual contribution row stays at body-row size - the $69K vs $2.9M magnitudes do the emphasis on their own. */
+
+/* ── Closer line ──────────────────────────────────────────────────── */
+.closer {
+  max-width: var(--content-w);
+  margin: 28px auto 28px;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.closer-line {
+  font-family: 'Playfair Display', serif;
+  font-style: normal;
+  font-weight: var(--weight-bold);
+  font-size: var(--type-medium);
+  color: var(--navy);
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
+  border-top: 1px solid var(--gold-line);
+  border-bottom: 1px solid var(--gold-line);
+  padding: 24px 16px;
+  max-width: 36em;
+  margin: 0 auto;
+}
+/* .closer-line .accent inherits from shared .accent (italic + weight 500 + gold-dim). */
+
+/* ── data-rows tighten (7 and 8 row vehicles) ─────────────────────── */
+/* Max is 8 again after the Traditional-IRA trim (2026-07-17); the 9-row
+   variant no longer exists. */
+body[data-rows="7"] .hero, body[data-rows="8"] .hero { padding-top: 8px; padding-bottom: 4px; }
+body[data-rows="7"] .compare-row .cell, body[data-rows="8"] .compare-row .cell { padding-top: 9px; padding-bottom: 9px; }
+body[data-rows="7"] .closer, body[data-rows="8"] .closer { margin-top: 14px; margin-bottom: 14px; }
+body[data-rows="7"] .closer-line, body[data-rows="8"] .closer-line { padding: 16px 16px; }
+
+/* ── Comparison selector ──────────────────────────────────────────── */
+.compare-selector { max-width: var(--content-w); width: 100%; margin: 0 auto; padding: 6px clamp(20px,5cqi,64px) 0; }
+.cs-pills { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; justify-content: center; }
+.cs-pills::-webkit-scrollbar { display: none; }
+.cs-pill { flex-shrink: 0; font-family: 'Inter',sans-serif; font-size: var(--type-small); font-weight: var(--weight-bold);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--navy-dim); background: var(--bg-soft);
+  border: 1px solid var(--border); padding: 6px 14px; border-radius: 2px; cursor: pointer; white-space: nowrap;
+  transition: background .15s, color .15s, border-color .15s; }
+.cs-pill:hover { background: var(--gold-bg); border-color: var(--gold-line); color: var(--navy); }
+.cs-pill.active { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.cs-pill:focus-visible { outline: 2px solid var(--gold-dim); outline-offset: 2px; }
+.cs-select { display: none; }
+
+/* ── Responsive cell text (full vs short landscape variants) ────────
+   Default: show full text, hide short variants.
+   Landscape block below flips these for mobile landscape. */
+.cell-full { display: inline; }
+.cell-short { display: none; }
+
+@media (max-width: 640px) {
+  .cs-pills { display: none; }
+  .cs-select { display: block; width: 100%; font-family: 'Inter',sans-serif; font-size: 15px;
+    padding: 8px 12px; border: 1px solid var(--border); background: var(--bg-soft); color: var(--navy); border-radius: 2px; }
+}
+
+/* ── Deck nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. ─────────────────────────────────────── */
+.deck-nav-link.contents { text-align: center; align-items: center; }
+
+@media (max-width: 768px) {
+
+  /* 1 ── Keep the chassis height locked to the viewport */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* Keep 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  /* Slide pane fills the middle row; distributes remaining height */
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Slide stage: cancel fixed canvas; become a normal flex column
+     that fills the pane height. container-type:normal disables
+     cqi/cqb queries so desktop clamp() tokens don't misfire. */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: single compact row, no wrap */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  /* brand-left is empty on this slide; hide it to reclaim width */
+  .brand-left {
+    display: none !important;
+  }
+
+  /* Nav: shrink font so FAQ · CASE STUDIES · CONTACT fits one line */
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* slide-stage centers the selector+title+table+closer block vertically */
+  .slide-stage {
+    justify-content: center !important;
+  }
+
+  /* 3 ── Selector: switch to <select> at mobile (pills overflow) */
+
+  .cs-pills { display: none !important; }
+  .cs-select {
+    display: block !important;
+    width: 100% !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 14px !important;
+    padding: 6px 10px !important;
+    border: 1px solid var(--border) !important;
+    background: var(--bg-soft) !important;
+    color: var(--navy) !important;
+    border-radius: 2px !important;
+  }
+
+  .compare-selector {
+    padding: 6px 12px 4px !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* 4 ── Hero: compact + smaller type */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 6px 12px 4px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(16px, 5vw, 24px) !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+    text-wrap: balance !important;
+    line-height: 1.25 !important;
+  }
+
+  /* 5 ── Comparison table: shrink to fit 3 columns within mobile width */
+
+  .compare-wrap {
+    max-width: 100% !important;
+    padding: 0 8px !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .compare {
+    width: 100% !important;
+    table-layout: fixed !important;
+    overflow: hidden !important;
+    /* Release the desktop fixed-height normalization on mobile: the phone
+       layout stacks at natural height inside the scaled/flex pane. */
+    height: auto !important;
+  }
+
+  /* Header row: 3 columns squeezed */
+  .compare-head {
+    grid-template-columns: 1.6fr 1fr 1.1fr !important;
+  }
+
+  .compare-head .col-label {
+    padding: 8px 6px 6px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.12em !important;
+    line-height: 1.3 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* Data rows: same 3-col grid, compressed */
+  .compare-row {
+    grid-template-columns: 1.6fr 1fr 1.1fr !important;
+  }
+
+  .compare-row .cell {
+    padding: 7px 6px !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    min-width: 0 !important;
+  }
+
+  .compare-row .cell.dim {
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    line-height: 1.3 !important;
+  }
+
+  .compare-row .cell.k401,
+  .compare-row .cell.cap {
+    font-size: clamp(11px, 3vw, 14px) !important;
+    line-height: 1.3 !important;
+  }
+
+  /* 6 ── Closer line: compact */
+
+  .closer {
+    max-width: 100% !important;
+    padding: 0 12px !important;
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .closer-line {
+    font-size: clamp(12px, 3.5vw, 16px) !important;
+    padding: 10px 10px !important;
+    line-height: 1.4 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* 7 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE TRUE-REFLOW (2026-06-29; selector-above-title 2026-07-17) ═══
+   2-column "title-rail" composition (mirrors desktop's vertical order —
+   control → title → table → closer — folded into two columns so the
+   8-row comparison variants still fit the 851×290 floor):
+     Left  column (38%): quiet selector chip (top) then the slide title
+                         (fills the column beneath it).
+     Right column (1fr):  comparison table (fills) / closing caption
+                          (bottom, ALWAYS visible).
+   The title sits in a WIDTH-bound rail rather than a HEIGHT-bound top row,
+   so the full stage height stays available to the table. The caption is
+   never dropped — it is the brand anchor line. Chrome chassis (brandbar,
+   deck-nav, .slide-pane) handled by shared.css landscape block.
+   ══════════════════════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* ── Short cell text: flip visibility in landscape ─────────────── */
+  .cell-full { display: none !important; }
+  .cell-short { display: inline !important; }
+
+  /* ── Slide stage: 3-row CSS grid (Dom 2026-07-17: selector ABOVE title) ──
+     LEFT column = selector chip (top) + title (fills below it). RIGHT column =
+     comparison table (fills) + closer caption (bottom, ALWAYS visible). Dom
+     reviewed the horizontal layout on 2026-07-17 and moved the switcher ABOVE
+     the title text (reversing the 2026-06-30 selector-under-title placement).
+     Rows: auto (sel chip) / 1fr (title + table fill) / auto (closer). The title
+     spans rows 2-3 so it fills the left column beneath the chip; the table spans
+     rows 1-2 so it keeps the full right-column height; the closer holds the
+     bottom-right auto row. The left column's right-edge divider is continuous
+     (both sel and hero carry border-right).                                */
+  .slide-stage {
+    display: grid !important;
+    grid-template-columns: 34% 1fr !important;
+    grid-template-rows: auto 1fr auto !important;
+    grid-template-areas:
+      "sel    table"
+      "hero   table"
+      "hero   closer" !important;
+    padding: 4px 0 !important;
+    gap: 4px 14px !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  /* ── Comparison selector: a quiet chip in the LEFT column, ABOVE the
+     title (Dom 2026-07-17: move the switcher above the title text). Sits in
+     the top auto row; the title fills the column beneath it. The divider
+     continues down the left column's right edge (sel + hero border-right). */
+  .compare-selector {
+    grid-area: sel !important;
+    padding: 0 14px 4px 8px !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;   /* left-align under the left-aligned title */
+    border-right: 1px solid var(--border) !important;
+  }
+  /* Pills overflow the narrow widths; style the <select> as a quiet pill
+     chip (rounded, soft fill, hairline border, custom gold caret) so it
+     mirrors the desktop pill aesthetic instead of a native dropdown. */
+  .cs-pills  { display: none !important; }
+  .cs-select {
+    display: inline-block !important;
+    width: auto !important;
+    min-width: 150px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 24px !important;
+    line-height: 1.1 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: var(--weight-bold) !important;
+    font-size: var(--landscape-body) !important;
+    letter-spacing: 0.02em !important;
+    text-align: center !important;
+    text-align-last: center !important;
+    padding: 3px 30px 3px 14px !important;
+    border: 1px solid var(--border-2) !important;
+    color: var(--navy) !important;
+    border-radius: 2px !important;   /* sharp edges, not a rounded pill (Dom 2026-06-30) */
+    box-sizing: border-box !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    background-color: var(--bg-soft) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23B08D3D' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 10px 6px !important;
+  }
+
+  /* ── Hero rail (left 38%): slide title, centered, responsive ── */
+  .hero {
+    grid-area: hero !important;
+    max-width: 100% !important;
+    padding: 0 14px 0 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    border-right: 1px solid var(--border) !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+  .hero .eyebrow { display: none !important; }
+  .hero h1 {
+    /* Responsive within the widened 38% rail: scales up on taller/wider
+       landscapes, floors at 18px so the longest title ("Traditional IRA")
+       stays a balanced multi-line headline — not a hardcoded lump.
+       overflow-wrap:break-word (not anywhere/word-break) breaks only when a
+       single token can't fit, so names never split mid-glyph in this rail. */
+    font-size: clamp(17px, 3.2vw, 24px) !important;
+    line-height: 1.22 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    text-align: left !important;        /* left-aligned editorial headline — clean left edge vs the
+                                           lumpy centered wrap (Dom 2026-06-30: "weird shape") */
+    text-wrap: pretty !important;       /* nicer ragged-right, avoids orphan last words */
+    overflow: hidden !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* ── Brandbar link padding: kill scrollHeight > clientHeight ── */
+  .brandbar .brand-nav a,
+  .brandbar .brand-nav .current {
+    padding: 0 2px !important;
+    line-height: 1 !important;
+    border-bottom: none !important;
+  }
+
+  /* ── Table column (right 72%): comparison table spans the top auto row +
+     the 1fr fill row. min-height:0 keeps the spanning table from inflating
+     the top auto row (which sizes to the selector chip). ── */
+  .compare-wrap {
+    grid-area: table !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+  }
+  .compare {
+    width: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
+    /* Release the desktop fixed-height normalization: landscape fills the
+       grid's 1fr table area via flex, not a fixed 400px. */
+    height: auto !important;
+  }
+
+  /* Column header row — flex:1 so it's the same height as the data rows
+     (was flex-shrink:0, which left the header cramped against row 1). */
+  .compare-head {
+    grid-template-columns: 2fr 1fr 1fr !important;
+    flex: 1 !important;
+  }
+  /* Note: col-label includes col-401/col-cap (column header cells).
+     Use overflow-wrap (not word-break) so "Micro Captive" breaks at the
+     space rather than mid-character. letter-spacing: 0 keeps headers compact. */
+  .compare-head .col-label {
+    padding: 2px 5px !important;
+    font-size: var(--landscape-body) !important;
+    letter-spacing: 0 !important;
+    line-height: 1.15 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Data rows: skip entrance animation; flex:1 distributes height
+     evenly across rows so the table fills the full 1fr column. */
+  .compare-row {
+    grid-template-columns: 2fr 1fr 1fr !important;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    flex: 1 !important;
+  }
+  /* Top-align cell content (rule 1: no vertical centering in content boxes).
+     letter-spacing: 0 on dim col ensures uppercase labels don't over-run their
+     2fr column at the narrowest landscape viewport (667px). */
+  .compare-row .cell {
+    padding: 1px 5px !important;
+    overflow-wrap: break-word !important;
+    min-width: 0 !important;
+    justify-content: flex-start !important;
+  }
+  .compare-row .cell.dim {
+    font-size: var(--landscape-body) !important;
+    letter-spacing: 0 !important;
+    line-height: 1.05 !important;
+  }
+  .compare-row .cell.k401,
+  .compare-row .cell.cap {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.05 !important;
+  }
+
+  /* ── Closer: ALWAYS visible — caption is never dropped ────────────
+     Caption appears in the right column's auto-height bottom row.
+     flex + overflow:hidden prevents it from pushing nav below fold. */
+  .closer {
+    grid-area: closer !important;
+    display: flex !important;
+    align-items: center !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+  .closer-line {
+    font-size: var(--landscape-body) !important;
+    padding: 3px 8px !important;
+    line-height: 1.2 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-wrap: break-word !important;
+    text-align: center !important;
+    border-bottom: none !important;
+    border-top: 1px solid var(--gold-line) !important;
+    margin: 0 !important;
+  }
+
+  /* ── 8-row vehicles: extra-tight row packing ─────────────────────────
+     The withdrawal-timeline row (2026-07-17) pushed every non-401(k) vehicle
+     to 8 rows (HSA/Roth/SEP/Traditional/1031); 401(k) stays 7. At narrow
+     landscape widths (e.g. 667×325 iPhone-SE landscape) the taller 8-row
+     variants' labels wrap and overrun the fixed table height. Shave cell
+     padding + line-height for the 8-row variants so the extra row packs
+     in without clipping, via the same data-rows-gated idiom the file uses,
+     and strictly tighter than (never looser than) the prior layout. */
+  body[data-rows="8"] .compare-row .cell { padding-top: 0 !important; padding-bottom: 0 !important; line-height: 1.0 !important; }
+  body[data-rows="8"] .compare-head .col-label { padding-top: 1px !important; padding-bottom: 1px !important; line-height: 1.0 !important; }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+
+/* ── Landscape floor (≤310px): extra-tight packing for 8-row variants ──────
+   At safari-floor (851 × 290) stage height = 223px. After sel (22px) and
+   closer (~36px for a 2-line caption at 14px/1.1lh + 3px padding + 1px border),
+   the table gets ~161px. 8 data rows need cell padding reduced to 1px and
+   line-height 1.0 so each row costs 16px (14px text + 2px pad) ≤ 17.4px slot.
+   ──────────────────────────────────────────────────────────────────────────── */
+@media (orientation: landscape) and (max-height: 310px) {
+
+  /* Reduce stage outer padding and row gaps to reclaim ~6px for table rows. */
+  .slide-stage {
+    padding: 2px 0 !important;
+    gap: 1px 6px !important;
+  }
+  /* Header and data cells: tighten vertical to line-height 1.0 at floor. */
+  .compare-head .col-label {
+    padding: 1px 6px !important;
+    line-height: 1.0 !important;
+  }
+  .compare-row .cell {
+    line-height: 1.0 !important;
+  }
+  .compare-row .cell.dim {
+    line-height: 1.0 !important;
+  }
+  .compare-row .cell.k401,
+  .compare-row .cell.cap {
+    line-height: 1.0 !important;
+  }
+  .closer-line {
+    padding: 2px 8px !important;
+    line-height: 1.1 !important;
+  }
+
+} /* end @media (orientation: landscape) and (max-height: 310px) */
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Comparison selector ─────────────────────────────────────────── -->
+<div class="compare-selector">
+  <div class="cs-pills" role="group" aria-label="Compare Micro Captive to">
+    <button class="cs-pill active" type="button" data-idx="0" aria-pressed="true">401(k)</button>
+    <button class="cs-pill" type="button" data-idx="1" aria-pressed="false">HSA</button>
+    <button class="cs-pill" type="button" data-idx="2" aria-pressed="false">Roth IRA</button>
+    <button class="cs-pill" type="button" data-idx="3" aria-pressed="false">SEP IRA</button>
+    <button class="cs-pill" type="button" data-idx="4" aria-pressed="false">Traditional IRA</button>
+    <button class="cs-pill" type="button" data-idx="5" aria-pressed="false">1031 Exchange</button>
+  </div>
+  <select class="cs-select" aria-label="Compare Micro Captive to">
+    <option value="0">401(k)</option><option value="1">HSA</option><option value="2">Roth IRA</option>
+    <option value="3">SEP IRA</option><option value="4">Traditional IRA</option><option value="5">1031 Exchange</option>
+  </select>
+</div>
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Think of a Micro&nbsp;Captive like a <span class="accent">401(k)</span> but for your business.</h1>
+</section>
+
+<!-- ── Comparison panel ───────────────────────────────────────────── -->
+<section class="compare-wrap">
+  <div class="compare">
+    <div class="compare-head">
+      <div class="col-label col-dim">Comparison</div>
+      <div class="col-label col-401">401(k)</div>
+      <div class="col-label col-cap">Micro Captive</div>
+    </div>
+
+    <!-- Headline row: annual contribution -->
+    <div class="compare-row headline diverge" data-row>
+      <div class="cell dim">Annual contribution</div>
+      <div class="cell k401">
+        $72,000
+      </div>
+      <div class="cell cap">
+        $2,900,000
+      </div>
+    </div>
+
+    <!-- Tax treatment -->
+    <div class="compare-row same" data-row>
+      <div class="cell dim">Tax treatment</div>
+      <div class="cell k401">
+        Tax-deferred
+      </div>
+      <div class="cell cap">
+        Tax-deferred
+      </div>
+    </div>
+
+    <!-- Who controls it -->
+    <div class="compare-row diverge" data-row>
+      <div class="cell dim">Who controls it</div>
+      <div class="cell k401">
+        Wall Street
+      </div>
+      <div class="cell cap">
+        You
+      </div>
+    </div>
+
+    <!-- Protects your business -->
+    <div class="compare-row diverge" data-row>
+      <div class="cell dim">Protects your business</div>
+      <div class="cell k401">
+        No
+      </div>
+      <div class="cell cap">
+        Yes
+      </div>
+    </div>
+
+    <!-- Builds long-term wealth -->
+    <div class="compare-row same" data-row>
+      <div class="cell dim">Builds long-term wealth</div>
+      <div class="cell k401">
+        Yes
+      </div>
+      <div class="cell cap">
+        Yes
+      </div>
+    </div>
+
+    <!-- Allowed withdrawal timeline -->
+    <div class="compare-row diverge" data-row>
+      <div class="cell dim"><span class="cell-full">Allowed withdrawal timeline</span><span class="cell-short">Withdrawal timeline</span></div>
+      <div class="cell k401">
+        59&frac12;
+      </div>
+      <div class="cell cap">
+        After 1 year
+      </div>
+    </div>
+
+    <!-- Who benefits -->
+    <div class="compare-row diverge" data-row>
+      <div class="cell dim">Who benefits</div>
+      <div class="cell k401">
+        Employees
+      </div>
+      <div class="cell cap">
+        <span class="cell-full">Business owners</span><span class="cell-short">Biz owners</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Closer line ────────────────────────────────────────────────── -->
+<section class="closer">
+  <p class="closer-line">A 401(k) is built for the employees. A Micro&nbsp;Captive is built for the <span class="accent">business owner</span>.</p>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows is-ancillary" aria-label="Page navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/" aria-label="Back to deck"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">Back to deck</span>
+</nav>
+
+<script>
+/* IntersectionObserver - stagger-reveal comparison rows */
+(function() {
+  const rowEls = document.querySelectorAll('[data-row]');
+
+  // Reduced motion: just show everything
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    rowEls.forEach(el => el.classList.add('reveal'));
+    return;
+  }
+
+  // Stagger comparison rows on enter
+  let rowDelay = 0;
+  const rowObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('reveal'), rowDelay);
+        rowDelay += 90;
+        rowObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  rowEls.forEach(el => rowObs.observe(el));
+})();
+
+/* Comparison selector - swap content between 6 comparison options */
+(function () {
+  const COMPARISONS = [
+    { // 0 - 401(k): reference, 7 rows (withdrawal-timeline row added 2026-07-17 per 7/12 Jason meeting)
+      label:"401(k)", article:"a", name:"401(k)", colLabel:"401(k)", bottomGroup:"the employees",
+      rows:[
+        {dim:"Annual contribution",     a:"$72,000",      cap:"$2,900,000"},
+        {dim:"Tax treatment",           a:"Tax-deferred", cap:"Tax-deferred"},
+        {dim:"Who controls it",         a:"Wall Street",  cap:"You"},
+        {dim:"Protects your business",  a:"No",           cap:"Yes"},
+        {dim:"Builds long-term wealth", a:"Yes",          cap:"Yes"},
+        {dim:"Allowed withdrawal timeline", dimShort:"Withdrawal timeline", a:"59&frac12;", cap:"After 1 year"},
+        {dim:"Who benefits",            a:"Employees",    cap:"Business owners", capShort:"Biz owners"},
+      ],
+    },
+    { // 1 - HSA: 8 rows. Dom: 4400/8750, Tax exempt, special-treatment Yes, long-term No
+      label:"HSA", article:"an", name:"HSA", colLabel:"HSA", bottomGroup:"individuals",
+      rows:[
+        {dim:"Annual contribution",       a:"$4,400 self only / $8,750 family", aShort:"$4,400 / $8,750", cap:"$2,900,000"},
+        {dim:"Tax treatment",             a:"Tax exempt",                       cap:"Tax-deferred"},
+        {dim:"Who controls it",           a:"Your HSA custodian", aShort:"A custodian",           cap:"You"},
+        {dim:"Requires special treatment", dimShort:"Special treatment", a:"Yes",                             cap:"No"},
+        {dim:"Protects your business",    a:"No",                               cap:"Yes"},
+        {dim:"Builds long-term wealth",   a:"No",                               cap:"Yes"},
+        {dim:"Allowed withdrawal timeline", dimShort:"Withdrawal timeline", a:"65 (non-medical)", aShort:"65", cap:"After 1 year"},
+        {dim:"Who benefits",              a:"Individuals (medical costs)", aShort:"Individuals",   cap:"Business owners", capShort:"Biz owners"},
+      ],
+    },
+    { // 2 - Roth IRA: 8 rows. Dom: 7500, income limits 153k/242k, who benefits Individuals
+      label:"Roth IRA", article:"a", name:"Roth IRA", colLabel:"Roth IRA", bottomGroup:"individuals",
+      rows:[
+        {dim:"Annual contribution",     a:"$7,500",                          cap:"$2,900,000"},
+        {dim:"Tax treatment",           a:"After-tax in, tax-free out",      cap:"Tax-deferred"},
+        {dim:"Who controls it",         a:"Your brokerage",                  cap:"You"},
+        {dim:"Income limits",           a:"$153,000 single / $242,000 married", cap:"None"},
+        {dim:"Protects your business",  a:"No",                              cap:"Yes"},
+        {dim:"Builds long-term wealth", a:"Yes",                             cap:"Yes"},
+        {dim:"Allowed withdrawal timeline", dimShort:"Withdrawal timeline", a:"59&frac12; (earnings)", aShort:"59&frac12;", cap:"After 1 year"},
+        {dim:"Who benefits",            a:"Individuals",                     cap:"Business owners", capShort:"Biz owners"},
+      ],
+    },
+    { // 3 - SEP IRA: 8 rows. Dom: 72,000; remove "IRS rules"; remove the word; who benefits self-employed biz owners
+      label:"SEP IRA", article:"a", name:"SEP IRA", colLabel:"SEP IRA", bottomGroup:"sole proprietors",
+      rows:[
+        {dim:"Annual contribution",          a:"$72,000",        cap:"$2,900,000"},
+        {dim:"Tax treatment",                a:"Tax-deferred",   cap:"Tax-deferred"},
+        {dim:"Who controls it",              a:"You",            cap:"You"},
+        {dim:"Must fund all eligible employees", dimShort:"Fund all employees", a:"Yes",        cap:"No"},
+        {dim:"Protects your business",       a:"No",             cap:"Yes"},
+        {dim:"Builds long-term wealth",      a:"Yes",            cap:"Yes"},
+        {dim:"Allowed withdrawal timeline", dimShort:"Withdrawal timeline", a:"59&frac12;", cap:"After 1 year"},
+        {dim:"Who benefits",                 a:"Self-employed business owners", aShort:"Self-employed", cap:"Business owners", capShort:"Biz owners"},
+      ],
+    },
+    { // 4 - Traditional IRA: 8 rows. Dom 2026-07-17: dropped "Income limits for deduction" row (kept RMDs) to normalize to 8. Dom: 7500; who benefits Individuals
+      label:"Traditional IRA", article:"a", name:"Traditional IRA", colLabel:"Traditional IRA", bottomGroup:"retirement",
+      rows:[
+        {dim:"Annual contribution",          a:"$7,500",                   cap:"$2,900,000"},
+        {dim:"Tax treatment",                a:"Tax-deferred",             cap:"Tax-deferred"},
+        {dim:"Who controls it",              a:"Your brokerage",           cap:"You"},
+        {dim:"Required minimum distributions", dimShort:"Min. distributions", a:"Yes, starting at age 73", aShort:"Yes", cap:"No"},
+        {dim:"Protects your business",       a:"No",                       cap:"Yes"},
+        {dim:"Builds long-term wealth",      a:"Yes",                      cap:"Yes"},
+        {dim:"Allowed withdrawal timeline", dimShort:"Withdrawal timeline", a:"59&frac12;", cap:"After 1 year"},
+        {dim:"Who benefits",                 a:"Individuals",              cap:"Business owners", capShort:"Biz owners"},
+      ],
+    },
+    { // 5 - 1031 Exchange: 8 rows. Dom: who controls -> "You"
+      label:"1031 Exchange", article:"a", name:"1031 Exchange", colLabel:"1031 Exchange", bottomGroup:"real estate investors",
+      rows:[
+        {dim:"Annual use",              a:"No cap, per transaction",   aShort:"No cap",           cap:"Up to $2,900,000/year",      capShort:"$2.9M/yr"},
+        {dim:"Tax treatment",          a:"Capital gains deferred",     aShort:"Cap-gains deferred", cap:"Tax-deferred"},
+        {dim:"Who controls it",        a:"You",                        cap:"You"},
+        {dim:"Asset type required",    a:"Like-kind real estate only", aShort:"Real estate only", cap:"Any business, any industry", capShort:"Any business"},
+        {dim:"Protects your business", a:"No, real property only",     aShort:"No",               cap:"Yes"},
+        {dim:"Builds long-term wealth", a:"Yes, via real estate",      aShort:"Yes",              cap:"Yes"},
+        {dim:"Allowed withdrawal timeline", dimShort:"Withdrawal timeline", a:"Any time (taxable)", aShort:"Any time", cap:"After 1 year"},
+        {dim:"Who benefits",           a:"Real estate investors",      aShort:"Investors",        cap:"Business owners",            capShort:"Biz owners"},
+      ],
+    },
+  ];
+
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function reReveal() {
+    var rows = document.querySelectorAll('[data-row]');
+    if (prefersReduced) {
+      rows.forEach(function (el) { el.classList.add('reveal'); });
+      return;
+    }
+    rows.forEach(function (el) { el.classList.remove('reveal'); });
+    rows.forEach(function (el, i) {
+      setTimeout(function () { el.classList.add('reveal'); }, i * 90);
+    });
+  }
+
+  function render(idx) {
+    var c = COMPARISONS[idx];
+    var h1 = document.querySelector('.hero h1');
+    if (h1) h1.innerHTML = 'Think of a Micro Captive like ' + c.article + ' <span class="accent">' + c.name + '</span> but for your business.';
+    var col401 = document.querySelector('.compare-head .col-401');
+    if (col401) col401.innerHTML = c.colLabel;
+    var compareEl = document.querySelector('.compare');
+    if (compareEl) {
+      compareEl.querySelectorAll('[data-row]').forEach(function (el) { el.parentNode.removeChild(el); });
+      c.rows.forEach(function (row) {
+        var div = document.createElement('div');
+        div.className = 'compare-row';
+        div.setAttribute('data-row', '');
+        /* Emit dual spans for cells that have a landscape-short variant;
+           CSS toggles .cell-full/.cell-short via the landscape @media query. */
+        var dimCell = row.dimShort
+          ? '<span class="cell-full">' + row.dim + '</span><span class="cell-short">' + row.dimShort + '</span>'
+          : row.dim;
+        var aCell = row.aShort
+          ? '<span class="cell-full">' + row.a + '</span><span class="cell-short">' + row.aShort + '</span>'
+          : row.a;
+        var capCell = row.capShort
+          ? '<span class="cell-full">' + row.cap + '</span><span class="cell-short">' + row.capShort + '</span>'
+          : row.cap;
+        div.innerHTML = '<div class="cell dim">' + dimCell + '</div>' +
+          '<div class="cell k401">' + aCell + '</div>' +
+          '<div class="cell cap">' + capCell + '</div>';
+        compareEl.appendChild(div);
+      });
+    }
+    var Art = c.article.charAt(0).toUpperCase() + c.article.slice(1);
+    var closerLine = document.querySelector('.closer-line');
+    if (closerLine) closerLine.innerHTML = Art + ' ' + c.name + ' is built for ' + c.bottomGroup +
+      '. A Micro Captive is built for the <span class="accent">business owner</span>.';
+    document.body.dataset.rows = String(c.rows.length);
+    requestAnimationFrame(function () { reReveal(); window.dispatchEvent(new Event('resize')); });
+  }
+
+  // Wire pill buttons
+  var pills = document.querySelectorAll('.cs-pill');
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pills.forEach(function (p) { p.classList.remove('active'); p.setAttribute('aria-pressed', 'false'); });
+      pill.classList.add('active');
+      pill.setAttribute('aria-pressed', 'true');
+      render(parseInt(pill.dataset.idx, 10));
+    });
+  });
+
+  // ArrowLeft/ArrowRight roving focus on pills
+  var pillsContainer = document.querySelector('.cs-pills');
+  if (pillsContainer) {
+    pillsContainer.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var pillArr = Array.from(pills);
+      var idx = pillArr.indexOf(document.activeElement);
+      if (idx === -1) return;
+      var next = e.key === 'ArrowRight'
+        ? (idx + 1) % pillArr.length
+        : (idx - 1 + pillArr.length) % pillArr.length;
+      pillArr[next].focus();
+      pillArr[next].click();
+    });
+  }
+
+  // Wire mobile select
+  var sel = document.querySelector('.cs-select');
+  if (sel) {
+    sel.addEventListener('change', function () {
+      var idx = parseInt(sel.value, 10);
+      pills.forEach(function (p) { p.classList.remove('active'); p.setAttribute('aria-pressed', 'false'); });
+      if (pills[idx]) { pills[idx].classList.add('active'); pills[idx].setAttribute('aria-pressed', 'true'); }
+      render(idx);
+    });
+  }
+
+  document.body.dataset.rows = '7';
+
+})();
+</script>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

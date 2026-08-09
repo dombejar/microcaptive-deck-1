@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>What Is a Micro Captive? · 831(b) · Jason Monczka</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens ────────────────────────────────────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.35);
+  --green:      #1F7A3A;
+  --green-bg:   #EEF7F1;
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav .current {
+  color: var(--navy);
+  border-bottom: 1px solid var(--gold-dim);
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* ── Hero (full-width, sits above two-col body) ───────────────────── */
+.hero {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 8px clamp(20px, 5cqi, 64px) 8px;
+}
+.hero .eyebrow {
+  display: inline-block;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.03em;
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+.hero h1 .accent {
+  font-style: italic;
+  color: var(--gold-dim);
+  font-weight: var(--weight-italic);
+}
+
+/* ── Two-column body ──────────────────────────────────────────────── */
+.what-grid {
+  max-width: var(--content-w);
+  margin: clamp(28px, 4cqb, 48px) auto 0;
+  padding: 0 clamp(20px, 5cqi, 64px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(36px, 5cqi, 72px);
+  align-items: stretch;
+}
+
+/* Left column — definition paragraphs + italic closer ─────────────── */
+.what-left {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(22px, 2.4cqi, 28px);
+}
+.what-left .section-eyebrow {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  line-height: 1.4;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.what-left p.def {
+  font-family: 'Inter', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  color: var(--text);
+  max-width: 36em;
+}
+.what-left p.def strong {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: var(--weight-bold);
+  color: var(--gold-dim);
+}
+.what-left .closer {
+  margin-top: auto;
+  padding-top: clamp(20px, 2cqb, 28px);
+  border-top: 1px solid var(--gold-line);
+}
+.what-left .closer p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  line-height: 1.4;
+  color: var(--text);
+  max-width: 32em;
+}
+
+/* Definition block — the PRIMARY artifact. Framed with a gold border-rule, holding
+   the plain-English eyebrow + translation only (statute section removed). Balances
+   the navy card on the right. */
+.what-left .def-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(18px, 2.2cqi, 28px) clamp(20px, 2.4cqi, 30px);
+  background: var(--bg-soft);
+  border: 1px solid var(--border-2);
+  border-left: 4px solid var(--gold);
+}
+
+/* Translation — now the sole content of the def-block (statute section removed).
+   Eyebrow is Inter, uppercase, letterspaced, bold, navy. Sentence is navy body,
+   framed by the def-block border. */
+.what-left .trans-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: var(--weight-display);
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 0;
+}
+.what-left p.def.trans-text {
+  font-size: clamp(19px, 1.9cqi, 22px);
+  font-weight: var(--weight-regular);
+  line-height: 1.34;
+  color: var(--navy);
+  /* Overrides the generic .what-left p.def max-width:36em fallback so the
+     sentence fills the full def-block measure instead of wrapping narrow. */
+  max-width: none;
+}
+
+/* Right column — bordered $2.9M callout box ─────────────────────── */
+.what-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.amount-card {
+  border: none;
+  padding: clamp(36px, 4.5cqb, 56px) clamp(40px, 5.5cqi, 64px);
+  background: var(--navy);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  aspect-ratio: 1 / 1;
+}
+.amount-card .ac-eyebrow {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  color: var(--gold);
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+.amount-card .ac-sub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  color: var(--white-mute);
+  margin-bottom: clamp(18px, 2.2cqb, 28px);
+}
+.amount-card .ac-amount {
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--weight-italic);
+  font-style: italic;
+  color: var(--gold);
+  font-size: var(--type-large);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ── Deck nav (Prev / Next) ───────────────────────────────────────── */
+/* chassis grid-template-columns / background / line-height now come from shared.css */
+.deck-nav {
+  border-top: 1px solid var(--border);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE LAYER — max-width: 768px
+   Cancels the fixed-canvas scale transform; reflows content as a
+   single-column flex block that fills exactly 100svh. No scroll.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock height, hide scroll */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Cancel the fixed 1280×800 canvas transform; become a normal flex column */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: single compact row, no wrap */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  /* brand-left is empty on this slide; hide it to reclaim width */
+  .brand-left {
+    display: none !important;
+  }
+
+  /* Nav: shrink font so FAQ · CASE STUDIES · CONTACT fits one line */
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding, prominent title */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 10px 16px 6px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 38px) !important;
+    white-space: normal !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+  }
+
+  /* 4 ── Two-column grid: stack to single column */
+
+  .what-grid {
+    max-width: 100% !important;
+    margin: 8px 0 0 !important;
+    padding: 0 16px 8px !important;
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    flex-shrink: 0 !important;
+    align-items: start !important;
+  }
+
+  /* Left column: compact gaps */
+  .what-left {
+    gap: 6px !important;
+  }
+
+  /* Definition frame: compact padding so the framed excerpt costs no scroll */
+  .what-left .def-block {
+    padding: 8px 10px !important;
+    gap: 3px !important;
+    border-left-width: 3px !important;
+  }
+  .what-left p.def.trans-text {
+    font-size: clamp(12px, 3.2vw, 15px) !important;
+  }
+
+  .what-left .section-eyebrow {
+    font-size: clamp(13px, 3.5vw, 17px) !important;
+    margin-bottom: 0 !important;
+  }
+
+  .what-left p.def {
+    font-size: clamp(11px, 3vw, 14px) !important;
+    line-height: 1.4 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    margin: 0 !important;
+  }
+
+  .what-left .closer {
+    margin-top: 4px !important;
+    padding-top: 8px !important;
+  }
+
+  .what-left .closer p {
+    font-size: clamp(11px, 3vw, 14px) !important;
+    line-height: 1.4 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Right column: cancel square aspect-ratio, compact padding */
+  .what-right {
+    align-items: stretch !important;
+  }
+
+  .amount-card {
+    aspect-ratio: auto !important;
+    padding: 14px 20px !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 6px 14px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+
+  .amount-card .ac-eyebrow {
+    font-size: clamp(11px, 3vw, 14px) !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+  }
+
+  .amount-card .ac-sub {
+    font-size: clamp(10px, 2.8vw, 13px) !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  .amount-card .ac-amount {
+    font-size: clamp(26px, 8vw, 42px) !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══════════════════════════════════════════════════════════════
+   LANDSCAPE TRUE-REFLOW — what-is-a-microcaptive (2026-06-29)
+   shared.css handles chassis: body grid, slide-pane overflow:hidden,
+   slide-stage transform:none + height:100% + flex-direction:column,
+   brandbar/deck-nav compaction, pane safe-area padding-inline.
+   This block: per-page content rules ONLY.
+   AC10: overflow-y:auto DELETED. No sub-14px font literals.
+   AC9:  all sizes consume var(--landscape-*) tokens.
+   Layout mirrors desktop: hero h1 strip → 2-col definition+card grid.
+   ══════════════════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* ── Brandbar: reset portrait-block padding for narrow landscape ──────
+     At widths ≤768px the portrait @media block sets padding-top/bottom:8px
+     (later in source order than shared.css, so it overrides it). This
+     landscape block is last in source order → padding-block:0 wins and
+     restores the zero block-padding shared.css brandbar-height needs.   */
+  .brandbar { padding-block: 0 !important; }
+
+  /* Hero: compact single-line title, no margin eating height */
+  .hero {
+    max-width: 100% !important;
+    padding: 4px 0 2px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+    margin: 0 !important;
+  }
+
+  .hero .eyebrow { display: none !important; }
+
+  .hero h1 {
+    font-size: var(--landscape-h1) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+  }
+
+  /* Two-col grid: mirrors desktop side-by-side; fills remaining stage height */
+  .what-grid {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 0 4px !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  /* Left column: definition + translation + closer. GAP FIX (Dom 2026-06-30):
+     space-evenly distributes all five text blocks to FILL the column height
+     evenly (was space-between + margin-top:auto on the closer, which pinned the
+     closer to the bottom and stranded a void in the middle). Balances the
+     full-height navy card on the right.                                      */
+  .what-left {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    overflow: hidden !important;
+    justify-content: space-evenly !important;
+    padding: 0 !important;
+  }
+
+  /* Definition frame: shave padding to the floor so it fits the ≤500px stage.
+     Font sizes stay on --landscape-body (AC9/AC10); hierarchy carries on the
+     frame + navy weight, not on a smaller secondary size. */
+  .what-left .def-block {
+    padding: 5px 8px !important;
+    gap: 2px !important;
+    border-left-width: 3px !important;
+  }
+  .what-left .section-eyebrow {
+    font-size: var(--landscape-body) !important;
+    margin-bottom: 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  .what-left p.def {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.35 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  .what-left .closer {
+    display: block !important;
+    margin-top: 0 !important;   /* override desktop margin-top:auto so space-evenly can distribute (no bottom-pin void) */
+    padding-top: 4px !important;
+    border-top: 1px solid var(--gold-line) !important;
+  }
+
+  .what-left .closer p {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.3 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    margin: 0 !important;
+  }
+
+  /* Right col: navy card stretches to full grid-cell height */
+  .what-right {
+    display: flex !important;
+    align-items: stretch !important;
+    align-self: stretch !important;
+  }
+
+  .amount-card {
+    aspect-ratio: auto !important;
+    width: 100% !important;
+    padding: 8px 12px !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+
+  .amount-card .ac-eyebrow {
+    font-size: var(--landscape-body) !important;
+    margin-bottom: 0 !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+  }
+
+  .amount-card .ac-sub {
+    font-size: var(--landscape-body) !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+    width: 100% !important;
+    line-height: 1.2 !important;
+  }
+
+  .amount-card .ac-amount {
+    font-size: var(--landscape-h1) !important;
+    text-align: center !important;
+    width: 100% !important;
+    line-height: 1 !important;
+  }
+
+} /* end @media landscape what-is-a-microcaptive */
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>So what is a <span class="accent">Micro&nbsp;Captive?</span></h1>
+</section>
+
+<!-- ── Two-column body ────────────────────────────────────────────── -->
+<section class="what-grid">
+
+  <!-- Left: framed plain-English definition → italic closer -->
+  <div class="what-left">
+
+    <!-- Definition: the primary artifact — one framed box holding the plain-English
+         translation only (statute section removed 2026-07-23). -->
+    <div class="def-block">
+      <div class="section-eyebrow trans-eyebrow">In plain English</div>
+      <p class="def trans-text">
+        A <strong>Micro Captive</strong> is a <strong>C-Corp that you own</strong>. This allows your business to deduct up to <strong>$2,900,000 annually</strong> to protect against unexpected expenses, while maintaining control over the funds.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/4-options" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">4 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/tax-arbitrage" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

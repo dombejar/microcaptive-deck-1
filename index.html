@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Micro Captives · 831(b) · The Smarter Way</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  gap: 14px;
+}
+.brand-nav a { color: var(--text-dim); text-decoration: none; padding: 6px 0; }
+.brand-nav .sep { color: var(--border-2); font-weight: 400; }
+
+/* ── Slide-specific component CSS (hero) ───────────────────────────────────── */
+/* .slide-pane, .slide-stage, .deck-nav chassis now come from shared.css       */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px clamp(20px, 5cqi, 64px);
+  max-width: var(--content-w);
+  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+}
+.hero h1 {
+  font-size: var(--type-display);
+  font-weight: var(--weight-display);
+  margin-bottom: 28px;
+  letter-spacing: -0.025em;
+}
+/* .hero h1 .accent inherits from shared.css canonical .accent (Playfair italic + var(--weight-italic) + var(--gold-dim)) */
+.hero .tagline {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  color: var(--text-mute);
+  line-height: 1.4;
+  max-width: 28em;
+}
+/* Cover-only wayfinding hint (Jason 7/12): first-time visitors mistook the
+   deck for a normal site and never advanced. A small nudge toward the arrow. */
+.cover-hint {
+  margin-top: 40px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.cover-hint-arrow {
+  font-size: 20px;
+  line-height: 1;
+  animation: cover-hint-nudge 1.6s ease-in-out infinite;
+}
+@keyframes cover-hint-nudge {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cover-hint-arrow { animation: none; }
+}
+@media (max-width: 768px) {
+  .cover-hint { margin-top: 26px !important; font-size: 13px !important; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .cover-hint { margin-top: 12px !important; font-size: 12px !important; }
+}
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. This rule is intentionally removed from inline style. */
+.deck-nav-link.prev-empty { cursor: default; }
+.deck-nav-link.prev-empty:hover { background: var(--bg-soft); }
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE LAYER  (max-width: 768px)
+   Cancels the fixed-canvas scale transform and reflows the cover
+   into a single viewport: big centered title + tagline, no scroll.
+   Desktop (>=768px) is byte-for-byte unchanged.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock to viewport, no scroll */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  /* Slide pane fills middle row */
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Cancel fixed canvas; become a flex column filling the pane.
+     container-type:normal disables cqi/cqb so desktop clamps don't misfire. */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: compact one-line row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  /* brand-left is empty on the cover; hide it */
+  .brand-left {
+    display: none !important;
+  }
+
+  /* Nav: shrink so FAQ · Case Studies · Contact fits one line */
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: content-sized block (stage centers it vertically) */
+
+  .hero {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 24px 20px !important;
+    /* Must NOT have height:100% — let it size to its content so
+       the stage can center the block in the remaining space */
+    height: auto !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  /* Cover title: big and commanding — this is the hero headline */
+  .hero h1 {
+    font-size: clamp(40px, 13vw, 72px) !important;
+    margin-bottom: 20px !important;
+    line-height: 1.08 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* Tagline: elegant italic subtitle, proportional to title */
+  .hero .tagline {
+    font-size: clamp(18px, 5.5vw, 30px) !important;
+    max-width: 100% !important;
+    line-height: 1.35 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 4 ── No secondary content on the cover — stage centering is all we need */
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE TRUE-REFLOW — cover (index.html) ══════════════════
+   shared.css owns: chassis (html/body, body-grid, slide-pane,
+   slide-stage), brandbar compaction, deck-nav compaction, and the
+   shared landscape token vocabulary (--landscape-*).
+   This block is ADDITIVE to those rules; it only handles the
+   cover-specific hero layout. Desktop + portrait UNTOUCHED.
+   AC10: overflow-y:auto and sub-14px chassis rules physically
+   absent (never restated here). */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* Compact nav-link padding so content fits within shared.css's
+     fixed 32px (31px clientHeight) landscape brandbar. Without this,
+     the default 5px top/bottom padding on brand-nav links exceeds the
+     budget on narrow landscape phones (e.g. 667px). */
+  .brandbar .brand-nav a,
+  .brandbar .brand-nav .current {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Stage: vertically center the stacked hero block. */
+  .slide-stage {
+    justify-content: center !important;
+  }
+
+  /* Cover hero: STACKED like the desktop + portrait deck — big title on
+     top, italic tagline below, centered. (Dom 2026-06-29: the prior
+     side-by-side row + hairline divider "looks bad — mirror the desktop
+     deck.") */
+  .hero {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    padding: 0 clamp(16px, 4vw, 48px) !important;
+    height: auto !important;
+    text-align: center !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* Cover title: big and commanding — sized to fill the short landscape
+     frame while clearing the 290px floor (single line stays well within
+     the 851px+ widths). */
+  .hero h1 {
+    font-size: clamp(32px, 8vw, 66px) !important;
+    margin-bottom: clamp(8px, 2vh, 18px) !important;
+    line-height: 1.08 !important;
+    text-align: center !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* Tagline: italic subtitle beneath the title, proportional. */
+  .hero .tagline {
+    font-size: clamp(16px, 3vw, 28px) !important;
+    max-width: 32em !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+</style>
+</head>
+<body>
+
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <span class="current">Home</span>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<div class="slide-pane">
+<div class="slide-stage">
+
+<section class="hero">
+  <h1>Micro&nbsp;<span class="accent">Captives</span></h1>
+  <p class="tagline">Protect Assets. Reduce Taxes. Accumulate Wealth.</p>
+  <p class="cover-hint">Click next to learn more <span class="cover-hint-arrow" aria-hidden="true">&rarr;</span></p>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <span class="deck-arrow-page">1 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/why" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

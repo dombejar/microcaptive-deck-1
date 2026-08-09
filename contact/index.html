@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Contact · Jason A. Monczka</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens ────────────────────────────────────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+/* html/body height + overflow + body grid come from shared.css (chassis) */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+a { color: var(--gold-dim); text-decoration: none; }
+a:hover { color: var(--gold); }
+::selection { background: var(--gold-bg); color: var(--text); }
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brandbar {
+  border-bottom: 1px solid var(--border);
+  padding: 15px clamp(20px, 5vw, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.brand-left {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav .current {
+  color: var(--navy);
+  border-bottom: 1px solid var(--gold-dim);
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav a:hover { color: var(--gold-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: 400;
+}
+
+/* .slide-pane, .slide-stage chassis now come from shared.css */
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(32px, 7vh, 76px) clamp(20px, 5vw, 64px) clamp(28px, 4.5vh, 56px);
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(36px, 5.4vw, 64px);
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.hero .sub-question {
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: clamp(18px, 2.2vw, 26px);
+  line-height: 1.3;
+  color: var(--text);
+  margin: 0 auto 20px;
+  letter-spacing: -0.01em;
+  max-width: 26em;
+}
+.hero .sub-question .accent {
+  font-style: italic;
+  color: var(--gold-dim);
+  font-weight: 500;
+}
+.hero .sub-question .accent-you { color: var(--gold-dim); font-weight: 600; font-size: 1.1em; }
+.hero .lede {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(16px, 1.8vw, 20px);
+  line-height: 1.45;
+  color: var(--text-mute);
+  max-width: 36em;
+  margin: 0 auto;
+}
+
+/* ── CTA buttons (primary) ────────────────────────────────────────── */
+.hero-cta {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 64px) clamp(32px, 5vh, 64px);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 14px 28px;
+  border: 1px solid var(--navy);
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  cursor: pointer;
+}
+.btn.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+}
+.btn.btn-primary:hover {
+  background: var(--navy-dim);
+  color: var(--white);
+}
+.btn.btn-secondary {
+  background: var(--white);
+  color: var(--navy);
+}
+.btn.btn-secondary:hover {
+  background: var(--gold-bg);
+  border-color: var(--gold-dim);
+  color: var(--gold-dim);
+}
+
+/* ── Details block ────────────────────────────────────────────────── */
+.details {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 64px) clamp(20px, 3vh, 36px);
+}
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding: clamp(32px, 5vh, 56px) 0;
+  border-top: 1px solid var(--gold-line);
+  border-bottom: 1px solid var(--gold-line);
+}
+@media (max-width: 880px) {
+  .details-grid { grid-template-columns: 1fr 1fr; }
+}
+.detail {
+  text-align: center;
+}
+.detail .detail-label {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--type-small);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 8px;
+}
+.detail .detail-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: var(--type-medium);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.detail .detail-value a {
+  color: var(--navy);
+}
+.detail .detail-value a:hover {
+  color: var(--gold-dim);
+}
+
+@media (max-width: 640px) {
+  .details-grid { grid-template-columns: 1fr; gap: 18px; }
+}
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   and all .deck-nav-link / .deck-nav-mid / .dn-label / .dn-title rules
+   now come from shared.css. This block is intentionally removed from inline style. */
+
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock height to viewport, 3-row grid */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: compact single row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  .brand-left {
+    display: none !important;
+  }
+
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding, enlarged type */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 10px 16px 6px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 38px) !important;
+    margin-bottom: 6px !important;
+    letter-spacing: -0.02em !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  .hero .sub-question {
+    font-size: clamp(14px, 4.2vw, 20px) !important;
+    max-width: 100% !important;
+    margin-bottom: 8px !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  .hero .lede {
+    font-size: clamp(13px, 3.8vw, 18px) !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 4 ── CTAs + details: stacked, full-width, compact */
+
+  .hero-cta {
+    max-width: 100% !important;
+    padding: 0 16px 8px !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .btn {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 12px 20px !important;
+    font-size: 12px !important;
+  }
+
+  .details {
+    max-width: 100% !important;
+    padding: 0 16px 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 10px 0 !important;
+  }
+
+  .detail {
+    text-align: center !important;
+  }
+
+  .detail .detail-label {
+    font-size: 9px !important;
+    margin-bottom: 2px !important;
+  }
+
+  .detail .detail-value {
+    font-size: clamp(12px, 3.5vw, 16px) !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE TRUE-REFLOW (2026-06-29) ══
+   Short-height landscape phones (height ≤ 500px).
+   Mirrors desktop composition side-by-side: width eaten, height killed.
+   shared.css handles base chrome (brandbar/deck-nav/slide-pane/slide-stage).
+   No overflow-y:auto anywhere; no sub-14px hardcoded fonts.
+   All sizing via shared.css :root landscape tokens (var(--landscape-*)). */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* Re-assert brandbar compaction: the portrait block (@media max-width:768px)
+     above overrides shared.css landscape's `padding: 0 16px` with `padding: 8px
+     14px` for viewports ≤768px (e.g. iPhone SE 667×325). This rule follows the
+     portrait block in source order so it wins, restoring the correct zero-block
+     padding and preventing the 5px vertical content clip that results. */
+  .brandbar {
+    padding: 0 16px !important;
+    overflow: hidden !important;
+  }
+
+  /* ── slide-stage: 2-column grid ────────────────────────────────────
+     Left col (3fr): hero copy (row 1, auto) + CTA buttons (row 2, auto)
+     Right col (2fr, spans both rows): contact details, vertically centred.
+     shared.css sets transform:none / height:100% / overflow:hidden.
+     Override flex→grid to eat viewport width and kill stacking height.
+     BOTH rows are auto: each sizes to its content so CTA buttons are
+     locked immediately below the text at every height (no bottom-anchor).
+     align-content:center centres the two-row block vertically in the
+     stage so residual space splits evenly above and below the group. */
+  .slide-stage {
+    display: grid !important;
+    grid-template-columns: 3fr 2fr !important;
+    grid-template-rows: auto auto !important;
+    grid-template-areas: "hero details" "cta  details" !important;
+    gap: 0 12px !important;
+    padding-block: var(--landscape-pane-pad-block) !important;
+    flex-direction: unset !important;
+    align-items: stretch !important;
+    align-content: center !important;
+  }
+
+  /* Left top row — hero copy, top-aligned within the cell */
+  .hero {
+    grid-area: hero !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    overflow: hidden !important;
+    max-width: 100% !important;
+  }
+
+  .hero h1 {
+    font-size: var(--landscape-h1) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 4px !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .hero .sub-question {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.3 !important;
+    margin: 0 0 2px !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .hero .lede {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.3 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Left bottom row — CTA buttons stacked vertically so full col width is
+     available on narrow phones (e.g. iPhone SE 667px). A side-by-side row
+     at 374px col would clip "Schedule a discovery call" button text since
+     both buttons together exceed the column width. Column layout avoids that. */
+  .hero-cta {
+    grid-area: cta !important;
+    padding: 4px 0 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    align-items: stretch !important;
+    max-width: 100% !important;
+  }
+
+  .hero-cta .btn {
+    font-size: var(--landscape-body) !important;
+    padding: 5px 10px !important;
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+    white-space: nowrap !important;
+  }
+
+  /* Right col, spans both rows — contact details, space-between so
+     "Direct line" top-aligns with hero text and "Prepared by Jason A. Monczka"
+     bottom-aligns with the CTA button (even columns, no wasted gap). */
+  .details {
+    grid-area: details !important;
+    padding: 0 0 0 14px !important;
+    margin: 0 !important;
+    border-left: 1px solid var(--gold-line) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    overflow: hidden !important;
+    max-width: 100% !important;
+  }
+
+  .details-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;  /* pushes "Prepared by" to bottom of column */
+    flex: 1 1 0 !important;                     /* fills full height of .details span */
+    gap: 0 !important;                          /* gap removed; space-between distributes evenly */
+    padding: 0 !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    width: 100% !important;
+  }
+
+  .detail {
+    text-align: left !important;
+    min-width: 0 !important;
+  }
+
+  .detail .detail-label {
+    font-size: var(--landscape-body) !important;
+    letter-spacing: 0.12em !important;
+    margin-bottom: 2px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* Allow email address to wrap rather than clip: `word-break: break-all`
+     forces a line-break at the container boundary when a long unspaced string
+     (e.g. "jason.monczka@pomeroygroup.com" ≈257px) exceeds the right col
+     width at narrow viewports (≈235px at 667px). This eliminates the 22px
+     horizontal scrollWidth overflow that caused FAIL_truncate at iphone-se. */
+  .detail .detail-value {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.2 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-all !important;
+  }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <span class="current">Contact</span>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>You already pay for unexpected expenses.</h1>
+  <p class="sub-question">The question is, are <span class="accent-you">you</span> structuring them the right way?</p>
+  <p class="lede">30-Minute discovery call. Your company, your money, your decision. Nothing generic.</p>
+</section>
+
+<!-- ── Primary CTAs ──────────────────────────────────────────────── -->
+<div class="hero-cta">
+  <a class="btn btn-primary" href="mailto:jason.monczka@pomeroygroup.com?subject=Discovery%20call%20%E2%80%93%20Micro%20Captive">Schedule a discovery call</a>
+  <a class="btn btn-secondary" href="tel:+16027391189">Call (602) 739-1189</a>
+</div>
+
+<!-- ── Contact details ──────────────────────────────────────────── -->
+<section class="details">
+  <div class="details-grid">
+    <div class="detail">
+      <div class="detail-label">Direct line</div>
+      <div class="detail-value"><a href="tel:+16027391189">(602) 739-1189</a></div>
+    </div>
+    <div class="detail">
+      <div class="detail-label">Email</div>
+      <div class="detail-value"><a href="mailto:jason.monczka@pomeroygroup.com">jason.monczka@pomeroygroup.com</a></div>
+    </div>
+    <div class="detail">
+      <div class="detail-label">Prepared by</div>
+      <div class="detail-value">Jason A. Monczka</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Back-to-deck arrow (replaces the old page-nav bar) -->
+<nav class="deck-arrows is-ancillary" aria-label="Page navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/what-the-call-looks-like" aria-label="Back to deck"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">Back to deck</span>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

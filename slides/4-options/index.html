@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>4 Options · 831(b) Micro Captive</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens (verbatim from the-flow) ──────────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+  --green:      #1F7A3A;
+  --green-bg:   #EEF7F1;
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav .current {
+  color: var(--navy);
+  border-bottom: 1px solid var(--gold-dim);
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* .slide-pane, .slide-stage chassis now come from shared.css */
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(24px, 4cqb, 48px) clamp(20px, 5cqi, 32px) clamp(32px, 5cqb, 48px);
+}
+.hero .eyebrow {
+  display: inline-block;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 10px;
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  font-size: var(--type-large);
+  letter-spacing: -0.015em;
+  line-height: 1.18;
+  max-width: 50ch;
+  margin-left: auto;
+  margin-right: auto;
+  text-wrap: balance;   /* keep the headline balanced; no orphaned trailing "it." */
+}
+.hero h1 .accent {
+  /* Inherits font-family / font-style / font-weight / color from shared .accent */
+  white-space: nowrap;
+}
+
+/* ── Options layout (Direction B: hero answer + alternatives) ─────── */
+.options-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.options-split {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;   /* Dom 2026-07-21: navy left edge moved right, box narrower than list */
+  gap: clamp(20px, 3cqi, 36px);
+  align-items: stretch;        /* stretch: navy box matches left column height so top/bottom edges align */
+}
+
+/* ── The hero answer (option 4) - dominant focal block ────────────── */
+.option-smart {
+  position: relative;
+  order: 2;
+  background: var(--navy);
+  color: var(--white);
+  border: 1px solid var(--gold);
+  border-left: 4px solid var(--gold);
+  padding: clamp(16px, 2.2cqi, 24px) clamp(18px, 2.4cqi, 28px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* Option A (Dom 2026-07-21): edges align with left column, content = one centered cluster */
+  gap: 14px;
+}
+.option-smart .smart-row {
+  /* mirrors .alt-item: numeral left, title+body right (Dom 2026-07-21) */
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  align-items: start;
+}
+.option-smart .smart-row > div > h3 {
+  margin-bottom: 6px;
+}
+.option-smart .smart-num {
+  /* matches .alt-item .alt-num so the 1-4 numbering reads as one system */
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.option-smart h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--weight-bold);
+  color: var(--white);
+  font-size: calc(var(--type-subhead) * 1.2);   /* restore pre-redesign visual scale (Dom 2026-07-21) */
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin-bottom: 0;
+}
+.option-smart h3 .accent {
+  /* §3.4 exception SUPERSEDED by Dom live walk 2026-07-21:
+     gold accent stays; italic + 1.2em flourish removed (shared .accent
+     supplies italic, so override explicitly) to match options 1-3. */
+  color: var(--gold);
+  font-style: normal;
+  font-weight: inherit;
+  font-size: 1em;
+}
+.option-smart .smart-body {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  color: var(--white-soft);
+  line-height: 1.55;
+  margin-bottom: 0;
+  max-width: 44ch;
+}
+
+/* ── The alternatives (options 1-3) - muted context column ────────── */
+.alternatives {
+  display: flex;
+  flex-direction: column;
+  order: 1;
+}
+.alt-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  align-items: center;
+  flex: 0 0 auto;        /* size rows to content; don't stretch to fill an over-tall column */
+}
+.alt-item:last-child {
+  border-bottom: 1px solid var(--border);
+}
+.alt-item .alt-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  color: var(--gold-dim);
+  line-height: 1;
+}
+.alt-item h3 {
+  /* main option text: mirrors .option-smart h3 (Playfair subhead) */
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--weight-bold);
+  color: var(--text);
+  font-size: var(--type-subhead);
+  line-height: 1.25;
+  margin: 0 0 3px;
+}
+.alt-item .alt-body {
+  /* subtext: mirrors .smart-body (Inter --type-medium) */
+  font-family: 'Inter', sans-serif;
+  font-size: var(--type-medium);
+  color: var(--text-mute);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. This rule is intentionally removed from inline style. */
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE REFLOW — max-width: 768px
+   Everything below this line is additive mobile-only.
+   NOTHING here affects >= 768px (all rules are inside this block).
+   Desktop: fixed-canvas scale via deck-fit.js, unchanged.
+   Mobile: single-column reflow, fits one viewport, no scroll.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock viewport height, 3-row grid */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Cancel fixed canvas; become a flex column filling pane height.
+     container-type:normal disables cqi/cqb so desktop clamp() tokens don't misfire. */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: compact single row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  /* brand-left is empty on this slide; hide it to reclaim width */
+  .brand-left {
+    display: none !important;
+  }
+
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding, mobile type scale */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 10px 16px 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(17px, 5.5vw, 26px) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+    text-wrap: balance !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* 4 ── Options: single-column stack, natural heights */
+
+  .options-wrap {
+    max-width: 100% !important;
+    padding: 0 12px 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .options-split {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  /* Alternatives: restore normal column order (above the smart box) */
+  .alternatives {
+    order: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+  }
+
+  .alt-item {
+    padding: 7px 0 !important;
+    column-gap: 10px !important;
+  }
+
+  .alt-item .alt-num {
+    font-size: clamp(16px, 5vw, 22px) !important;
+  }
+
+  .alt-item h3 {
+    font-size: clamp(13px, 3.8vw, 16px) !important;
+    margin: 0 0 2px !important;
+    line-height: 1.2 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .alt-item .alt-body {
+    font-size: clamp(11px, 3vw, 13px) !important;
+    line-height: 1.35 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Smart box: full width, natural height, order after alternatives */
+  .option-smart {
+    order: 2 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px 16px !important;
+    gap: 8px !important;
+    justify-content: flex-start !important;
+  }
+
+  .option-smart .smart-num {
+    font-size: clamp(20px, 6vw, 28px) !important;
+  }
+
+  .option-smart .smart-marker {
+    font-size: clamp(10px, 3vw, 13px) !important;
+  }
+
+  .option-smart h3 {
+    font-size: clamp(15px, 4.5vw, 20px) !important;
+    line-height: 1.25 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .option-smart .smart-body {
+    font-size: clamp(11px, 3vw, 14px) !important;
+    line-height: 1.4 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .option-smart .smart-badge {
+    margin-bottom: 0 !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE-PHONE TRUE REFLOW ══
+   Chassis (html/body, slide-pane, slide-stage, brandbar, deck-nav) is
+   handled by the shared.css landscape block — NOT duplicated here.
+   This block is CONTENT-ONLY: mirrors the desktop 2-column composition
+   (hero above | alternatives left · smart box right) at real text sizes,
+   no internal scroll, no sub-14px body text. Tokens from shared.css :root. */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* ── Cascade fix: narrow landscape (<768px wide) fires BOTH portrait and landscape
+     blocks; portrait's !important padding wins over shared.css landscape because the
+     page's inline <style> comes after the external shared.css. Re-assert here so this
+     per-page landscape block (last in source order) wins. ── */
+  .brandbar     { padding: 0 16px !important; }
+  .deck-nav-link { padding: 3px 14px !important; }
+
+  /* ── Hero: compact line(s) above two-column options ── */
+  .hero {
+    max-width: 100% !important;
+    padding: 3px 0 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 5vw, 26px) !important; /* bigger than h2's 20px cap; capped at 26px so
+                                                      the multi-line title stays 2 lines (not 3) at
+                                                      floor heights and doesn't overflow the stage  */
+    line-height: 1.2 !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* ── Options wrap: fill remaining slide-stage height ── */
+  .options-wrap {
+    max-width: 100% !important;
+    padding: 0 0 4px !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* ── Two-column grid mirrors desktop composition (1fr · 1.55fr) ── */
+  .options-split {
+    display: grid !important;
+    grid-template-columns: 1.15fr 1fr !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* ── Alternatives (left column): fill column height, top-anchored ──
+     justify-content: flex-start means item 1's border-top sits at the
+     very top of the column (= navy box top); flex: 1 on each item
+     distributes the full height equally so item 3's border-bottom
+     lands at the navy box bottom. */
+  .alternatives {
+    order: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    min-height: 0 !important;
+  }
+
+  /* Equal-height items: each alt-item gets exactly 1/3 of the column.
+     align-items: flex-start top-aligns number + text per systemic rule 1. */
+  .alt-item {
+    flex: 1 1 0 !important;              /* equal thirds; overrides desktop flex: 0 0 auto */
+    /* 1px (was 2px): reclaims 6px of column height so the alt-body lines still
+       fit after the 46px arrow-lane gutter narrows the text column (2026-07-17
+       nav R2). Only the 667x325-class narrow-landscape case was tight. */
+    padding: 1px 0 !important;
+    column-gap: 8px !important;
+    border-top: 1px solid var(--border) !important;
+    align-items: flex-start !important;  /* top-align content in each row */
+    min-height: 0 !important;
+  }
+
+  .alt-item:last-child {
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  /* Subordinate the decorative number so hero h1 reads more prominently */
+  .alt-item .alt-num {
+    font-size: var(--landscape-body) !important;  /* 14px — down from 16px */
+    line-height: 1 !important;
+    padding-top: 2px !important;
+  }
+
+  .alt-item h3 {
+    font-size: var(--landscape-body) !important;   /* 14px */
+    margin: 0 !important;   /* was 0 0 1px — reclaims 3px so the narrow 667x325 column clears the arrow-lane gutter */
+    line-height: 1.2 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .alt-item .alt-body {
+    font-size: var(--landscape-body) !important;   /* 14px */
+    line-height: 1.2 !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* ── Smart box (right column): navy dominant focal block ──
+     flex-start + auto margins: badge pins to the top, then the h3+body
+     pair is centered as ONE tight unit (small `gap` between them) in the
+     remaining space below the badge — instead of space-between flinging
+     all 3 children apart and stranding the body at the very bottom. */
+  .option-smart {
+    order: 2 !important;
+    padding: 8px 14px !important;
+    gap: 5px !important;
+    justify-content: center !important;   /* center cluster, matches desktop Option A */
+    box-sizing: border-box !important;
+    min-height: 0 !important;
+  }
+
+  .option-smart .smart-badge {
+    margin-bottom: 0 !important;
+    gap: 8px !important;
+    align-items: baseline !important;
+  }
+
+  .option-smart .smart-num {
+    font-size: var(--landscape-body) !important;  /* 14px — matches .alt-item .alt-num */
+    line-height: 1 !important;
+  }
+
+  .option-smart .smart-marker {
+    font-size: var(--landscape-body) !important;  /* 14px */
+    letter-spacing: 0.15em !important;
+  }
+
+  .option-smart h3 {
+    font-size: var(--landscape-h2) !important;   /* clamp(16px,2.4vw,20px) */
+    line-height: 1.2 !important;
+    overflow-wrap: break-word !important;
+    margin: 0 0 4px !important;   /* smart-row layout: no slack hacks; card centers via justify-content */
+  }
+
+  .option-smart .smart-body {
+    font-size: var(--landscape-body) !important;  /* 14px */
+    line-height: 1.35 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    margin: 0 !important;
+  }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Your business made a profit. You have <span class="accent">4 options</span>.</h1>
+</section>
+
+<!-- ── Options (Direction B: hero answer + alternatives) ───────────── -->
+<section class="options-wrap">
+  <div class="options-split">
+
+    <!-- The hero answer (option 4) - the dominant focal block -->
+    <div class="option-smart">
+      <div class="smart-row">
+        <span class="smart-num">4</span>
+        <div>
+          <h3>Instead of paying others,<br><span class="accent">pay yourself.</span></h3>
+          <p class="smart-body">What Fortune 500 companies and smart business owners do differently.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Options 1-3 collapse into the muted alternatives column -->
+    <div class="alternatives">
+
+      <div class="alt-item">
+        <span class="alt-num">1</span>
+        <div>
+          <h3>Spend the money</h3>
+          <p class="alt-body">Buy more equipment. Capital expenditures. Prepay expenses.</p>
+        </div>
+      </div>
+
+      <div class="alt-item">
+        <span class="alt-num">2</span>
+        <div>
+          <h3>Pay bonuses</h3>
+          <p class="alt-body">Reward the team. Pay employer taxes.</p>
+        </div>
+      </div>
+
+      <div class="alt-item">
+        <span class="alt-num">3</span>
+        <div>
+          <h3>Pay taxes</h3>
+          <p class="alt-body">Write a painful check to the IRS, funding waste, fraud, and abuse.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/why" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">3 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/what-is-a-microcaptive" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

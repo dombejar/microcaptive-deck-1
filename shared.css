@@ -1,0 +1,600 @@
+/* ─────────────────────────────────────────────────────────────────
+   shared.css - microcaptive-site deck
+   Path 2 extraction (2026-05-23): only blocks byte-for-byte identical
+   across all 11 slides. Divergent blocks (root tokens, body, brand-nav
+   variants, slide-pane/stage, deck-nav variants) stay per-slide inline
+   and are addressed by Phase B normalization.
+
+   Also defines R2 typography tokens + .accent utility class - these
+   are NEW shared definitions (no prior per-slide source).
+   ───────────────────────────────────────────────────────────────── */
+
+/* ── R3 typography tokens (static, no ranges) ──────────────────── */
+/* R3 (locked 2026-05-23): convert all clamp() ranges to static px.
+   The r9+ chassis transform: scale() handles all responsive concerns;
+   internal clamp/cqi was double-duty inheritance from pre-r9 layout.
+   Adds --type-subhead (28px) for the cover-tagline / CTA-h3 / slide-
+   internal sub-headline tier that R2 had no token for. */
+:root {
+  --type-small:   11px;
+  --type-caption: 14.5px;
+  --type-medium:  18px;
+  --type-subhead: 28px;
+  --type-large:   64px;
+  --type-display: 128px;
+  --type-bignum:  92px;
+
+  --weight-regular: 400;
+  --weight-bold:    600;
+  --weight-display: 700;
+  --weight-italic:  500;
+  --weight-medium:  500;
+
+  --white-soft: rgba(255, 255, 255, 0.88);
+  --white-mute: rgba(255, 255, 255, 0.70);
+  --white-dim:  rgba(255, 255, 255, 0.60);
+
+  /* canonical content width — every slide/page content container references this (1200 "7/9 feel") */
+  --content-w: 1200px;
+}
+
+/* ── Content-frame fill (deck-wide) ────────────────────────────────
+   --content-w sets the max-width CAP; this sets the FILL. In the
+   flex-column .slide-stage a wrap with margin:0 auto but no width
+   collapses to its content width, so heroes/wraps must declare
+   width:100% to expand to the 1200 cap. Single source of truth;
+   kills the per-slide drift permanently. (.cta is intentionally
+   excluded — it is a full-bleed navy band, not a content wrap.) */
+.hero,
+.options-wrap, .what-grid, .compare-wrap, .cards-wrap, .exposure-wrap,
+.calc-wrap, .steps-wrap, .qual-wrap, .agenda-wrap, .details {
+  width: 100%;
+}
+
+/* ── Reset / base (verbatim from all 11 slides) ────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+a { color: var(--gold-dim); text-decoration: none; }
+a:hover { color: var(--gold); }
+::selection { background: var(--gold-bg); color: var(--text); }
+
+/* ── Brandbar (verbatim from all 11 slides) ────────────────────── */
+/* Darkened top bar (2026-07-17, Jason 7/12 decision): the bar was a light
+   gray/white strip that testers mistook for the primary nav. Filled navy so
+   it reads as chrome that frames the deck, with light links for legibility.
+   Single source of truth — applies to every slide AND faq/case-studies/
+   contact (all link shared.css); no per-page brandbar sets a background, and
+   this base rule's specificity on the link colors (.brandbar .brand-nav …)
+   beats the per-page `.brand-nav a { color: var(--text-dim) }` rules. */
+.brandbar {
+  background: var(--navy);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 18px clamp(20px, 5vw, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand-left {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white-mute);
+}
+
+/* Top-bar nav links bumped to --type-caption; specificity beats per-slide
+   inline `.brand-nav { font-size: 11px }`. Brandbar padding trimmed (18->15px)
+   so the taller text holds the same bar height (no fit() --scale trickle-down). */
+.brandbar { padding-top: 15px; padding-bottom: 15px; }
+/* Normalize the top-bar nav across every slide. Per-slide inline had drifted on
+   four axes that made the bar visibly change when flipping slides:
+     - font-size (now --type-caption / 14.5px)
+     - separator color (slides 1-2 used gray --border-2; rest used gold)
+     - spacing model (slides 1-2 used flex gap:14px; rest used .sep margin:0 14px)
+     - link box (padding 6px 0 vs 4px 2px; inherited line-height 1.5 vs 1.55)
+   Pin all four to the majority model (gold + margin-spacing) so the bar is
+   pixel-identical on every page. Specificity beats the per-slide inline rules. */
+.brandbar .brand-nav { font-size: var(--type-caption); gap: 0; }
+/* Links AND the active item (.current) share ONE box so the bar is pixel-
+   identical on every page. The active underline is a 1px border RESERVED
+   (transparent) on every item and merely colored-in on .current — so making
+   an item active never changes its height, and the bar never jumps when you
+   flip pages. This .brandbar .brand-nav scope (0,3,0) is the single source of
+   truth; it beats every per-page `.brand-nav .current` rule (0,2,0). */
+.brandbar .brand-nav a,
+.brandbar .brand-nav .current { padding: 5px 2px; line-height: 1.5; border-bottom: 1px solid transparent; }
+/* Navy-bar link colors: light links, active item white with a gold underline.
+   These win over the per-page `.brand-nav a { color: var(--text-dim) }` (0,2,0)
+   because .brandbar-scoped selectors are (0,3,0). */
+.brandbar .brand-nav a { color: var(--white-mute); }
+.brandbar .brand-nav .current { color: var(--white); border-bottom-color: var(--gold); }
+.brandbar .brand-nav .sep { color: rgba(255, 255, 255, 0.30); margin: 0 14px; font-weight: var(--weight-regular); }
+.brandbar .brand-nav a:hover { color: var(--gold); }
+
+/* ── Deck nav (verbatim from all 11 slides) ────────────────────── */
+.deck-nav > * + * {
+  border-left: 1px solid var(--border);
+}
+
+.deck-nav-link {
+  padding: 10px clamp(20px, 5vw, 48px);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  transition: background .15s;
+  min-width: 0;
+}
+
+.deck-nav-mid {
+  font-family: 'Inter', sans-serif;
+  font-size: var(--type-caption);
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  padding: 10px 16px;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deck-nav-mid a { color: var(--gold-dim); }
+.deck-nav-mid a:hover { color: var(--gold); }
+.deck-nav-mid .dot { color: var(--gold-dim); margin: 0 8px; }
+
+.deck-nav-link:hover { background: var(--white); }
+.deck-nav-link.next { text-align: right; align-items: flex-end; }
+
+.deck-nav .dn-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+
+.deck-nav .dn-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--navy);
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DECK NAVIGATION ARROWS  (2026-07-17; portrait strip + safe-area R2)
+   Desktop + landscape: two fixed controls in the side white space,
+   vertically centered (prev left / next right), page indicator under the
+   next arrow. Portrait phones: the same three elements collapse into a
+   slim fixed BOTTOM STRIP (prev · N of 13 · next) — floating side controls
+   over portrait content was rejected (Dom, iPhone review 2026-07-17).
+   Anchors keep the same prev/next hrefs. Because the pages are
+   viewport-fit=cover, every fixed offset clears env(safe-area-inset-*) so
+   the iPhone Dynamic Island / home indicator never clips a control.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Wrapper: inert on desktop/landscape — its children are position:fixed so
+   it collapses to a 0-height grid row. Becomes the strip in portrait. */
+.deck-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* Island-safe: sit at the design offset, but never inside the safe-area
+   inset (Dynamic Island in landscape). max() picks whichever is larger. */
+.deck-arrow-prev { left:  max(clamp(10px, 2.2vw, 34px), calc(env(safe-area-inset-left)  + 4px)); }
+.deck-arrow-next { right: max(clamp(10px, 2.2vw, 34px), calc(env(safe-area-inset-right) + 4px)); }
+
+.deck-arrow-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 1px solid var(--border-2);
+  box-shadow: 0 2px 10px rgba(14, 27, 61, 0.10);
+  color: var(--navy);
+  transition: background .15s, color .15s, border-color .15s, box-shadow .15s, transform .12s;
+}
+.deck-arrow-btn svg { width: 28px; height: 28px; display: block; }
+
+.deck-arrow:hover .deck-arrow-btn {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--white);
+  box-shadow: 0 4px 16px rgba(176, 141, 61, 0.35);
+}
+.deck-arrow:active .deck-arrow-btn { transform: scale(0.94); }
+.deck-arrow:focus-visible { outline: none; }
+.deck-arrow:focus-visible .deck-arrow-btn {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+
+/* Page indicator — desktop/landscape: subtle, centered under the next arrow.
+   right = next-arrow lane + half the 56px button; translateX(50%) then
+   centers the label on the button's centre-line. */
+.deck-arrow-page {
+  position: fixed;
+  top: calc(50% + 42px);
+  right: calc(max(clamp(10px, 2.2vw, 34px), calc(env(safe-area-inset-right) + 4px)) + 28px);
+  transform: translateX(50%);
+  z-index: 60;
+  font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Ancillary pages (contact/faq/case-studies): a single back-to-deck LEFT
+   arrow and a text label ("Back to deck") instead of a page number. The
+   label centres under the LEFT arrow (mirror of the default right-arrow
+   placement). Portrait inherits the strip; landscape inherits display:none. */
+.deck-arrows.is-ancillary .deck-arrow-page {
+  left: calc(max(clamp(10px, 2.2vw, 34px), calc(env(safe-area-inset-left) + 4px)) + 28px);
+  right: auto;
+  transform: translateX(-50%);
+  text-transform: none;
+  letter-spacing: 0.06em;
+}
+
+/* ── Portrait phones: bottom nav strip (prev · N of 13 · next) ──────────
+   The wrapper becomes a fixed strip; the three children drop out of fixed
+   positioning into a 3-col grid so the page label always sits centred
+   between the arrows (grid-column pins each element, so the cover — which
+   has no prev — still centres its label). Solid navy to match the top bar;
+   env(safe-area-inset-bottom) clears the home indicator. */
+@media (max-width: 768px) and (orientation: portrait) {
+  .deck-arrows {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    background: var(--navy);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 -2px 14px rgba(14, 27, 61, 0.22);
+    padding: 8px 14px;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+  .deck-arrow {
+    position: static;
+    transform: none;
+    top: auto;
+    left: auto;
+    right: auto;
+  }
+  .deck-arrow-prev { grid-column: 1; justify-self: start; }
+  .deck-arrow-page { grid-column: 2; justify-self: center; }
+  .deck-arrow-next { grid-column: 3; justify-self: end; }
+
+  .deck-arrow-btn { width: 48px; height: 48px; }   /* ≥48px thumb target */
+  .deck-arrow-btn svg { width: 24px; height: 24px; }
+
+  .deck-arrow-page {
+    position: static;
+    top: auto;
+    right: auto;
+    transform: none;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--white-mute);
+  }
+
+  /* Reserve room so slide content never hides behind the strip. The strip is
+     65px tall (48px button + 2×8px padding + 1px top border); 68px clears it
+     with a 3px margin. env() adds the home-indicator inset on top. */
+  .slide-pane { padding-bottom: calc(68px + env(safe-area-inset-bottom)) !important; }
+}
+
+/* ── Short landscape phones: side arrows, island-safe, in their own lane ──
+   Arrows are 40px (Dom wants them prominent). They live in a 46px pane
+   gutter reserved in the landscape block below — the gutter is ADDITIVE to
+   env() (env + 46) so on a notched phone the island inset and the arrow
+   lane STACK instead of one swallowing the other. The arrow x-offset is
+   likewise env-additive, so arrow and content both clear the island AND
+   each other (edge env+4 + width 40 + 2px gap = env+46 = content edge).
+   4-options' landscape packing is retuned to fit the narrower column. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .deck-arrow-prev { left:  calc(env(safe-area-inset-left)  + 4px); }
+  .deck-arrow-next { right: calc(env(safe-area-inset-right) + 4px); }
+  .deck-arrow-btn  { width: 40px; height: 40px; }
+  .deck-arrow-btn svg { width: 22px; height: 22px; }
+  .deck-arrow-page { display: none; }
+}
+
+/* ── .accent utility (canonical base) ──────────────────────────── */
+/* Phase B agents will refactor per-slide .accent overrides to inherit. */
+.accent {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  color: var(--gold-dim);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCALE-TO-FIT CHASSIS (centralized from per-slide r9/r10 chassis)
+   Extracted Phase 1 (2026-06-22). Previously copy-pasted inline into
+   every slide page. All 6 bugs from the original r9/r10 chassis are
+   fixed here once and only here.
+
+   Engine counterpart: /deck-fit.js (shared script replacing inline fit())
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Chassis CSS variables ─────────────────────────────────────────
+   Added to existing :root. Per-slide :root blocks keep their color
+   tokens; these three chassis vars come from shared.css so they are
+   always defined even if a slide's own :root omits them. */
+:root {
+  --slide-w: 1280;   /* base canvas width  (px) — 16:9 design canvas with --slide-h */
+  --slide-h: 800;    /* base canvas height (px) — FIXED; the stage is sized to this and scaled whole.
+                        Must be >= the tallest slide's content so nothing clips. Tallest measured =
+                        the-flow ~763px; 800 gives margin (verified by render). Raise if a slide clips. */
+  --scale:   1;      /* written by deck-fit.js at runtime; 1 = no scale (fallback for first paint) */
+}
+
+/* ── html / body height — Bug 1 fix ───────────────────────────────
+   ORIGINAL (buggy):
+     html, body { height: 100svh; height: 100vh; ... }
+   The second `height: 100vh` declaration won on every svh-capable
+   browser (it comes later in source order). On iOS, 100vh = the
+   chrome-hidden height, so on load the body was taller than the
+   visible screen; scale was computed too small and deck-nav was
+   pushed below the fold.
+   FIX: only 100svh. The @supports fallback below handles ancient
+   browsers that lack svh. Never re-add a bare 100vh line after this. */
+html, body {
+  height: 100svh;
+  margin: 0;
+  overflow: hidden; /* deck slides never scroll the page */
+}
+
+/* Fallback for browsers without svh support (Chrome <105, Safari <15.4) */
+@supports not (height: 100svh) {
+  html, body { height: 100vh; }
+}
+
+/* ── Body grid chassis ─────────────────────────────────────────────
+   3-row grid: brandbar (auto) / slide-pane (fills remaining space) /
+   deck-nav (auto). Per-slide body rules keep font/background/color;
+   only the layout properties come from here. */
+body {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+/* ── Slide pane ────────────────────────────────────────────────────
+   Clips the scaled stage and centers it BOTH axes. Centering (not
+   top-anchoring) is what keeps a SHORT slide visually centered in the
+   viewport instead of pinned to the top with a dead bottom half. */
+.slide-pane {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ── Slide stage ───────────────────────────────────────────────────
+   FIXED design canvas: 1280 x --slide-h. This is the reveal.js model —
+   a fixed-dimension box that deck-fit.js scales as a whole to fit the
+   viewport. Content is centered inside the box (justify-content:center),
+   so SHORT slides sit centered in a full-height box (fill + center) and
+   the box scales to fill the screen — no top-anchoring, no collapse.
+   The height is FIXED in CSS (not measured at runtime), which also keeps
+   container-type:size stable: cqi/cqb resolve against the fixed 1280 x
+   --slide-h box at every viewport, so padding never shifts on resize.
+   transform-origin: center center keeps the scaled box centered in the
+   pane (paired with the pane's align-items/justify-content: center). */
+.slide-stage {
+  width:  calc(var(--slide-w) * 1px);
+  height: calc(var(--slide-h) * 1px);
+  transform-origin: center center;
+  transform: scale(var(--scale));
+  container-type: size;          /* stable now: the box is a fixed size */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  will-change: transform; /* GPU compositing layer hint */
+}
+
+/* ── Deck nav grid ─────────────────────────────────────────────────
+   3-column: Prev (1fr) / mid info strip (auto) / Next (1fr).
+   Bug 3 fix: on narrow viewports the auto middle column (white-space:
+   nowrap, ~550-650px of content) consumed all width and the 1fr
+   Prev/Next columns collapsed to 0. Fix: clamp .deck-nav-mid to
+   min-width:0 and allow it to clip, so Prev/Next always get their
+   share of space and never disappear. */
+.deck-nav {
+  display: grid;
+  /* Prev/Next get a guaranteed minimum (110px) so the mid contact strip
+     can never crush them to slivers (it did from ~900px down before).
+     mid = minmax(0,auto): takes content width when there's room, shrinks
+     and clips (overflow:hidden below) when there isn't. */
+  grid-template-columns: minmax(110px, 1fr) minmax(0, auto) minmax(110px, 1fr);
+  background: var(--bg-soft);
+  line-height: 1.5;
+  border-top: 1px solid var(--border);
+}
+
+/* Bug 3 fix: allow the mid strip to shrink below its natural width.
+   overflow:hidden clips the nowrap text rather than squeezing Prev/Next. */
+.deck-nav-mid {
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ── Mobile seam @media ────────────────────────────────────────────
+   SEAM: future mobile-specific layout mounts here.
+
+   Today this block is a documented NO-OP. The deck still scales-to-fit
+   on phones — the transform is intentionally NOT zeroed. A phone at
+   375px will see the slide scaled down to fit. When the mobile layout
+   is built it will add rules here that replace the scale approach.
+
+   The mid strip is hidden on narrow viewports (Bug 3 follow-up):
+   its contact info is duplicated in the brandbar, so clipping it
+   here keeps Prev/Next fully accessible at any narrow width. */
+@media (max-width: 640px) {
+  /* SEAM: future mobile-specific layout mounts here.
+     Today this is a documented no-op — deck still scales-to-fit on phone. */
+
+  /* Hide the contact info strip on phone so Prev/Next never collapse */
+  .deck-nav-mid {
+    display: none;
+  }
+
+  /* With the mid strip removed, drop the empty center track so Prev/Next
+     occupy the two halves (prev → left, next → right). Without this the
+     nav stays 1fr/auto/1fr and "Next" auto-places into the empty center. */
+  .deck-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LANDSCAPE TRUE-REFLOW: Phase A shared token recipe (2026-06-29)
+   Applies ONLY to short-height landscape phones:
+   (orientation: landscape) and (max-height: 500px).
+   Desktop (unmediated) and portrait (@media max-width:768px) rules
+   are NOT touched — this block is purely additive.
+
+   AC7:  all 16 page metas add viewport-fit=cover (per-page edits).
+   AC8:  env(safe-area-inset-*) wired ONCE here on .slide-pane;
+         chrome rows (brandbar/deck-nav) stay full-bleed.
+         env() resolves to 0 in headless — real Pro-iPhone notch
+         eye-check required (residual unverified-by-CI risk).
+   AC9:  --landscape-* token vocabulary defined here; per-page
+         landscape blocks CONSUME var(--landscape-*), never hardcode.
+   AC10: per-page overflow-y:auto and sub-14px rules physically
+         deleted, not overridden, so drift cannot resurface.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* ── Shared landscape sizing tokens (AC9) ───────────────────────── */
+  :root {
+    --landscape-body:            14px;   /* primary content text floor (AC6) */
+    --landscape-h1:              clamp(22px, 5vw, 30px);
+    --landscape-h2:              clamp(16px, 2.4vw, 20px);
+    --landscape-fineprint:       11.5px; /* ONLY for .fineprint / .disclaimer */
+    --landscape-pane-pad-inline: 16px;   /* horizontal content inset */
+    --landscape-pane-pad-block:  8px;    /* vertical content inset */
+    --landscape-brandbar-h:      32px;
+    --landscape-decknav-h:       34px;
+  }
+
+  /* ── Page-height chassis ────────────────────────────────────────── */
+  html, body { height: 100svh !important; overflow: hidden !important; }
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  /* ── Brandbar compaction (deck-wide) ────────────────────────────── */
+  /* Chrome background stays full-bleed (no env() inset here). */
+  .brandbar {
+    height: var(--landscape-brandbar-h) !important;
+    padding: 0 16px !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    overflow: hidden !important;
+  }
+  .brand-left { display: none !important; }
+  .brand-nav {
+    font-size: 9px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    width: 100% !important;
+    justify-content: center !important;
+    letter-spacing: 0.10em !important;
+  }
+  .brand-nav .sep { margin: 0 8px !important; }
+
+  /* ── Deck-nav compaction (deck-wide) ────────────────────────────── */
+  /* Chrome background stays full-bleed (no env() inset here). */
+  .deck-nav {
+    overflow: hidden !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .deck-nav-mid  { display: none !important; }
+  .deck-nav-link {
+    padding: 3px 14px !important;
+    align-items: center !important;
+    min-width: 0 !important;
+  }
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+    line-height: 1 !important;
+  }
+  .deck-nav .dn-title {
+    font-size: clamp(11px, 2.4vw, 14px) !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* ── Slide pane: no internal scroll + safe-area content inset (AC8) */
+  /* Content padding-inline uses max() to honour notch insets on real  */
+  /* devices while falling back to --landscape-pane-pad-inline in      */
+  /* headless (env() = 0).                                             */
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    /* Reserve the horizontal gutter for the 40px side arrows. The lane is
+       ADDITIVE to the safe-area inset (env + 46), NOT max()'d against it:
+       on a notched phone the Dynamic Island eats env(~59px) AND the arrow
+       needs its own 46px beyond that, so they must stack. 46px = arrow edge
+       (env+4) + width (40) + 2px gap, measured from the safe-area edge.
+       At env=0 (headless, non-notch) the gutter is a flat 46px. 4-options'
+       landscape packing is tightened (in its own file) to fit this. */
+    padding-left:  calc(env(safe-area-inset-left)  + 46px) !important;
+    padding-right: calc(env(safe-area-inset-right) + 46px) !important;
+    padding-block: 0 !important;
+  }
+
+  /* ── Slide stage: cancel scale-to-fit, fill pane height (AC10) ──── */
+  /* Per-page blocks set flex-direction (row or column) + layout.      */
+  /* height:100% fills the slide-pane grid row exactly (no overflow).  */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;  /* default; per-page may override to row */
+    align-items: stretch !important;
+    justify-content: center !important;  /* mirror desktop/portrait (both center); kills the
+                                            top-align dead-space default. Per-page blocks override
+                                            per content (fill / space-between / row layouts). */
+    overflow: hidden !important;
+  }
+}

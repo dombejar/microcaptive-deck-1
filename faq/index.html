@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>FAQs · 831(b) Micro Captive · Pomeroy Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens (verbatim from build-deck-v5.py) ───────────────────── */
+:root {
+  --navy:        #0E1B3D;
+  --navy-dim:    #1F2C50;
+  --navy-bg:     #EEF1F7;
+  --text:        #111827;
+  --text-mute:   #4B5563;
+  --text-dim:    #9CA3AF;
+  --white:       #FFFFFF;
+  --border:      #E5E7EB;
+  --border-2:    #D1D5DB;
+  --rule:        #D6DBE3;
+  --bg-soft:     #F7F8FA;
+  --gold:        #B08D3D;
+  --gold-dim:    #8C6F2D;
+  --gold-bg:     #F8F4EC;
+  --gold-line:   rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis: harmless on utility pages (scale transform not applied) */
+  --slide-w: 1280;
+  --slide-h: 680;
+  --scale: 1;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+html, body {
+  height: 100svh;
+  margin: 0;
+  overflow: hidden;          /* page itself never scrolls — only the middle pane */
+}
+@supports not (height: 100svh) {
+  html, body { height: 100vh; }
+}
+
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+a { color: var(--gold-dim); text-decoration: none; }
+a:hover { color: var(--gold); }
+::selection { background: var(--gold-bg); color: var(--text); }
+
+/* ── Brand bar ────────────────────────────────────────────────────────── */
+/* Desktop-base top-bar chassis (.brandbar, .brand-left, .brand-nav box,
+   .brand-nav a/.current padding+border, :hover, .sep) now comes from
+   /shared.css — the single source of truth that keeps the bar pixel-identical
+   across all 16 pages. Only the rules shared.css does NOT cover are kept here:
+     - .brand-left .dot  (separator glyph; not in shared.css)
+     - .brand-nav base box props beyond font-size/gap (display/align-items/
+       font-weight/letter-spacing/text-transform — shared.css only sets
+       font-size + gap)
+     - .brand-nav a color + transition (shared.css sets neither) */
+.brand-left .dot { color: var(--gold-dim); margin: 0 6px; }
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current { transition: color 0.18s; }
+.brand-nav a { color: var(--text-dim); }
+
+/* ── Slide pane (utility variant: internal scroll, no fixed stage) ──── */
+.slide-pane {
+  /* display:block restores the original block flow: shared.css's .slide-pane is
+     display:flex (fixed-stage centering) which this scroll-pane page must NOT use. */
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+.slide-pane::-webkit-scrollbar { width: 8px; }
+.slide-pane::-webkit-scrollbar-track { background: transparent; }
+.slide-pane::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
+
+/* ── Hero block ──────────────────────────────────────────────────────── */
+.hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 88px clamp(20px, 5vw, 64px) 32px;
+}
+.hero h1 {
+  font-size: clamp(44px, 7vw, 84px);
+  margin-bottom: 18px;
+  letter-spacing: -0.02em;
+}
+.hero h1 .accent {
+  font-style: italic;
+  color: var(--gold-dim);
+  font-weight: 500;
+}
+.hero .lede {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(19px, 2.2vw, 24px);
+  line-height: 1.4;
+  color: var(--gold-dim);
+  margin-bottom: 18px;
+  max-width: 72ch;
+}
+.hero .helper {
+  font-size: 13px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  margin-top: 8px;
+}
+
+/* ── Category accordion (outer level) ────────────────────────────────── */
+.category-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+.category-row {
+  border-top: 1px solid var(--gold-line);
+}
+.category-row:last-of-type {
+  border-bottom: 1px solid var(--gold-line);
+  margin-bottom: 88px;
+}
+.category-head {
+  width: 100%;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 28px 0;
+  transition: opacity 0.18s;
+}
+.category-head:hover { opacity: 0.78; }
+.category-head:focus-visible {
+  outline: 2px solid var(--gold-dim);
+  outline-offset: 4px;
+}
+.category-head .c-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 18px;
+  color: var(--gold-dim);
+  flex-shrink: 0;
+  min-width: 28px;
+}
+.category-head .c-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.category-head .c-rule {
+  flex: 1;
+  height: 1px;
+  background: var(--gold-line);
+  align-self: center;
+}
+.category-head .c-icon {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--gold-dim);
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+  align-self: center;
+}
+
+.category-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.32s ease-out;
+}
+.category-row.open .category-body {
+  /* set inline via JS, then released to none after transition */
+}
+
+/* ── FAQ accordion (inner level) ─────────────────────────────────────── */
+.faq-list {
+  border-top: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.faq-row {
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.faq-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gold-dim);
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+.faq-row.open::before,
+.faq-row:hover::before { opacity: 1; }
+
+.faq-q {
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 20px 24px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  color: inherit;
+  transition: background 0.18s;
+}
+.faq-q:hover { background: var(--bg-soft); }
+.faq-q:focus-visible {
+  outline: 2px solid var(--gold-dim);
+  outline-offset: -2px;
+}
+.faq-q-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.3;
+  color: var(--navy);
+  letter-spacing: -0.005em;
+  flex: 1;
+}
+.faq-q-icon {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--gold-dim);
+  flex-shrink: 0;
+  line-height: 1.3;
+  margin-top: 2px;
+  width: 16px;
+  text-align: center;
+}
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.28s ease-out;
+}
+.faq-row.open .faq-a {
+  max-height: 3000px;
+}
+.faq-a-body {
+  padding: 0 24px 24px;
+  font-size: 16px;
+  color: var(--text);
+  line-height: 1.7;
+  max-width: 72ch;
+}
+.faq-a-body p { margin-bottom: 14px; }
+.faq-a-body p:last-child { margin-bottom: 0; }
+.faq-a-body strong {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--navy);
+}
+.faq-a-body .placeholder {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  background: var(--gold-bg);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+.faq-a-body a.placeholder-link {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  background: var(--gold-bg);
+  padding: 4px 12px;
+  border-radius: 2px;
+  border: 1px solid var(--gold-line);
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  text-decoration: none;
+}
+.faq-a-body a.placeholder-link:hover {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--white);
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+/* ── Scroll cue (hero hint) ────────────────────────────────────────── */
+.scroll-cue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--gold-dim);
+  margin-top: clamp(16px, 2vh, 28px);
+  text-align: center;
+}
+.scroll-cue .arrow {
+  display: inline-block;
+  font-style: normal;
+  animation: scroll-bounce 1.8s ease-in-out infinite;
+}
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50%      { transform: translateY(4px); opacity: 1; }
+}
+
+/* ── Deck nav (replaces text footer) ─────────────────────────────── */
+.deck-nav {
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(0, auto) minmax(110px, 1fr);
+  background: var(--bg-soft);
+  line-height: 1.5;
+}
+.deck-nav > * + * { border-left: 1px solid var(--border); }
+.deck-nav-link {
+  padding: 10px clamp(20px, 5vw, 48px);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  transition: background .15s;
+  min-width: 0;
+}
+.deck-nav-mid {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  padding: 10px 16px;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+}
+.deck-nav-mid a { color: var(--gold-dim); }
+.deck-nav-mid a:hover { color: var(--gold); }
+.deck-nav-mid .dot { color: var(--gold-dim); margin: 0 8px; }
+.deck-nav-link:hover { background: var(--white); }
+.deck-nav-link.next { text-align: right; align-items: flex-end; }
+.deck-nav .dn-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.deck-nav .dn-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--navy);
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Deck nav mobile: hide contact strip, split Prev/Next ───────────── */
+@media (max-width: 640px) {
+  .deck-nav-mid { display: none; }
+  .deck-nav { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Responsive tweaks ──────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .hero { padding-top: 56px; }
+  .category-head { padding: 22px 0; }
+  .category-head .c-title { font-size: 12px; letter-spacing: 0.2em; }
+  .faq-q { padding: 18px 18px; }
+  .faq-q-text { font-size: 17px; }
+  .faq-a-body { padding: 0 18px 20px; }
+}
+
+/* ── Mobile: full phone-readable layout ─────────────────────────────── */
+@media (max-width: 768px) {
+  /* Prevent any horizontal overflow at the body / html level */
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ── Brand bar: single compact row ── */
+  .brandbar {
+    padding: 8px 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+  .brand-left {
+    display: none !important;
+  }
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .brand-nav a, .brand-nav .current {
+    white-space: nowrap;
+  }
+  .brand-nav .sep {
+    margin: 0 8px !important;
+    flex-shrink: 0;
+  }
+
+  /* ── Hero: comfortable padding + wrapping ── */
+  .hero {
+    padding: 40px 16px 24px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 8vw, 48px);
+    margin-bottom: 12px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .hero .lede {
+    font-size: clamp(16px, 4vw, 20px);
+    overflow-wrap: break-word;
+  }
+  .hero .helper {
+    font-size: 12px;
+  }
+
+  /* ── Category wrapper: tighter horizontal padding ── */
+  .category-wrap {
+    padding: 0 16px;
+  }
+  .category-head {
+    padding: 18px 0;
+    gap: 12px;
+  }
+  .category-head .c-num {
+    font-size: 16px;
+    min-width: 24px;
+  }
+  .category-head .c-title {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+  }
+  /* Hide the decorative horizontal rule inside category header to save space */
+  .category-head .c-rule {
+    display: none;
+  }
+
+  /* ── FAQ questions: full-width, no overflow ── */
+  .faq-q {
+    padding: 16px 12px;
+    gap: 12px;
+  }
+  .faq-q-text {
+    font-size: 15px;
+    line-height: 1.35;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+  }
+  .faq-q-icon {
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+
+  /* ── FAQ answers: full-width, readable type ── */
+  .faq-a-body {
+    padding: 0 12px 18px;
+    font-size: 15px;
+    line-height: 1.65;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .faq-a-body p {
+    margin-bottom: 12px;
+  }
+
+  /* ── Deck nav: canonical portrait compaction (matches why) ── */
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+  .deck-nav .dn-title {
+    font-size: clamp(11px, 3vw, 13px) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+}
+
+/* ── Landscape phone (e.g. 844×390, 667×375) ────────────────────────── */
+/* AC9: consumes shared landscape tokens from shared.css; no hardcoded
+   one-off sizes. AC8: safe-area insets on .slide-pane. AC7: viewport
+   meta above carries viewport-fit=cover. Internal scroll is the
+   accepted exception for this long-form FAQ utility page. */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* ── Canonical chassis (mirrors deck slides) ── */
+  html, body { height: 100svh !important; overflow: hidden !important; }
+  body { display: grid !important; grid-template-rows: auto minmax(0, 1fr) auto !important; }
+
+  /* top bar: compact, height-token, centered nav, no brand-left */
+  .brandbar {
+    height: var(--landscape-brandbar-h) !important;
+    padding: 0 16px !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    overflow: hidden !important;
+  }
+  .brand-left { display: none !important; }
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .brand-nav a, .brand-nav .current { white-space: nowrap; }
+  .brand-nav .sep { margin: 0 8px !important; flex-shrink: 0; }
+
+  /* bottom bar: 2-col prev/next, no mid strip — matches all deck slides */
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .deck-nav-mid { display: none !important; }
+  .deck-nav-link { padding: 3px 14px !important; min-width: 0 !important; }
+  .deck-nav .dn-label { font-size: 9px !important; line-height: 1 !important; }
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 2.4vw, 14px) !important;
+    line-height: 1.2 !important;
+  }
+
+  /* slide-pane: scrollable for long-form content + safe-area insets (AC8) */
+  .slide-pane {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-inline: max(var(--landscape-pane-pad-inline),
+                        env(safe-area-inset-left),
+                        env(safe-area-inset-right)) !important;
+    /* Left gutter for the fixed back-to-deck arrow (env + 46px, additive) so
+       the 40px landscape arrow never overlaps the category list (nav R2). */
+    padding-left: calc(env(safe-area-inset-left) + 46px) !important;
+    padding-top: max(0px, env(safe-area-inset-top)) !important;
+  }
+
+  /* hero: tighter padding, tokens for type sizes */
+  .hero {
+    padding: 16px 16px 12px !important;
+  }
+  .hero h1 {
+    font-size: var(--landscape-h1) !important;
+    margin-bottom: 6px !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .hero .lede {
+    font-size: var(--landscape-h2) !important;
+    margin-bottom: 6px !important;
+    overflow-wrap: break-word;
+  }
+  /* helper hint + scroll-cue are redundant in landscape (categories immediately
+     visible); hide them to save vertical space and avoid sub-14px font readings */
+  .hero .helper { display: none !important; }
+  .scroll-cue   { display: none !important; }
+
+  /* category + faq: tighter horizontal padding, no overflow */
+  .category-wrap { padding: 0 14px !important; }
+  .category-head { padding: 12px 0 !important; gap: 10px !important; }
+  .category-head .c-num { font-size: 15px !important; min-width: 22px !important; }
+  .category-head .c-title {
+    font-size: var(--landscape-body) !important;  /* 14px — meets body floor; was 10px */
+    letter-spacing: 0.14em !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+  }
+  .category-head .c-rule { display: none !important; }
+
+  /* last category: breathing room before the deck-nav */
+  .category-row:last-of-type { margin-bottom: 16px !important; }
+
+  .faq-q { padding: 14px 10px !important; gap: 10px !important; }
+  .faq-q-text {
+    font-size: var(--landscape-body) !important;  /* 14px — body floor */
+    line-height: 1.3 !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+  }
+  .faq-q-icon { flex-shrink: 0 !important; font-size: 16px !important; }
+  .faq-a-body {
+    padding: 0 10px 14px !important;
+    font-size: var(--landscape-body) !important;  /* 14px — was 13px (bug fix) */
+    line-height: 1.6 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <span class="current">FAQ</span>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) — internal scroll for utility content ────── -->
+<div class="slide-pane">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Common questions.</h1>
+  <p class="lede">What smart business owners are asking.</p>
+  <p class="helper">Tap a category to open it. Tap a question to see the answer.</p>
+  <div class="scroll-cue">scroll for more <span class="arrow">&darr;</span></div>
+</section>
+
+<!-- ── Categories rendered by JS ───────────────────────────────────── -->
+<div id="categories" class="category-wrap"></div>
+
+</div><!-- /.slide-pane -->
+
+<!-- ── Footer ──────────────────────────────────────────────────────── -->
+<!-- Back-to-deck arrow (replaces the old page-nav bar) -->
+<nav class="deck-arrows is-ancillary" aria-label="Page navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/" aria-label="Back to deck"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">Back to deck</span>
+</nav>
+
+<script>
+/* ── FAQ data (sourced from ./faq-master.md, in-repo canonical) ─── */
+const CATEGORIES = [
+  {
+    num: "I",
+    title: "Qualification",
+    questions: [
+      {
+        q: "Does my business qualify?",
+        a: ["Privately-owned businesses with money left over at year-end qualify."]
+      },
+      {
+        q: "What size business qualifies?",
+        a: ["It's not the size of the business — it's businesses with extra cash at year-end."]
+      },
+      {
+        q: "What revenue level do I need?",
+        a: ["The key metric isn't revenue — it's businesses that have extra cash at the end of the year."]
+      },
+      {
+        q: "What industries qualify?",
+        a: ["Any business facing real unexpected expenses."]
+      },
+      {
+        q: "Does my business structure matter — LLC, S-Corp, C-Corp?",
+        a: ["Your existing business structure doesn't matter. The new savings entity we form is its own separate company. Most common business structures can participate."]
+      },
+      {
+        q: "Can a sole proprietor qualify?",
+        a: ["It depends. Sole proprietors with significant revenue and documented unexpected expenses may qualify, but the structure works best with a clear separation between business income and owner income."]
+      },
+      {
+        q: "Can a partnership qualify?",
+        a: ["Yes. The partners who own the business would own the new savings entity."]
+      },
+      {
+        q: "Do I need to be profitable to qualify?",
+        a: ["Yes. You need extra cash at the end of the year to fund this. The strategy sets aside pre-tax dollars, so there need to be pre-tax dollars available. It's designed for businesses already running well."]
+      },
+      {
+        q: "Can a startup qualify?",
+        a: ["Generally not yet. Startups rarely have the consistent extra cash this strategy requires. Once your business is generating steady income and you have money left over after expenses, that's when this becomes the right conversation to have."]
+      },
+      {
+        q: "Can I qualify if I already have business coverage?",
+        a: ["Yes. This is completely separate from your existing coverages. In fact, all businesses already carry standard policies but still face unexpected expenses."]
+      },
+      {
+        q: "Can this be customized for my business?",
+        a: ["Yes. The unexpected expenses your business faces are different from every other business. Your plan is built around your specific industry, your specific gaps, and your specific goals. No two plans look exactly alike."]
+      },
+      {
+        q: "Do I have the appetite to oversee this?",
+        a: ["Minimal time is required on your end. As experienced professionals, we handle the filings, administration, and compliance. You make the big decisions — we handle the details. Business owners always find it simpler than they expected."]
+      }
+    ]
+  },
+  {
+    num: "II",
+    title: "Cost & Setup",
+    questions: [
+      {
+        q: "What does it cost to set up?",
+        a: ["Setup cost pays for itself. Ask us for a customized proposal to see for yourself."]
+      },
+      {
+        q: "How long does setup take?",
+        a: ["Most plans are set up within <strong>30–60 days.</strong> Our team coordinates the formation, filings, and documentation."]
+      },
+      {
+        q: "What professionals do I need?",
+        a: ["We work with anyone on your existing team — including finance, legal, and tax."]
+      },
+      {
+        q: "Do I need a special attorney?",
+        a: ["No. We handle everything for you."]
+      },
+      {
+        q: "Do I need a special CPA?",
+        a: ["No. Your existing CPA can stay involved. Many CPAs haven't seen this strategy before. Our job is helping your CPA understand it thoroughly."]
+      },
+      {
+        q: "Where is the plan domiciled?",
+        a: ["Our plans are domiciled in Delaware, where it is well-regulated with established rules for this structure."]
+      },
+      {
+        q: "Does it matter which state I do business in?",
+        a: ["No. Your operating business can be based anywhere."]
+      },
+      {
+        q: "What are the ongoing annual costs?",
+        a: ["Annual management runs <strong>$6,000 a year</strong> after the initial setup."]
+      },
+      {
+        q: "Are the setup costs tax deductible?",
+        a: ["Many of the setup and ongoing costs are deductible as ordinary business expenses. Your CPA will confirm the specifics based on your structure. Either way, most of the cost comes back to you through deductions."]
+      },
+      {
+        q: "Can one plan cover multiple related companies?",
+        a: ["Yes. Business owners with multiple entities can structure a single plan to work across related companies. This is one reason sophisticated owners with multiple businesses find this strategy especially powerful."]
+      },
+      {
+        q: "How does this impact cash flow?",
+        a: ["You're setting aside money you would have paid in taxes. The cash moves from your operating account into a savings account you own — so your overall financial picture stays strong. For most owners, cash flow actually improves."]
+      },
+      {
+        q: "How is this different from regular business coverage?",
+        a: ["With standard policies, your money is gone — the carrier keeps what they don't pay out. With this, your money stays in a company you own and control. <strong>Same protection. Completely different economics.</strong>"]
+      },
+      {
+        q: "What is the process for setting up a microcaptive?",
+        a: [
+          "Complete Micro Captive plan application",
+          "Introduction and onboarding by an admin specialist",
+          "Sign Micro Captive documents",
+          "We register your Micro Captive",
+          "Finalize corporate documents and receive EIN",
+          "Open your new bank account",
+          "Fund your Micro Captive",
+          "Your Micro Captive is now active!"
+        ]
+      },
+      {
+        q: "What is the timeline for setting up a microcaptive?",
+        a: ["Approximately 2-4 weeks, provided you supply the necessary information in a timely manner."]
+      },
+      {
+        q: "Who handles the tax return for my Micro Captive?",
+        a: ["The Administrator handles all reporting and tax returns. This is included in the Admin Fee."]
+      }
+    ]
+  },
+  {
+    num: "III",
+    title: "Contributions & Limits",
+    questions: [
+      {
+        q: "How much can I contribute each year?",
+        a: ["Up to <strong>$2,900,000 per year — pre-tax.</strong> That's money that would otherwise go to the IRS going into a savings account you control instead. Even contributing a fraction of the maximum delivers a significant financial advantage.", "The minimum is <strong>$200,000.</strong>"]
+      },
+      {
+        q: "Is the $2,900,000 limit per year or per lifetime?",
+        a: ["Per year. You can set aside up to $2,900,000 every single year. This is how business owners build long-term wealth."]
+      },
+      {
+        q: "Can I contribute less than the maximum?",
+        a: ["Yes. You choose your contribution amount each year based on your cash position and business needs. The minimum is $200,000 and the maximum is $2,900,000."]
+      },
+      {
+        q: "Can I change my contribution amount each year?",
+        a: ["Yes. You can increase, decrease, or adjust each year based on how your business performs. Flexibility is one of the features business owners appreciate most about this structure."]
+      },
+      {
+        q: "Can I skip a year?",
+        a: ["Yes. You can skip a year if your business has an off year or your cash position changes. There's no penalty for not contributing."]
+      },
+      {
+        q: "Is the contribution tax deductible?",
+        a: ["Yes. The money your business sets aside is deducted from your operating income — just like any legitimate business expense. That's the core of how this strategy reduces what you owe each year."]
+      },
+      {
+        q: "When during the year do I make the contribution?",
+        a: ["Contributions are typically made before the end of your tax year. Your team will set a calendar so nothing is late. Most of the work happens well before year-end."]
+      },
+      {
+        q: "Can I make contributions after year end?",
+        a: ["Yes, depending on your business structure and filing timeline. We work with your CPA to coordinate the details."]
+      },
+      {
+        q: "Does the contribution limit adjust for inflation?",
+        a: ["Yes. The IRS adjusts it periodically. The current limit is <strong>$2,900,000 per year.</strong>"]
+      }
+    ]
+  },
+  {
+    num: "IV",
+    title: "Growth & Investment",
+    questions: [
+      {
+        q: "What happens to the money once it's in the plan?",
+        a: ["The money sits in a savings account your new company owns and controls. You are allowed to invest in liquid assets like stocks, bonds, and ETFs — and it compounds over time. It's available to cover unexpected expenses and build long-term wealth."]
+      },
+      {
+        q: "Who controls the money?",
+        a: ["You do. The savings entity is owned by you — the business owner — not a third party. Your name is on it. You make the investment decisions. <strong>This is your money in your company.</strong>"]
+      },
+      {
+        q: "What happens to my money?",
+        a: ["<strong>Your money, your rules.</strong> It's your money. You invest it just as you normally would — savings, treasuries, stocks, bonds, mutual funds, and ETFs."]
+      },
+      {
+        q: "Does the money grow tax-free?",
+        a: ["Not entirely — but very close. The savings entity pays tax only on realized investment income, not on the original money set aside. Compared to paying full ordinary income tax up front, the advantage is significant."]
+      },
+      {
+        q: "Who manages the investments?",
+        a: ["You do."]
+      },
+      {
+        q: "What rate of return can I expect from a Micro Captive?",
+        a: ["It depends on your contribution amount and your tax position. On a $1.5M annual contribution, a Micro&nbsp;Captive saves about <strong>$919,903 over 5 years</strong> &mdash; roughly a <strong>16% ROI</strong> net of all fees. <a href=\"/slides/the-flow\" class=\"placeholder-link\">Run the numbers &rarr;</a>"]
+      },
+      {
+        q: "What are the specific benefits for my business?",
+        a: ["Tax savings on up to $2.9 million per year, a growing savings account you control, protection against unexpected expenses, and long-term wealth built from money you would've otherwise paid to the IRS."]
+      }
+    ]
+  },
+  {
+    num: "V",
+    title: "Accessing the Money",
+    questions: [
+      {
+        q: "When can I access the money?",
+        a: ["It is not locked away — it's in a company you own. Most business owners access it as needs arise."]
+      },
+      {
+        q: "How is the money taxed when I take it out?",
+        a: ["Distributions are taxed at <strong>long-term capital gains rates</strong>, which are much lower than ordinary income rates."]
+      },
+      {
+        q: "Can I take it out as a dividend?",
+        a: ["Yes. The company can distribute money to its owners as dividends."]
+      },
+      {
+        q: "Can I take it out as a loan?",
+        a: ["Yes."]
+      },
+      {
+        q: "Can I pass the money to my children?",
+        a: ["Yes. Since this is a company you own, it can be included in your estate and succession planning. Many business owners use it as a wealth-transfer tool, passing a funded, growing asset to the next generation."]
+      },
+      {
+        q: "Can I use the money to pay unexpected expenses?",
+        a: ["Yes. That's one of its primary purposes."]
+      },
+      {
+        q: "How do I get my money back out?",
+        a: ["Through distributions or eventually winding down the entity."]
+      },
+      {
+        q: "How does ownership and control work?",
+        a: ["You, the business owner, own the new savings entity. It works like any other company you own."]
+      },
+      {
+        q: "Can I take a loan against my Micro Captive?",
+        a: ["Yes. However, there are strict compliance guidelines that we assist you with."]
+      }
+    ]
+  },
+  {
+    num: "VI",
+    title: "Taxes",
+    questions: [
+      {
+        q: "How does this reduce my taxable income?",
+        a: ["Your business deducts the money set aside each year — up to $2,900,000 — just like any other legitimate business expense."]
+      },
+      {
+        q: "How is the plan itself taxed?",
+        a: ["The savings entity pays tax only on what it earns from investments. The original money set aside is not taxed when it goes in. That's the core advantage: <strong>you shift from high ordinary income rates to long-term capital gains rates.</strong>"]
+      },
+      {
+        q: "Can I use this alongside my existing tax strategy?",
+        a: ["Yes. This works alongside your existing strategies. Whether you use cost segregation, retirement plans, or other deductions, this stacks on top. It's designed to complement everything you're already doing."]
+      },
+      {
+        q: "Does this work with a QBI deduction?",
+        a: ["Yes. The deduction from your operating company works alongside the Qualified Business Income deduction."]
+      },
+      {
+        q: "Does this work with a cost segregation study?",
+        a: ["Yes. These are complementary strategies. Cost segregation accelerates depreciation deductions; this plan sets aside income pre-tax."]
+      },
+      {
+        q: "What happens at exit or sale of my business?",
+        a: ["The savings entity is separate from your operating business."]
+      },
+      {
+        q: "What are the tax implications overall?",
+        a: ["You deduct up to $2.9 million per year from operating income. The savings entity pays tax only on investment earnings. When you eventually take distributions, you pay long-term capital gains rates."]
+      },
+      {
+        q: "What States provide the highest ROI (best tax-advantaged)?",
+        a: ["IL, CA, NY, AZ, CO"]
+      }
+    ]
+  },
+  {
+    num: "VII",
+    title: "Comparisons",
+    questions: [
+      {
+        q: "How is this different from a SEP IRA?",
+        a: ["A SEP IRA maxes out around $70,000 per year. This strategy goes up to <strong>$2,900,000 per year</strong> — about 40 times more."]
+      },
+      {
+        q: "How is this different from a Health Savings Account?",
+        a: ["An HSA caps at <strong>$4,300 individual / $8,550 family per year</strong> (2026) and can only be used for qualifying medical expenses. This goes up to <strong>$2,900,000 per year</strong> and protects against any unexpected business expense."]
+      },
+      {
+        q: "How is this better than just buying more equipment?",
+        a: ["Buying equipment is one of <a href=\"/slides/4-options\" class=\"placeholder-link\">four options &rarr;</a> for what to do with profit &mdash; it works, but the money is gone the moment you spend it.", "With a Micro&nbsp;Captive you can <strong>borrow against your tax-deferred savings</strong> to buy the same equipment, while your money keeps compounding inside the captive."]
+      },
+      {
+        q: "How is this better than paying bonuses?",
+        a: ["Bonuses are taxed as ordinary income &mdash; for both you and your employee. By the time the IRS, the state, and payroll taxes are done, more than half can be gone.", "Funding a Micro&nbsp;Captive is the <a href=\"/slides/4-options\" class=\"placeholder-link\">fourth option &rarr;</a>: set the money aside pre-tax, keep control of it, and eventually exit at long-term capital gains rates."]
+      },
+      {
+        q: "How is this better than paying the IRS?",
+        a: ["When you pay the IRS, that money is gone. When you fund your savings account, that money stays yours — growing, available for your business, and eventually exiting at long-term capital gains tax rates."]
+      },
+      {
+        q: "Why don't more business owners know about this?",
+        a: ["The same way nobody knew what a 401(k) was in 1983."]
+      },
+      {
+        q: "Why hasn't my CPA told me about this?",
+        a: ["This is a specialized area that not many people have knowledge of. CPAs who know it well are among the most valuable advisors a growing business owner can have."]
+      },
+      {
+        q: "Can a Micro-Captive be used for Estate Planning?",
+        a: ["No."]
+      },
+      {
+        q: "What is a \"Group Captive\"?",
+        a: ["A group captive is typically for companies' GL, WorkComp, and Auto insurance. It is also an 831(a) which is very different from an 831(b)."]
+      },
+      {
+        q: "What is a captive for General Liability, WorkComp & Auto?",
+        a: ["This is an 831(a) which is not an 831(b)."]
+      },
+      {
+        q: "Is it true that approximately 25% of all insurance premiums are paid into captives?",
+        a: ["Yes. It is estimated that within the next 5 to 10 years, 40% of all insurance premiums will be paid into captives."]
+      }
+    ]
+  },
+  {
+    num: "VIII",
+    title: "Risks & Concerns",
+    questions: [
+      {
+        q: "Is this too good to be true?",
+        a: ["This is how many Fortune 500 companies and successful business owners build long-term wealth."]
+      },
+      {
+        q: "What if I get audited?",
+        a: ["This will not trigger an audit. The IRS incentivizes you to have this."]
+      },
+      {
+        q: "What if I close my business?",
+        a: ["The savings entity is separate from your operating business."]
+      },
+      {
+        q: "What if I sell my business?",
+        a: ["The savings entity stays with you — it's not part of what's being sold unless you choose to include it."]
+      },
+      {
+        q: "What if I die — what happens to the plan?",
+        a: ["The savings entity passes through your estate like any other business asset."]
+      },
+      {
+        q: "Why should I trust this strategy?",
+        a: ["It's been in the tax code since 1986. Fortune 500 companies and successful business owners have used versions of it for decades."]
+      },
+      {
+        q: "Is this right for my business?",
+        a: ["If you consistently have extra cash at year-end, face potential unexpected business expenses, and are already paying significant taxes — the answer is <strong>yes.</strong>"]
+      },
+      {
+        q: "What will my CPA think?",
+        a: ["The CPAs we work with like this because of the tax-efficient retention of cash, the protection it gives a business against unexpected expenses, and how it builds long-term wealth."]
+      }
+    ]
+  },
+  {
+    num: "IX",
+    title: "Legality & Compliance",
+    questions: [
+      {
+        q: "Is this a listed transaction?",
+        a: ["No, it has been struck down. Vacated by a federal court April 2026. The harshest label, gone."]
+      },
+      {
+        q: "Is this a transaction of interest?",
+        a: ["Yes, the disclosure is filed for you as part of administration. Currently on appeal at the Fifth Circuit."]
+      },
+      {
+        q: "Is this legal?",
+        a: ["Yes. This strategy is written directly into the U.S. tax code. Congress put it there to help small businesses protect themselves from unexpected expenses. Fortune 500 companies have used versions of this for decades. Thousands of businesses across the country use it today."]
+      },
+      {
+        q: "Is this IRS-approved?",
+        a: ["Yes. Congress wrote this into the tax code specifically to encourage small businesses to prepare for unexpected expenses."]
+      },
+      {
+        q: "Why would the IRS challenge this?",
+        a: ["The IRS challenges plans that fall outside its rules — especially when people abuse the structure with fake expenses or no real business purpose."]
+      },
+      {
+        q: "What IRS code section covers this?",
+        a: ["<strong>Section 831(b) of the U.S. tax code.</strong> Congress created it in 1986 and updated it in 2015 to protect business owners using it correctly. It has been part of federal law for over 40 years — tested, updated, and proven."]
+      },
+      {
+        q: "Has anyone ever gotten in trouble for this?",
+        a: ["Yes — business owners who use fake unexpected expenses, who don't use an independent administrator, or who improperly diversify."]
+      },
+      {
+        q: "What makes this different from a tax shelter?",
+        a: ["A tax shelter <strong>hides</strong> money. This strategy <strong>protects</strong> money — in a business account you own — from unexpected expenses."]
+      },
+      {
+        q: "Does the IRS consider this abusive or presumptively fraudulent?",
+        a: ["No. Abusive plans use fake expenses. Fraud requires intent to deceive. Compliant plans are built with documented, genuine business needs and experienced professionals."]
+      },
+      {
+        q: "Do I need IRS approval before I start?",
+        a: ["No. You do not need to ask permission. We set up your plan following the IRS rules, file all required forms, and ensure you're compliant."]
+      },
+      {
+        q: "What happens if the tax laws change?",
+        a: ["Laws can change — but this strategy has survived multiple updates since 1986. Congress has consistently supported it. Contribution limits have only increased throughout the years."]
+      },
+      {
+        q: "Has Congress ever tried to eliminate this?",
+        a: ["No. In 2015, Congress actually <strong>strengthened</strong> it — adding new rules to protect business owners using it correctly. Lawmakers incentivize small businesses to use this tool."]
+      },
+      {
+        q: "Will this trigger an IRS audit?",
+        a: ["No, our administrator has filed thousands of these disclosures for 1,000+ insureds and 2,000+ participants. Per its public statement, \"not one of [its] clients has been audited due to these filings.\" If an examination ever does occur, the plan comes with funded legal and accounting support."]
+      },
+      {
+        q: "What does IRS Form 8886 mean?",
+        a: ["IRS Form 8886 is used to disclose reportable transactions to the IRS. We file these on behalf of our clients."]
+      },
+      {
+        q: "Has any firm you've worked with had an IRS audit because of this?",
+        a: ["No. Our clients' plans are created within compliance of the IRS guidelines."]
+      },
+      {
+        q: "What can I do to avoid issues with the IRS?",
+        a: ["Work with experienced professionals. We document your business needs and keep clean records."]
+      },
+      {
+        q: "What would cause a red flag with the IRS?",
+        a: ["Inflated numbers with no real business need behind them, missing documentation, or not filing the proper IRS forms."]
+      },
+      {
+        q: "How does the IRS monitor these plans?",
+        a: ["Through annual disclosure filings and tax returns. We file these for you on time and correctly."]
+      },
+      {
+        q: "Who ensures compliance with IRS guidelines for my Micro Captive?",
+        a: ["The Administrator oversees that your Micro Captive is compliant with IRS guidelines. This is included in the Admin Fee."]
+      }
+    ]
+  }
+];
+
+/* ── Render ──────────────────────────────────────────────────────── */
+function renderCategories() {
+  const root = document.getElementById('categories');
+  CATEGORIES.forEach(cat => {
+    const row = document.createElement('div');
+    row.className = 'category-row';
+
+    const head = document.createElement('button');
+    head.className = 'category-head';
+    head.type = 'button';
+    head.setAttribute('aria-expanded', 'false');
+    head.innerHTML = `
+      <span class="c-num">${escapeHTML(cat.num)}</span>
+      <span class="c-title">${escapeHTML(cat.title)}</span>
+      <span class="c-rule"></span>
+      <span class="c-icon" aria-hidden="true">+</span>
+    `;
+
+    const body = document.createElement('div');
+    body.className = 'category-body';
+
+    const list = document.createElement('div');
+    list.className = 'faq-list';
+    cat.questions.forEach(q => {
+      const qrow = document.createElement('div');
+      qrow.className = 'faq-row';
+      qrow.innerHTML = `
+        <button class="faq-q" type="button" aria-expanded="false">
+          <span class="faq-q-text">${escapeHTML(q.q)}</span>
+          <span class="faq-q-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-body">${q.a.map(p => `<p>${p}</p>`).join('')}</div>
+        </div>
+      `;
+      const btn = qrow.querySelector('.faq-q');
+      btn.addEventListener('click', () => toggleQuestion(qrow, btn));
+      list.appendChild(qrow);
+    });
+    body.appendChild(list);
+
+    head.addEventListener('click', () => toggleCategory(row, head, body));
+
+    row.appendChild(head);
+    row.appendChild(body);
+    root.appendChild(row);
+  });
+}
+
+function toggleCategory(row, btn, body) {
+  const isOpen = row.classList.toggle('open');
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  btn.querySelector('.c-icon').textContent = isOpen ? '–' : '+';
+
+  if (isOpen) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    body.addEventListener('transitionend', function handler() {
+      if (row.classList.contains('open')) {
+        body.style.maxHeight = 'none';
+      }
+      body.removeEventListener('transitionend', handler);
+    });
+  } else {
+    body.style.maxHeight = body.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+      body.style.maxHeight = '0';
+    });
+  }
+}
+
+function toggleQuestion(row, btn) {
+  const isOpen = row.classList.toggle('open');
+  btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  btn.querySelector('.faq-q-icon').textContent = isOpen ? '–' : '+';
+}
+
+/* ── Helpers ─────────────────────────────────────────────────────── */
+function escapeHTML(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ── Boot ────────────────────────────────────────────────────────── */
+renderCategories();
+</script>
+
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

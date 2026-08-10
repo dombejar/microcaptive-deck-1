@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Flow &middot; Opportunity Cost &middot; 831(b) Micro Captive &middot; Pomeroy Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens (verbatim from FAQ + landing) ──────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a {
+  padding: 4px 2px;
+  color: var(--text-dim);
+  transition: color 0.18s;
+}
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(20px, 3cqb, 36px) clamp(20px, 5cqi, 64px) clamp(8px, 1cqb, 12px);
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.hero h1 .accent {
+  font-style: italic;
+  color: var(--gold-dim);
+  font-weight: var(--weight-italic);
+}
+.hero .lede {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  line-height: 1.4;
+  color: var(--text-mute);
+  max-width: 42em;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── Content wrap (headline stat + graph + caption) ────────────────── */
+.example-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5cqi, 64px) clamp(12px, 2cqb, 20px);
+}
+
+/* ── Symmetric two-stat pair (opt-c header, merged desktop) ─────────────
+   Two equal-rank stats centered under the hero with generous whitespace
+   between them — no band, no divider. ROI (italic gold) and savings (navy
+   bold) carry the same visual weight. The chart below uses opt-a's clean
+   straight diverging lines, no shaded wedge. */
+.statpair {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: clamp(48px, 9cqi, 128px);
+  width: 100%;
+  margin: 0 auto clamp(16px, 2.4cqb, 28px);
+}
+.sp-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+}
+.sp-num {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold-dim);
+  font-size: clamp(42px, 5.4cqi, 70px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.sp-num-nav {
+  color: var(--navy);
+  font-style: normal;
+  font-weight: var(--weight-bold);
+}
+.sp-cap {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(12px, 1.2cqi, 15px);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* ── Graph card ────────────────────────────────────────────────────── */
+.graph-inner {
+  background: var(--white);
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: clamp(16px, 2.4cqb, 28px) clamp(18px, 2.6cqi, 34px);
+  box-shadow: 0 1px 2px rgba(14, 27, 61, 0.04);
+  position: relative;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* graph-row: business selector LEFT of the y-axis | large chart RIGHT */
+.graph-row {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(14px, 2cqi, 28px);
+}
+
+/* ── "Your business" selector column (left of the y-axis) ──────────── */
+.biz-selector {
+  flex: 0 0 auto;
+  width: clamp(150px, 15cqi, 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+}
+.biz-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  font-size: clamp(15px, 1.5cqi, 19px);
+  letter-spacing: -0.01em;
+  margin-bottom: 2px;
+}
+.biz-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.biz-label {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(11px, 1.1cqi, 13px);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.biz-select {
+  position: relative;
+  display: block;
+}
+.biz-select select {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.5cqi, 18px);
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  background: var(--white);
+  border: 1px solid var(--border-2);
+  border-radius: 6px;
+  padding: 9px 34px 9px 12px;
+  margin: 0;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  line-height: 1.2;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.biz-select select:hover { border-color: var(--gold-line); }
+.biz-select select:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 0 3px var(--gold-bg);
+}
+.biz-select::after {
+  content: '';
+  position: absolute;
+  right: 13px;
+  top: 50%;
+  width: 10px;
+  height: 6px;
+  transform: translateY(-50%);
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2210%22%20height%3D%226%22%20viewBox%3D%220%200%2010%206%22%3E%3Cpath%20fill%3D%22none%22%20stroke%3D%22%238C6F2D%22%20stroke-width%3D%221.6%22%20d%3D%22M1%201l4%204%204-4%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+}
+
+/* ── Chart ─────────────────────────────────────────────────────────── */
+.chartwrap {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+}
+.chartwrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.chartwrap text { font-family: 'Inter', sans-serif; }
+
+/* ── Caption under the graph (two lines) ───────────────────────────── */
+.graph-caption {
+  text-align: center;
+  margin-top: clamp(10px, 1.6cqb, 18px);
+}
+.graph-caption p {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  color: var(--navy);
+  font-size: clamp(14px, 1.5cqi, 18px);
+  line-height: 1.4;
+}
+.graph-caption p + p {
+  font-family: 'Inter', sans-serif;
+  font-weight: var(--weight-regular);
+  color: var(--text-mute);
+  font-size: clamp(12px, 1.25cqi, 15px);
+  margin-top: 3px;
+}
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. */
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE HYBRID LAYOUT  — <=768px only
+   Overrides the shared.css fixed-canvas chassis FOR THIS PAGE ONLY.
+   Desktop (>768px) is completely untouched. Portrait phones + iPad
+   portrait (768px) get a compact single-column reflow, no page scroll.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Brandbar — compact one line */
+  .brandbar {
+    padding: 8px 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+  .brand-left { display: none !important; }
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .brand-nav .sep { margin: 0 8px !important; }
+
+  /* Hero — tight */
+  .hero {
+    padding: 8px 14px 2px !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 6vw, 36px) !important;
+    margin-bottom: 2px !important;
+  }
+  .hero .lede {
+    font-size: clamp(12px, 3.5vw, 16px) !important;
+    max-width: 100% !important;
+  }
+
+  /* Content wrap */
+  .example-wrap {
+    padding: 0 10px 6px !important;
+    max-width: 100% !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Headline stat — two equal-rank stats side by side, compact, symmetric */
+  .headline {
+    align-items: center !important;
+    gap: 4px !important;
+    margin-bottom: 6px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+  .statpair {
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: clamp(16px, 6vw, 36px) !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+  .sp-item { gap: 2px !important; }
+  .sp-num { font-size: clamp(24px, 7.4vw, 40px) !important; }
+  .sp-cap { font-size: clamp(9px, 2.6vw, 12px) !important; }
+
+  .graph-inner {
+    padding: 10px 12px 10px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Business selector — becomes a horizontal row ABOVE the chart on phone */
+  .graph-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  .biz-selector {
+    width: 100% !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    gap: 8px 12px !important;
+  }
+  .biz-title {
+    width: 100% !important;
+    text-align: center !important;
+    font-size: clamp(13px, 3.4vw, 16px) !important;
+    margin-bottom: 0 !important;
+  }
+  .biz-field { flex: 1 1 120px !important; min-width: 0 !important; }
+  .biz-label { font-size: 10px !important; }
+  .biz-select select {
+    font-size: clamp(13px, 3.6vw, 16px) !important;
+    padding: 7px 30px 7px 10px !important;
+  }
+
+  .chartwrap {
+    margin-top: 0 !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    height: 26svh !important;
+    /* flex:0 0 auto (not the base 1 1 0) so height wins — in this column
+       graph-row a flex-basis of 0 would otherwise collapse the chart. */
+    flex: 0 0 auto !important;
+  }
+  .chartwrap svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+  }
+
+  .graph-caption {
+    margin-top: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  .graph-caption p { font-size: clamp(12px, 3.2vw, 15px) !important; }
+  .graph-caption p + p { font-size: clamp(10px, 2.8vw, 13px) !important; }
+
+  /* Deck nav — no horizontal overflow */
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+  }
+  .deck-nav-link { padding: 6px 14px !important; min-width: 0 !important; }
+  .deck-nav .dn-label { font-size: 9px !important; }
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+}
+
+/* ══ LANDSCAPE TRUE-REFLOW — R3 restack: LEFT stack | tall chart RIGHT ══
+   Shared chassis + --landscape-* tokens come from shared.css landscape block.
+   Dom R3 directive A: left column, top→bottom = title → subtitle → ROI stat →
+   dollar line → Your-business selector. The chart moves fully to the right and
+   grows taller into the space freed by lifting the stat text off the top of it.
+
+   Mechanism: the desktop DOM nests the stat (.headline) and the selector
+   (.biz-selector, inside .graph-inner > .graph-row) in the SAME branch as the
+   chart. To pull them into a shared left column WITHOUT touching the desktop
+   DOM, the wrappers (.example-wrap, .graph-inner, .graph-row) collapse to
+   display:contents here, so their children (headline, biz-selector, chartwrap,
+   graph-caption) become direct grid items of .slide-stage alongside .hero.
+   CSS Grid then places the left stack in column 1 and the chart+caption in
+   column 2, with the chart spanning the stack's rows so it fills the height.
+   Desktop (>768px, height>500px) and portrait (max-width:768px) untouched. */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  .brandbar { padding-block: 0 !important; }
+
+  .slide-stage {
+    display: grid !important;
+    flex-direction: unset !important;
+    grid-template-columns: minmax(0, 40%) minmax(0, 1fr) !important;
+    /* 1fr spacers above/below the left text stack center it vertically;
+       the right column spans all rows so the chart keeps full height. */
+    grid-template-rows: minmax(0, 1fr) auto auto minmax(0, 1fr) auto !important;
+    column-gap: clamp(16px, 3vw, 30px) !important;
+    row-gap: 0 !important;
+    align-items: start !important;
+    justify-items: stretch !important;
+    padding: var(--landscape-pane-pad-block) var(--landscape-pane-pad-inline) !important;
+  }
+
+  /* Flatten the outer desktop wrappers so their children join the stage grid.
+     .graph-row is NOT flattened here — it becomes the right-column flex box that
+     stacks the selector above the chart (see the RIGHT-column rules below). */
+  .example-wrap,
+  .graph-inner { display: contents !important; }
+
+  /* ── RIGHT column: one flex column spanning the hero+stats rows, holding the
+        Your-business selector on top and the chart filling the space beneath. ── */
+  .graph-row {
+    grid-column: 2 !important;
+    grid-row: 1 / 5 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    gap: 0 !important;
+  }
+
+  /* ── LEFT column, row 1: title + subtitle ── */
+  .hero {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .hero h1 {
+    align-self: flex-start !important;
+    font-size: clamp(22px, 6.5vh, 32px) !important;
+    text-align: left !important;
+    margin-bottom: clamp(3px, 1vh, 6px) !important;
+    line-height: 1.05 !important;
+    max-width: 100% !important;
+  }
+  .hero .lede {
+    font-size: var(--landscape-body) !important;
+    text-align: left !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  /* ── LEFT column, row 2: the two-stat pair, stacked in the narrow column.
+        Each stat is a two-line unit — big number on its own line, small-caps
+        label flush beneath it — so the whole column shares ONE left edge with
+        the title and subtitle and nothing wraps mid-phrase. The two stats read
+        as a pair: tight num→label within each, deliberate space between them. ── */
+  .headline {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    align-items: flex-start !important;
+    margin: clamp(20px, 7vh, 36px) 0 0 !important;
+    text-align: left !important;
+  }
+  .statpair {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: clamp(12px, 3.4vh, 22px) !important;   /* space BETWEEN the two pairs */
+    width: 100% !important;
+    /* element is class="headline statpair" — this later rule wins, so the
+       title-block -> numbers gap must live HERE, not on .headline */
+    margin: clamp(20px, 7vh, 36px) 0 0 !important;
+  }
+  /* Each stat: number line + label line, both flush left at the column edge.
+     text-align:left explicit — at ≤768px wide the portrait block co-matches
+     and would otherwise center these. */
+  .sp-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 2px !important;                         /* tight WITHIN a pair */
+    width: 100% !important;
+  }
+  .sp-num { font-size: clamp(30px, 11vh, 42px) !important; }
+  /* Label on its own line, never wrapping; nowrap + a size that fits the 40%
+     column at 667×325 (verified: longest label "MORE IN YOUR POCKET" clears). */
+  .sp-cap {
+    font-size: var(--landscape-body) !important;
+    white-space: nowrap !important;
+    line-height: 1.1 !important;
+  }
+
+  /* ── RIGHT column, top: Your-business selector as a horizontal row directly
+        ABOVE the chart. Now a flex child of .graph-row (not a stage-grid cell). ── */
+  .biz-selector {
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    margin: 0 0 clamp(6px, 1.6vh, 10px) !important;
+    gap: 4px 12px !important;
+  }
+  .biz-title {
+    width: 100% !important;
+    font-size: var(--landscape-body) !important;
+    margin-bottom: 0 !important;
+    text-align: left !important;   /* beat the co-matching portrait center */
+  }
+  .biz-field { flex: 1 1 0 !important; min-width: 0 !important; gap: 3px !important; }
+  .biz-label { font-size: 10px !important; }
+  .biz-select select {
+    font-size: var(--landscape-body) !important;
+    padding: 6px 28px 6px 10px !important;
+  }
+
+  /* ── RIGHT column, beneath the selector: the chart fills the remaining height
+        of the .graph-row flex column. A light card frame replaces the wrapper. ── */
+  .chartwrap {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    background: var(--white) !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 1px 2px rgba(14, 27, 61, 0.04) !important;
+    padding: 8px 12px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+  .chartwrap svg {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+  }
+
+  /* SVG in-chart text: bump to 14px floor */
+  #chart .svg-year,
+  #chart .svg-endlabel { font-size: 14px !important; }
+
+  /* ── RIGHT column, bottom row: caption under the chart ── */
+  .graph-caption {
+    grid-column: 2 !important;
+    grid-row: 5 !important;
+    margin-top: 5px !important;
+    text-align: center !important;
+  }
+  .graph-caption p { font-size: var(--landscape-body) !important; }
+  .graph-caption p + p { font-size: var(--landscape-fineprint) !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Why this <span class="accent">matters.</span></h1>
+</section>
+
+<section class="example-wrap">
+
+  <!-- ── Symmetric two-stat pair (opt-c): equal-rank, airy, centered ── -->
+  <div class="headline statpair">
+    <div class="sp-item">
+      <span class="sp-num" id="roiNum">40.82%</span>
+      <span class="sp-cap">ROI over 5 years</span>
+    </div>
+    <div class="sp-item">
+      <span class="sp-num sp-num-nav" id="savingsNum">$3,204,159</span>
+      <span class="sp-cap">more in your pocket</span>
+    </div>
+  </div>
+
+  <div class="graph-inner">
+    <h2 class="sr-only">Growth chart comparing money kept by a Micro Captive versus a normally-taxed C corp or S corp from year zero through year five, for the selected state and business structure.</h2>
+
+    <div class="graph-row">
+
+      <!-- Business selector, stacked to the LEFT of the y-axis -->
+      <div class="biz-selector">
+        <div class="biz-title">Your business</div>
+        <label class="biz-field">
+          <span class="biz-label">State</span>
+          <span class="biz-select">
+            <select id="stateSelect" aria-label="State">
+              <option value="AZ">AZ</option>
+              <option value="CA" selected>CA</option>
+              <option value="MI">MI</option>
+              <option value="IL">IL</option>
+              <option value="FL">FL</option>
+              <option value="NY">NY</option>
+            </select>
+          </span>
+        </label>
+        <label class="biz-field">
+          <span class="biz-label">Structure</span>
+          <span class="biz-select">
+            <select id="structSelect" aria-label="Business structure">
+              <option value="ccorp" selected>C-Corp</option>
+              <option value="scorp">S-Corp</option>
+            </select>
+          </span>
+        </label>
+      </div>
+
+      <!-- Chart -->
+      <div class="chartwrap" id="chartwrap">
+        <svg id="chart" viewBox="0 0 960 440" role="img" aria-label="Line chart: a Micro Captive curve arcing up steeply above a flatter comparison curve for a normally-taxed C corp or S corp, over five years.">
+          <g id="grid"></g>
+          <g id="axis"></g>
+          <g id="yearlabels"></g>
+          <path id="line-alt" fill="none" stroke="var(--navy-dim)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+          <path id="line-cap" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+          <circle id="dot-alt" r="4.5" fill="var(--navy-dim)" stroke="#fff" stroke-width="2"></circle>
+          <circle id="dot-cap" r="5" fill="var(--gold)" stroke="#fff" stroke-width="2"></circle>
+          <text id="end-cap" class="svg-endlabel" font-family="Inter" font-size="14" font-weight="600" fill="var(--gold-dim)"></text>
+          <text id="end-alt" class="svg-endlabel" font-family="Inter" font-size="14" font-weight="600" fill="var(--navy-dim)"></text>
+        </svg>
+      </div>
+
+    </div><!-- /.graph-row -->
+  </div><!-- /.graph-inner -->
+
+  <!-- ── Caption under the graph ─────────────────────────────────────── -->
+  <div class="graph-caption">
+    <p>What a micro captive saves you over 5 years</p>
+    <p>Example of maximum allowable contribution of $2.9 million annually</p>
+  </div>
+
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/tax-arbitrage" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">6 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/for-your-cpa" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<script>
+(function(){
+  // ───────────────────────────────────────────────────────────────────
+  // STATIC LOOKUP TABLE — transcribed 1:1 from state_structure_table.json
+  // (2026-07-17 recalc). Browser does lookup + formatting ONLY — no math.
+  //   sav   = pre-formatted 5-year savings string (nearest dollar, commas)
+  //   roi   = pre-formatted ROI %, two decimals (matches source narrative)
+  //   ratio = comparison after-tax ÷ captive after-tax, for curve shaping
+  // ccorp → savings_vs_ccorp_E / roi_vs_ccorp   (comparison = a C corp)
+  // scorp → savings_vs_passthrough_C / roi_vs_passthrough (comparison = an S corp)
+  // ───────────────────────────────────────────────────────────────────
+  const DATA = {
+    AZ: { ccorp: { sav: '$3,287,010', roi: '34.20', ratio: 0.7451 }, scorp: { sav: '$2,342,331', roi: '22.19', ratio: 0.8184 } },
+    CA: { ccorp: { sav: '$3,204,159', roi: '40.82', ratio: 0.7101 }, scorp: { sav: '$2,295,476', roi: '26.21', ratio: 0.7923 } },
+    MI: { ccorp: { sav: '$3,225,572', roi: '36.06', ratio: 0.7350 }, scorp: { sav: '$2,416,978', roi: '24.78', ratio: 0.8014 } },
+    IL: { ccorp: { sav: '$3,704,662', roi: '42.27', ratio: 0.7029 }, scorp: { sav: '$2,387,964', roi: '23.69', ratio: 0.8085 } },
+    FL: { ccorp: { sav: '$3,472,461', roi: '35.21', ratio: 0.7396 }, scorp: { sav: '$2,291,087', roi: '20.75', ratio: 0.8282 } },
+    NY: { ccorp: { sav: '$3,109,419', roi: '36.50', ratio: 0.7326 }, scorp: { sav: '$2,087,317', roi: '21.88', ratio: 0.8205 } },
+  };
+  const CMP_LABEL = { ccorp: 'C-Corp', scorp: 'S-Corp' };
+
+  // ---- SELECTION STATE (default: CA + C-Corp) ----
+  let state = 'CA';
+  let cmp   = 'ccorp';
+
+  // ---- ELEMENTS ----
+  const roiNumEl    = document.getElementById('roiNum');
+  const savingsEl   = document.getElementById('savingsNum');
+  const stateSelect = document.getElementById('stateSelect');
+  const structSelect= document.getElementById('structSelect');
+
+  // ---- CHART GEOMETRY ----
+  const W = 960, H = 440;
+  const P = { t: 26, r: 152, b: 46, l: 42 };
+  const x0 = P.l, x1 = W - P.r, yTop = P.t, yBase = H - P.b;
+  const NYEARS = 5;                    // year 0 .. year 5
+  const xAt = i => x0 + (i / NYEARS) * (x1 - x0);
+
+  // Micro Captive endpoint sits near the top of the plot. The comparison
+  // endpoint is dropped into a deliberately dramatic band (~40–50% of the
+  // captive endpoint height) so the money/ROI gap reads big — this is an
+  // illustrative arc, NOT the honest after-tax ratio. Per-selection ordering
+  // is preserved (C-Corp ends lower than S-Corp; states still vary) by
+  // remapping the real ratio through exaggerate(); the DATA table's `ratio`
+  // is read-only and never mutated.
+  const CAP_FRAC = 0.90;
+  const plotH = yBase - yTop;
+
+  // Exaggeration band + the honest-ratio span it maps from (see DATA above):
+  // lowest real ratio → EXAG_LO, highest → EXAG_HI, linear in between.
+  const EXAG_LO = 0.40, EXAG_HI = 0.50;
+  const RATIO_LO = 0.70, RATIO_HI = 0.83;
+  const clamp01 = t => Math.max(0, Math.min(1, t));
+  const exaggerate = ratio =>
+    EXAG_LO + clamp01((ratio - RATIO_LO) / (RATIO_HI - RATIO_LO)) * (EXAG_HI - EXAG_LO);
+
+  // opt-a chart: both lines are DEAD STRAIGHT, diverging from the shared
+  // year-0 origin. No dramatic arc — they read "kind of linear." The big gap
+  // between the captive endpoint (CAP_FRAC) and the exaggerated comparison
+  // endpoint is preserved (altFrac < CAP_FRAC guarantees no crossing). No
+  // shaded wedge between the lines.
+  const easeCap = u => u;
+  const easeAlt = u => u;
+
+  function pathFor(endFrac, ease){
+    let d = '';
+    const N = 60;
+    for (let k = 0; k <= N; k++){
+      const u = k / N;
+      const x = x0 + u * (x1 - x0);
+      const y = yBase - endFrac * ease(u) * plotH;
+      d += (k === 0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    }
+    return d.trim();
+  }
+
+  const grid       = document.getElementById('grid');
+  const axis       = document.getElementById('axis');
+  const yearlabels = document.getElementById('yearlabels');
+  const lineAlt    = document.getElementById('line-alt');
+  const lineCap    = document.getElementById('line-cap');
+  const dotAlt     = document.getElementById('dot-alt');
+  const dotCap     = document.getElementById('dot-cap');
+  const endCap     = document.getElementById('end-cap');
+  const endAlt     = document.getElementById('end-alt');
+
+  const SVGNS = 'http://www.w3.org/2000/svg';
+
+  // ---- STATIC AXIS + YEAR LABELS (drawn once) ----
+  function drawAxis(){
+    // faint horizontal gridlines
+    [0.25, 0.5, 0.75, 1].forEach(t => {
+      const y = yBase - t * plotH;
+      const ln = document.createElementNS(SVGNS, 'line');
+      ln.setAttribute('x1', x0); ln.setAttribute('x2', x1);
+      ln.setAttribute('y1', y);  ln.setAttribute('y2', y);
+      ln.setAttribute('stroke', '#EFF0F3');
+      ln.setAttribute('stroke-width', '1');
+      grid.appendChild(ln);
+    });
+
+    // y-axis
+    const yax = document.createElementNS(SVGNS, 'line');
+    yax.setAttribute('x1', x0); yax.setAttribute('x2', x0);
+    yax.setAttribute('y1', yTop - 4); yax.setAttribute('y2', yBase);
+    yax.setAttribute('stroke', '#C7CBD3'); yax.setAttribute('stroke-width', '1.5');
+    axis.appendChild(yax);
+
+    // x-axis
+    const xax = document.createElementNS(SVGNS, 'line');
+    xax.setAttribute('x1', x0); xax.setAttribute('x2', x1 + 6);
+    xax.setAttribute('y1', yBase); xax.setAttribute('y2', yBase);
+    xax.setAttribute('stroke', '#C7CBD3'); xax.setAttribute('stroke-width', '1.5');
+    axis.appendChild(xax);
+
+    // year ticks + plain-text labels (NOT buttons — plain axis text)
+    for (let i = 0; i <= NYEARS; i++){
+      const x = xAt(i);
+      const tick = document.createElementNS(SVGNS, 'line');
+      tick.setAttribute('x1', x); tick.setAttribute('x2', x);
+      tick.setAttribute('y1', yBase); tick.setAttribute('y2', yBase + 6);
+      tick.setAttribute('stroke', '#C7CBD3'); tick.setAttribute('stroke-width', '1.5');
+      axis.appendChild(tick);
+
+      const lbl = document.createElementNS(SVGNS, 'text');
+      lbl.setAttribute('class', 'svg-year');
+      lbl.setAttribute('x', x);
+      lbl.setAttribute('y', yBase + 24);
+      lbl.setAttribute('text-anchor', 'middle');
+      lbl.setAttribute('font-family', 'Inter');
+      lbl.setAttribute('font-size', '13');
+      lbl.setAttribute('fill', '#6B7280');
+      lbl.textContent = 'Year ' + i;
+      yearlabels.appendChild(lbl);
+    }
+  }
+
+  // ---- RENDER CURVES + LABELS FOR CURRENT SELECTION ----
+  function renderChart(){
+    const ratio   = DATA[state][cmp].ratio;
+    const altFrac = CAP_FRAC * exaggerate(ratio);
+
+    lineCap.setAttribute('d', pathFor(CAP_FRAC, easeCap));
+    lineAlt.setAttribute('d', pathFor(altFrac, easeAlt));
+
+    const capY = yBase - CAP_FRAC * plotH;
+    const altY = yBase - altFrac * plotH;
+    const labelX = x1 + 12;
+
+    dotCap.setAttribute('cx', x1); dotCap.setAttribute('cy', capY);
+    dotAlt.setAttribute('cx', x1); dotAlt.setAttribute('cy', altY);
+
+    endCap.setAttribute('x', labelX); endCap.setAttribute('y', capY);
+    endCap.setAttribute('text-anchor', 'start');
+    endCap.setAttribute('dominant-baseline', 'middle');
+    endCap.textContent = 'Micro Captive';
+
+    endAlt.setAttribute('x', labelX); endAlt.setAttribute('y', altY);
+    endAlt.setAttribute('text-anchor', 'start');
+    endAlt.setAttribute('dominant-baseline', 'middle');
+    endAlt.textContent = CMP_LABEL[cmp];
+  }
+
+  // ---- UPDATE HEADLINE NUMBERS ----
+  function renderStats(){
+    const rec = DATA[state][cmp];
+    roiNumEl.textContent  = rec.roi + '%';
+    savingsEl.textContent = rec.sav;
+  }
+
+  function renderAll(){ renderStats(); renderChart(); }
+
+  // ---- BIND SELECTORS ----
+  stateSelect.addEventListener('change', () => { state = stateSelect.value; renderAll(); });
+  structSelect.addEventListener('change', () => { cmp   = structSelect.value; renderAll(); });
+
+  // ---- INIT ----
+  drawAxis();
+  renderAll();
+})();
+</script>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

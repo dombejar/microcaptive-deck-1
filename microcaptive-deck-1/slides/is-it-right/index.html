@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Is It Right for You? · 831(b) Micro Captive · Pomeroy Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens (verbatim from the-flow) ──────────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+  --green:      #1F7A3A;
+  --green-bg:   #EEF7F1;
+  --red:        #9B2C2C;
+  --red-bg:     #FBEEEE;
+
+}
+
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav .current {
+  color: var(--navy);
+  border-bottom: 1px solid var(--gold-dim);
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: 8px clamp(20px, 5cqi, 64px) 4px;
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+/* .hero h1 .accent inherits from shared.css canonical .accent (Playfair italic + var(--weight-italic) + var(--gold-dim)) */
+.hero .lede {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  line-height: 1.4;
+  color: var(--text-mute);
+  max-width: 40em;
+}
+
+/* ── Qualification two-column (R4: typography-as-event) ────────────── */
+/* R4 rebuild 2026-05-28: the two-panel SaaS qualifier card grid + the live
+   interactive score widget were removed (Dom-approved). The fit/not-fit
+   markers are now two clean typographic lists. Color is constrained to ink
+   (icon + label + a single thin top rule per column); no background washes,
+   no row min-height, no click/hover/selected affordances. The interactive
+   self-score scorer moves to the self-serve site version. */
+.qual-wrap {
+  max-width: var(--content-w);
+  margin: 4px auto 2px;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.qual-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+.qual-col {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+.qual-col.fit    { border-top: 3px solid var(--green); }
+.qual-col.notfit { border-top: 3px solid var(--red); }
+.qual-col .col-eyebrow {
+  font-size: var(--type-subhead);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+}
+.qual-col.fit .col-eyebrow    { color: var(--green); }
+.qual-col.notfit .col-eyebrow { color: var(--red); }
+.qual-col h3 {
+  font-size: var(--type-medium);
+  margin-bottom: 2px;
+}
+.qual-col .col-sub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-mute);
+  font-size: var(--type-small);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.qual-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.qual-row {
+  display: flex;
+  align-items: baseline;
+  gap: 11px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+.qual-row:last-child { border-bottom: 0; }
+.qual-row .icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  position: relative;
+  top: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.qual-row .icon svg { display: block; }
+.qual-col.fit .qual-row .icon svg    { stroke: var(--green); }
+.qual-col.notfit .qual-row .icon svg { stroke: var(--red); }
+.qual-row .label {
+  font-size: var(--type-medium);
+  line-height: 1.4;
+  color: var(--text);
+}
+.qual-col.notfit .qual-row .label { color: var(--text); }
+
+/* ── CTA block ────────────────────────────────────────────────────── */
+.cta {
+  max-width: var(--content-w);
+  margin: 6px auto 8px;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.cta-block {
+  text-align: center;
+  border-top: 1px solid var(--gold-line);
+  border-bottom: 1px solid var(--gold-line);
+  padding: 18px clamp(20px, 4cqi, 48px);
+}
+.cta-block h3 {
+  font-size: var(--type-subhead);
+  margin-bottom: 4px;
+}
+.cta-block .cta-sub {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--text-mute);
+  font-size: var(--type-medium);
+  margin-bottom: 10px;
+  line-height: 1.4;
+  max-width: 44em;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.btn {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.06em;
+  padding: 10px 20px;
+  border: 1px solid var(--navy);
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+  cursor: pointer;
+}
+.btn.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+}
+.btn.btn-primary:hover {
+  background: var(--navy-dim);
+  color: var(--white);
+}
+.btn.btn-secondary {
+  background: var(--white);
+  color: var(--navy);
+}
+.btn.btn-secondary:hover {
+  background: var(--gold-bg);
+  border-color: var(--gold-dim);
+  color: var(--gold-dim);
+}
+
+/* ── Deck nav (Prev / Mid / Next) ─────────────────────────────────── */
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. This rule is intentionally removed from inline style. */
+
+/* ══════════════════════════════════════════════════════════════════
+   MOBILE LAYOUT LAYER  (<= 768px)
+   Cancels the fixed-canvas scale transform and reflows the slide to
+   fit exactly one viewport (100svh) with NO vertical scroll.
+   DESKTOP (>= 768px) is byte-for-byte unchanged.
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock to viewport height */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Cancel fixed canvas; become a normal flex column filling pane height.
+     container-type:normal disables cqi/cqb so desktop clamp() tokens don't misfire. */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: compact single row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  /* brand-left is empty on this slide; hide it to reclaim width */
+  .brand-left {
+    display: none !important;
+  }
+
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding + enlarged title */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 6px 14px 4px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 6.5vw, 36px) !important;
+    margin-bottom: 2px !important;
+    text-align: center !important;
+    line-height: 1.15 !important;
+  }
+
+  /* 4 ── Qual grid: stack to single column */
+
+  .qual-wrap {
+    max-width: 100% !important;
+    padding: 0 12px 4px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .qual-grid {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    display: grid !important;
+  }
+
+  .qual-col {
+    padding-top: 5px !important;
+    width: 100% !important;
+    display: block !important;
+    height: auto !important;
+  }
+
+  .qual-col .col-eyebrow {
+    font-size: clamp(11px, 3.2vw, 14px) !important;
+    margin-bottom: 2px !important;
+  }
+
+  .qual-col h3 {
+    font-size: clamp(11px, 3.2vw, 14px) !important;
+    margin-bottom: 1px !important;
+  }
+
+  .qual-col .col-sub {
+    font-size: clamp(10px, 2.5vw, 12px) !important;
+    margin-bottom: 2px !important;
+  }
+
+  .qual-list {
+    display: block !important;
+  }
+
+  .qual-row {
+    padding: 2px 0 !important;
+    gap: 7px !important;
+    align-items: flex-start !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    min-width: 0 !important;
+  }
+
+  .qual-row .label {
+    font-size: clamp(10px, 2.8vw, 12px) !important;
+    line-height: 1.25 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  .qual-row .icon {
+    top: 1px !important;
+    flex-shrink: 0 !important;
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  .qual-row .icon svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  /* 4b ── CTA: compact */
+
+  .cta {
+    max-width: 100% !important;
+    padding: 0 12px 2px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .cta-block {
+    padding: 6px 12px !important;
+    text-align: center !important;
+  }
+
+  .cta-block h3 {
+    font-size: clamp(12px, 3.5vw, 15px) !important;
+    margin-bottom: 2px !important;
+  }
+
+  .cta-block .cta-sub {
+    font-size: clamp(10px, 2.8vw, 12px) !important;
+    margin-bottom: 6px !important;
+    line-height: 1.25 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .cta-buttons {
+    gap: 5px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  .btn {
+    font-size: clamp(10px, 2.6vw, 11px) !important;
+    padding: 6px 12px !important;
+    width: 100% !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE-PHONE TRUE REFLOW ══
+   Mirrors desktop side-by-side composition at real sizes (≥14px): no scale, no scroll.
+   shared.css Phase-A tokens handle chrome (brandbar/decknav), .slide-pane overflow:hidden,
+   env() safe-area inset, and .slide-stage base reflow. This block handles ONLY the
+   per-page content grid. Desktop (unmediated) and portrait (max-width:768px) unchanged. */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* Re-assert chrome rules to beat portrait block's !important longhands.
+     Cascade: shared.css (linked) < per-page inline style; portrait block
+     (@media max-width:768px) appears in the inline style BEFORE this landscape
+     block, so its individual padding-top/bottom longhands override shared.css
+     landscape shorthand. Re-declare here (after portrait) so landscape wins. */
+  .brandbar {
+    height: var(--landscape-brandbar-h) !important;
+    padding: 0 16px !important;
+    overflow: hidden !important;
+  }
+  .deck-nav-link { padding: 3px 14px !important; }
+
+  /* ── FILL layout (Dom polish-v3): mirror desktop's single-column composition —
+     centered title on top, the full-width 2-col Strong-Fit / Not-Fit checklist as the
+     centerpiece. The checklist GROWS (flex:1) to fill all space below the title and its
+     rows distribute (space-between) so the columns stretch to fill the height instead of
+     stranding the dead lower quadrant the old title-left/columns-right split produced.
+     CTA stays hidden: at the 851×290 gate the usable pane is ~218px and the 12-row
+     checklist + title already consume it; a restored CTA truncates. (Dom's two options
+     were "compact CTA OR let the checklist fill" — fit forces the checklist-fill path.) */
+  .slide-stage {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    padding: 4px 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* ── Hero: centered title on top (mirrors desktop's centred hero) ── */
+  .hero {
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    text-align: center !important;
+  }
+  .hero h1 {
+    font-size: var(--landscape-h2) !important;
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+  }
+  .hero .lede { display: none !important; }
+
+  /* ── Qual-wrap: centerpiece — grows to fill everything below the title ── */
+  .qual-wrap {
+    flex: 1 1 auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .qual-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 28px !important;
+    align-items: stretch !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+  }
+  /* keep desktop's coloured top rule per column (green / red) — it is the slide's
+     signal; just compact the padding for landscape. */
+  .qual-col {
+    padding-top: 5px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+  }
+  .qual-col .col-eyebrow {
+    font-size: var(--landscape-body) !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+    line-height: 1.2 !important;
+  }
+  .qual-col .col-sub { display: none !important; }
+  /* rows distribute across the stretched column height — fills, no strand.
+     desktop's per-row hairline divider is inherited (not overridden), so the
+     spaced list reads as an intentional divided comparison table. */
+  .qual-list {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+  }
+  .qual-row {
+    padding: 2px 0 !important;
+    gap: 8px !important;
+    align-items: flex-start !important;
+  }
+  .qual-row .label {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.2 !important;
+  }
+  .qual-row .icon {
+    flex-shrink: 0 !important;
+    width: 13px !important;
+    height: 13px !important;
+    top: 1px !important;
+  }
+  .qual-row .icon svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  /* ── CTA: stays hidden in landscape (see fit note on .slide-stage above) ── */
+  .cta { display: none !important; }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+
+/* CTA is fully hidden in landscape — suppress cta-sub reveal rule too. */
+@media (orientation: landscape) and (min-height: 340px) and (max-height: 500px) {
+  .cta-block .cta-sub { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Is a Micro&nbsp;Captive <span class="accent">right</span> for you?</h1>
+</section>
+
+<!-- ── Qualification two-column (typography-as-event) ──────────────── -->
+<section class="qual-wrap">
+
+  <div class="qual-grid">
+
+    <!-- Strong Fit column -->
+    <div class="qual-col fit">
+      <div class="col-eyebrow">Strong Fit</div>
+      <ul class="qual-list">
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
+          </span>
+          <span class="label">Revenue of $2M+ annually</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
+          </span>
+          <span class="label">Excess cash flow above operating needs</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
+          </span>
+          <span class="label">Potential for loss of revenue</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
+          </span>
+          <span class="label">Appetite for long-term wealth building</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
+          </span>
+          <span class="label">Exposure to unexpected expenses</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 10 18 20 6"></polyline></svg>
+          </span>
+          <span class="label">S-Corp or C-Corp entity structure</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Not the Right Fit column -->
+    <div class="qual-col notfit">
+      <div class="col-eyebrow">Not the Right Fit</div>
+      <ul class="qual-list">
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </span>
+          <span class="label">Revenue under $2M annually</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </span>
+          <span class="label">Lack of cash flow above operating needs</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </span>
+          <span class="label">Sole proprietor with no employees</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </span>
+          <span class="label">Looking for a quick fix or one-year play</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </span>
+          <span class="label">Unexpected expenses are not a focus</span>
+        </li>
+        <li class="qual-row">
+          <span class="icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+          </span>
+          <span class="label">Not willing to maintain ongoing compliance</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA ──────────────────────────────────────────────────────────── -->
+<section class="cta">
+  <div class="cta-block">
+    <h3>Looks like a fit? Let&rsquo;s confirm in 30 minutes.</h3>
+    <p class="cta-sub">Your revenue, your cash flow. A direct call. Just whether the math works for your business.</p>
+    <div class="cta-buttons">
+      <a class="btn btn-primary" href="mailto:jason.monczka@pomeroygroup.com?subject=Discovery%20call%20%E2%80%93%20Micro%20Captive">Schedule a discovery call</a>
+      <a class="btn btn-secondary" href="tel:+16027391189">Call Jason &middot; (602) 739-1189</a>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/for-your-cpa" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">8 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/what-the-call-looks-like" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

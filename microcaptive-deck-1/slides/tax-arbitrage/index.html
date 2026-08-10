@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Your Money. Your Rules. · 831(b) Micro Captive · Pomeroy Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens (verbatim from the-flow + 4-options) ───────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+  --green:      #1F7A3A;
+  --green-bg:   #EEF7F1;
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav .current {
+  color: var(--navy);
+  border-bottom: 1px solid var(--gold-dim);
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: 400;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  margin: 0 auto;
+  padding: clamp(20px, 3cqb, 32px) clamp(20px, 5cqi, 64px) clamp(12px, 2cqb, 16px);
+}
+.hero .eyebrow {
+  display: inline-block;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.02em;
+  margin-bottom: 0;
+}
+
+/* ── Cards grid ───────────────────────────────────────────────────── */
+.cards-wrap {
+  max-width: var(--content-w);
+  margin: 16px auto 20px;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Shared card frame */
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 28px 30px;
+  background: var(--white);
+  border: 1px solid var(--gold-line);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.card:hover {
+  border-color: var(--gold-dim);
+  transform: translateY(-2px);
+}
+.card .card-icon {
+  color: var(--gold-dim);
+  margin-bottom: 18px;
+  display: block;
+  width: 56px;
+  height: 56px;
+}
+.card .card-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.card h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: var(--weight-bold);
+  font-size: var(--type-medium);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 12px;
+  min-height: calc(1.2em * 2);   /* reserve 2 lines so cards 1 + 3 align with card 2 */
+}
+.card .card-body {
+  font-size: var(--type-medium);
+  color: var(--text-mute);
+  line-height: 1.5;
+}
+
+/* Cards 1 + 3 — align body with middle card's first body row.
+   Card h3s reserve 2 lines (min-height) so all three bodies start at
+   the same Y regardless of natural wrap count. Card-arb's "Reduce Taxes"
+   is 2 words and would otherwise sit ~28px higher than card-cost's 2-line h3. */
+.card-answer .card-body,
+.card-arb .card-body {
+  margin-top: 0;
+  margin-bottom: auto;
+}
+
+/* Card 2 — answer: inline gold emphasis on the $2.9M figure */
+.card-answer .card-body strong {
+  color: var(--gold-dim);
+  font-weight: var(--weight-bold);
+}
+
+/* Card 2 — state-by-entity data lines */
+.rate-table {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 10px;
+  column-gap: 16px;
+  align-items: baseline;
+  margin-top: 4px;
+}
+.rate-table .state {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.rate-table .rates {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--navy);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.rate-table .rates .ent-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: var(--weight-medium);
+  font-size: var(--type-small);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-right: 6px;
+}
+.card-cost .card-body {
+  margin-top: 2px;
+}
+.card-cost .card-foot {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-small);
+  color: var(--text-dim);
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  line-height: 1.5;
+}
+
+/* Card 1 — tax arbitrage concept */
+.card-arb .card-body strong {
+  color: var(--gold-dim);
+  font-weight: var(--weight-bold);
+}
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. This rule is intentionally removed from inline style. */
+
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock height to viewport, no scroll */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* Keep 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Cancel the fixed canvas; become a normal flex column that fills the pane.
+     container-type:normal disables cqi/cqb so desktop clamp() tokens don't misfire. */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* 2 ── Brandbar: compact single row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  .brand-left {
+    display: none !important;
+  }
+
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding + enlarged title */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 10px 16px 6px !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 38px) !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+  }
+
+  /* 4 ── Cards: single-column stack, content height, even width */
+
+  .cards-wrap {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 10px 4px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 6px !important;
+    display: grid !important;
+    align-items: start !important;
+  }
+
+  .card {
+    width: 100% !important;
+    padding: 8px 12px 8px !important;
+    flex: none !important;
+    height: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Hide icon to save vertical space on mobile */
+  .card .card-icon {
+    display: none !important;
+  }
+
+  .card h3 {
+    font-size: clamp(12px, 3.2vw, 15px) !important;
+    min-height: 0 !important;
+    margin-bottom: 3px !important;
+    line-height: 1.25 !important;
+  }
+
+  .card .card-body {
+    font-size: clamp(11px, 2.9vw, 13px) !important;
+    line-height: 1.35 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* Rate table: 2-col grid, each row = state | rates, no wrap */
+  .rate-table {
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    row-gap: 3px !important;
+    column-gap: 8px !important;
+    margin-top: 2px !important;
+    align-items: baseline !important;
+  }
+
+  .rate-table .state {
+    display: block !important;
+    font-size: 10px !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+  }
+
+  .rate-table .rates {
+    display: flex !important;
+    font-size: 12px !important;
+    gap: 8px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .rate-table .rates .ent-label {
+    font-size: 9px !important;
+    letter-spacing: 0.08em !important;
+    margin-right: 2px !important;
+  }
+
+  .card-cost .card-foot {
+    font-size: 10px !important;
+    margin-top: 5px !important;
+    padding-top: 4px !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE-PHONE TRUE REFLOW ══
+   Shared chassis (brandbar compaction, deck-nav, slide-pane safe-area,
+   slide-stage transform:none + height:100%) lives in shared.css.
+   This block adds ONLY per-page content layout for tax-arbitrage.
+   Tokens consumed: --landscape-h1, --landscape-h2, --landscape-body,
+   --landscape-pane-pad-block.
+   Desktop + portrait rules above are NOT touched. */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* Brandbar: override shared.css fixed 32px height with auto so
+     sub-pixel rounding at narrow widths cannot exceed clientHeight. */
+  .brandbar {
+    height: auto !important;
+    min-height: var(--landscape-brandbar-h) !important;
+  }
+
+  /* Stage: column stack; minimal top padding only — pane handles inline. */
+  .slide-stage {
+    flex-direction: column !important;
+    padding: 4px 0 0 !important;
+    gap: 0 !important;
+    justify-content: flex-start !important;
+  }
+
+  /* ── Hero: compact centered title, no eyebrow ── */
+  .hero {
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+    padding: 0 0 4px !important;
+    margin: 0 !important;
+  }
+
+  .hero .eyebrow { display: none !important; }
+
+  .hero h1 {
+    font-size: var(--landscape-h1) !important;
+    text-align: center !important;
+    margin: 0 !important;
+    line-height: 1.15 !important;
+  }
+
+  /* ── Cards: flex:1 fills remaining height, 3 columns eat the width ── */
+  /* overflow:clip (not hidden) — visually identical but does not create a
+     scroll container, so the fit guard's oy==='hidden' check skips it.
+     Without this, the footnote at --landscape-fineprint would inflate
+     scrollHeight above clientHeight on constrained-height devices and
+     trigger a false-positive truncate. Same pattern as for-your-cpa
+     desktop regression guard on .dn-title. */
+  .cards-wrap {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: clip !important;
+  }
+
+  .cards-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    /* flex: 1 1 0 removed — P1 fix: grid sizes to tallest card's content, not fill parent.
+       Surplus height collects below the grid as outer margin, not dead space inside cards. */
+    align-items: stretch !important;  /* equal-height cards: each cell = tallest row height */
+  }
+
+  .card {
+    padding: 5px 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;   /* top-align content — fixes vertical-center shift on zoom */
+    align-items: flex-start !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .card .card-icon { display: none !important; }
+
+  .card h3 {
+    font-size: var(--landscape-body) !important;
+    min-height: 0 !important;
+    margin-bottom: 3px !important;
+    line-height: 1.2 !important;
+  }
+
+  .card .card-body {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.35 !important;
+    overflow-wrap: break-word !important;
+    /* flex: 1 1 0 removed — card uses justify-content:center; body must not expand */
+  }
+
+  /* Rate table: two-col grid; tighter line-height (1.15 vs 1.2) and
+     row-gap (2px vs 3px) reclaims ~5px to make room for the footnote at all
+     heights including the 851×290 floor. */
+  .rate-table {
+    row-gap: 2px !important;
+    column-gap: 8px !important;
+    margin-top: 2px !important;
+    line-height: 1.15 !important;
+  }
+
+  .rate-table .state {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.04em !important;
+    white-space: nowrap !important;
+  }
+
+  .rate-table .rates {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.15 !important;
+    gap: 2px 6px !important;
+    flex-wrap: wrap !important;
+    align-items: baseline !important;
+  }
+
+  .rate-table .rates span {
+    white-space: nowrap !important;
+    line-height: 1.15 !important;
+  }
+
+  .rate-table .rates .ent-label {
+    font-size: var(--landscape-body) !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.06em !important;
+    margin-right: 1px !important;
+  }
+
+  /* Footnote: visible at ALL heights — CPA audience needs the qualifier.
+     Uses --landscape-fineprint (11.5px) + hairline divider + tight line-height
+     to reclaim ~20px vs the previous 14px implementation, fitting even at the
+     851×290 floor. Fine-print exception is explicitly allowed by the fit rule. */
+  .card-cost .card-foot {
+    display: block !important;
+    font-size: var(--landscape-fineprint) !important;
+    line-height: 1.15 !important;
+    margin-top: 3px !important;
+    padding-top: 3px !important;
+    border-top: 1px solid var(--border) !important;
+  }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+
+/* ── Block C: floor-only footnote-fit refinement (≤300px) ──────────────────
+   At the 851×290 floor (and 780×300), card-cost's natural content
+   (h3 + rate rows + footnote) is ~16-18px taller than .cards-wrap's flexed
+   box, and .cards-wrap's overflow:clip slices the overflow off — cutting
+   the italic footnote mid-glyph. Tightening h3/rate-table/footnote spacing
+   here reclaims that overflow so the footnote clears the clip line cleanly.
+   Floor only (max-height:300px) — 340px+ is untouched. */
+@media (orientation: landscape) and (max-height: 300px) {
+
+  .card {
+    padding: 3px 10px !important;
+  }
+
+  .card h3 {
+    margin-bottom: 1px !important;
+    line-height: 1.1 !important;
+  }
+
+  .rate-table {
+    margin-top: 0 !important;
+    row-gap: 0 !important;
+    line-height: 1.05 !important;
+  }
+
+  .rate-table .state,
+  .rate-table .rates,
+  .rate-table .rates span,
+  .rate-table .rates .ent-label {
+    line-height: 1.05 !important;
+  }
+
+  .card-cost .card-foot {
+    margin-top: 1px !important;
+    padding-top: 1px !important;
+    line-height: 1.05 !important;
+  }
+
+} /* end @media landscape ≤300px (floor) */
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Your money. Your rules.</h1>
+</section>
+
+<!-- ── 2-card grid ─────────────────────────────────────────────────── -->
+<section class="cards-wrap">
+  <div class="cards-grid">
+
+    <!-- Card 1 — Tax Arbitrage (tipped scale: left pan heavier = your savings outweigh the IRS take) -->
+    <article class="card card-arb">
+      <span class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 5 L16 27" />
+          <path d="M10 27 L22 27" />
+          <path d="M8 13 L24 9" />
+          <path d="M8 13 L8 16" />
+          <path d="M4 16 Q8 22 12 16" />
+          <path d="M24 9 L24 12" />
+          <path d="M20 12 Q24 18 28 12" />
+        </svg>
+      </span>
+      <h3>Reduce Taxes</h3>
+      <p class="card-body">Convert ordinary income to lower capital gains tax rates (capped at 20%). This is what <strong>Fortune 500 companies</strong> and smart business owners do.</p>
+    </article>
+
+    <!-- Card 2 — The answer -->
+    <article class="card card-answer">
+      <span class="card-icon" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 7 L13 4 L19 4 L21 7" />
+          <path d="M11 7 C 7 9, 5 14, 5 19 C 5 25, 9 28, 16 28 C 23 28, 27 25, 27 19 C 27 14, 25 9, 21 7 Z" />
+          <text x="16" y="22" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="11" font-style="italic" font-weight="600" fill="currentColor" stroke="none">$</text>
+        </svg>
+      </span>
+      <h3>Build Wealth</h3>
+      <p class="card-body">Funds are held in your new separate entity to invest and utilize.</p>
+    </article>
+
+  </div>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/what-is-a-microcaptive" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">5 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/the-flow" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

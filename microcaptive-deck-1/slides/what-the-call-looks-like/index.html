@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>What the Call Looks Like · Jason A. Monczka</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens ────────────────────────────────────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a, .brand-nav .current {
+  padding: 4px 2px;
+  transition: color 0.18s;
+}
+.brand-nav a { color: var(--text-dim); }
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* .slide-pane, .slide-stage chassis now come from shared.css */
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(20px, 4cqb, 40px) clamp(20px, 5cqi, 64px) clamp(12px, 2cqb, 20px);
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+/* .hero h1 .accent inherits from shared.css canonical .accent (Playfair italic + var(--weight-italic) + var(--gold-dim)) */
+.hero .lede {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  line-height: 1.45;
+  color: var(--text-mute);
+  max-width: 70ch;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+/* ── Agenda block ──────────────────────────────────────────────── */
+.agenda-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5cqi, 64px) clamp(16px, 2.5cqb, 28px);
+}
+.agenda {
+  background: var(--bg-soft);
+  border-left: 2px solid var(--gold-dim);
+  padding: clamp(18px, 2.4cqb, 28px) clamp(20px, 3cqi, 32px);
+}
+.agenda h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 14px;
+}
+.agenda ol {
+  list-style: none;
+  counter-reset: agenda;
+  padding: 0;
+}
+.agenda li {
+  counter-increment: agenda;
+  font-family: 'Playfair Display', serif;
+  font-size: var(--type-subhead);
+  color: var(--text);
+  padding: 6px 0 6px 36px;
+  position: relative;
+  line-height: 1.45;
+}
+.agenda li::before {
+  content: counter(agenda);
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-style: italic;
+  color: var(--gold-dim);
+  font-size: 14px;
+  font-weight: var(--weight-italic);
+}
+
+/* ── Closer paragraph ──────────────────────────────────────────── */
+.closer-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5cqi, 64px) clamp(20px, 3cqb, 32px);
+}
+.closer {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  color: var(--text-mute);
+  max-width: 92ch;
+}
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. This rule is intentionally removed from inline style. */
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE LAYER  ·  max-width: 768px
+   Cancels the fixed-canvas transform so the slide-stage reflows
+   as a flex column that fills the available pane height. Every
+   section shrinks proportionally so ALL content fits in exactly
+   100svh with NO vertical scroll at 375×667 and larger.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Keep the chassis height locked to the viewport */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* Keep 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  /* Slide pane fills the middle row; distributes remaining height */
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Slide stage: cancel fixed canvas; become a normal flex column
+     that fills the pane height. container-type:normal disables
+     cqi/cqb queries so desktop clamp() tokens don't misfire. */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: single compact row, no wrap */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  /* brand-left is empty on this slide; hide it to reclaim width */
+  .brand-left {
+    display: none !important;
+  }
+
+  /* Nav: shrink font so FAQ · CASE STUDIES · CONTACT fits one line */
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding + mobile-sized type */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 10px 16px 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7vw, 36px) !important;
+    margin-bottom: 4px !important;
+  }
+
+  .hero .lede {
+    font-size: clamp(13px, 3.8vw, 18px) !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 4 ── Agenda + Closer: natural height, single-column content */
+
+  .agenda-wrap {
+    max-width: 100% !important;
+    padding: 0 12px 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .agenda {
+    padding: 8px 14px !important;
+  }
+
+  .agenda h3 {
+    font-size: 10px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .agenda li {
+    font-size: clamp(11px, 3vw, 14px) !important;
+    padding: 3px 0 3px 28px !important;
+    line-height: 1.35 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  .agenda li::before {
+    font-size: 12px !important;
+    top: 3px !important;
+  }
+
+  .closer-wrap {
+    max-width: 100% !important;
+    padding: 0 12px 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .closer {
+    font-size: clamp(11px, 3vw, 14px) !important;
+    line-height: 1.4 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE TRUE-REFLOW ── what-the-call-looks-like ══
+   shared.css handles: html/body height/overflow, body grid,
+   brandbar compaction, deck-nav compaction,
+   .slide-pane (overflow:hidden + safe-area padding-inline),
+   .slide-stage (transform:none, 100% w/h, flex-column, overflow:hidden).
+   This block: page-specific content layout ONLY.
+   AC10: overflow-y:auto physically deleted; no hardcoded sub-14px fonts.
+   AC6:  all content text >= var(--landscape-body) (14px).
+   AC9:  all sizes via var(--landscape-*) tokens. */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* Override shared.css fixed brandbar height so brand-nav content
+     (9px font + 3px top/bottom padding) doesn't clip.
+     shared.css forces height:32px !important; we win by source order. */
+  .brandbar {
+    height: auto !important;
+    padding: 3px 16px !important;
+  }
+
+  /* slide-stage: center content vertically in available pane */
+  .slide-stage {
+    justify-content: center !important;
+    gap: 5px !important;
+    padding-block: 4px !important;
+  }
+
+  /* Hero: compact, centered — mirrors desktop centred title+lede */
+  .hero {
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 4.2vw, 27px) !important;  /* trimmed from --landscape-h1 to win back floor height */
+    margin-bottom: 1px !important;
+    line-height: 1.15 !important;
+    text-align: center !important;
+  }
+
+  .hero .lede {
+    font-size: var(--landscape-body) !important;   /* 14px floor */
+    line-height: 1.3 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  /* Agenda wrap: natural height, full width */
+  .agenda-wrap {
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+  }
+
+  .agenda {
+    padding: 4px 14px !important;
+  }
+
+  /* Restore "THE 30 MINUTES" eyebrow label at landscape-body (14px) floor.
+     Hidden at very short heights (≤330px) via the sub-query below — see reviewer note. */
+  .agenda h3 {
+    display: block !important;
+    font-size: var(--landscape-body) !important;   /* 14px — AC6 floor */
+    font-weight: var(--weight-bold) !important;
+    letter-spacing: 0.22em !important;
+    margin-bottom: 5px !important;
+  }
+
+  /* SINGLE VERTICAL NUMBERED LIST (Dom 2026-06-30, path B): mirror desktop's
+     clean 1->2->3->4->5 sequence. At full landscape width each item is ~1 line,
+     so five rows pack tight and the box sizes to its content (no float/void).
+     The slide-stage centers the whole group vertically. */
+  .agenda ol {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: clamp(5px, 1.8vh, 14px) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Reset any prior full-width / rule treatment on the last item */
+  .agenda li:last-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    border-top: none !important;
+  }
+
+  .agenda li {
+    font-size: var(--landscape-body) !important;   /* 14px floor */
+    padding: 0 0 0 16px !important;
+    line-height: 1.26 !important;
+    hyphens: none !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    /* top-align content within each equal-height grid cell */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+  }
+
+  .agenda li::before {
+    font-size: var(--landscape-body) !important;
+    top: 0 !important;
+  }
+
+  /* Restore closing italic paragraph — human/low-pressure reframe; material body
+     copy. Fills the dead vertical band at 344/380 and fixes the content regression.
+     At 290px (the tightest floor) it still fits: see estimate in the review notes. */
+  .closer-wrap {
+    flex: 0 0 auto !important;
+    max-width: 100% !important;
+    padding: clamp(12px, 2.5vh, 22px) 0 0 !important;   /* breathing room from the box (reviewer P1) */
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  .closer {
+    font-size: var(--landscape-body) !important;   /* 14px floor */
+    line-height: 1.3 !important;
+    text-align: left !important;   /* match desktop (reviewer P2) */
+    max-width: 100% !important;
+  }
+
+} /* end @media landscape + max-height:500px */
+
+/* ── Landscape short-height trim (≤330px: pixel5-floor/galaxy-narrow/iphone-se) ──
+   Reviewer guidance: "If absolutely no room at the 290 floor, keep the closing
+   line and drop only the eyebrow there, but it should appear at 344/380."
+   Hiding the h3 label recovers ~21px, which is more than the worst overflow (11px).
+   The closer (material body copy) is retained at all landscape heights. */
+@media (orientation: landscape) and (max-height: 330px) {
+  .agenda h3 {
+    display: none !important;
+  }
+  /* The 2-col list is 3 rows tall; tighten gaps + leading at the floor so the
+     stage clears the 290px usable height. */
+  .agenda ol {
+    row-gap: 2px !important;
+    align-content: start !important;
+  }
+  .agenda li {
+    line-height: 1.16 !important;
+  }
+  .closer {
+    line-height: 1.18 !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>What the <span class="accent">call</span> looks like.</h1>
+  <p class="lede">A 30-minute working conversation built around your specific business.</p>
+</section>
+
+<!-- ── Agenda ────────────────────────────────────────────────────── -->
+<section class="agenda-wrap">
+  <div class="agenda">
+    <h3>The 30 minutes</h3>
+    <ol>
+      <li>Your revenue, structure, and the unexpected expenses you already absorb.</li>
+      <li>What a Micro&nbsp;Captive would look like at your contribution range.</li>
+      <li>Your projected savings. Modeled to your tax position and state.</li>
+      <li>What setup looks like, what it costs, and what you'd own at the end.</li>
+      <li>Questions. Push back on the math, ask the awkward ones, get straight answers.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── Closer ────────────────────────────────────────────────────── -->
+<section class="closer-wrap">
+  <p class="closer">Most owners come away from this conversation knowing within fifteen minutes whether the strategy fits. The other fifteen are spent talking about life.</p>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/slides/is-it-right" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">9 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/contact" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

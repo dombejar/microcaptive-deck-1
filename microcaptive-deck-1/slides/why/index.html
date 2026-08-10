@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Why a Micro Captive · 831(b) · Jason Monczka</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  gap: 14px;
+}
+.brand-nav a { color: var(--text-dim); text-decoration: none; padding: 6px 0; }
+.brand-nav .sep { color: var(--border-2); font-weight: 400; }
+
+/* ── Slide-specific component CSS (hero, byline, cta, btn) ─────────────── */
+/* .slide-pane, .slide-stage, .deck-nav chassis now come from shared.css    */
+
+.hero {
+  padding: clamp(28px, 4cqb, 48px) clamp(20px, 5cqi, 64px) clamp(24px, 3cqb, 36px);
+  max-width: var(--content-w);
+  margin: 0 auto;
+  width: 100%;
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  font-weight: var(--weight-bold);
+  margin-bottom: 28px;
+  letter-spacing: -0.02em;
+  max-width: 30ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* .hero h1 .accent inherits from shared.css canonical .accent (Playfair italic + var(--weight-italic) + var(--gold-dim)) */
+
+.byline {
+  border-top: 1px solid var(--gold-line);
+  padding-top: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(28px, 5cqi, 64px);
+  align-items: start;
+}
+.byline-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  font-size: var(--type-subhead);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  text-align: center;
+}
+.byline-name .role {
+  display: block;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: var(--type-medium);
+  font-weight: var(--weight-italic);
+  letter-spacing: 0;
+  color: var(--gold-dim);
+  margin-top: 8px;
+}
+.byline-name .role-line {
+  display: block;
+  line-height: 1.35;
+}
+.credentials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.credentials li {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-medium);
+  color: var(--text-mute);
+  line-height: 1.4;
+  position: relative;
+  padding-left: 26px;
+}
+.credentials li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 16px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.cta {
+  background: var(--navy);
+  color: var(--white);
+  padding: clamp(20px, 2.6cqb, 28px) clamp(20px, 5cqi, 64px);
+  text-align: center;
+}
+.cta-block { max-width: 760px; margin: 0 auto; }
+.cta h3 {
+  font-size: var(--type-subhead);
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.cta-sub {
+  color: var(--white-mute);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-medium);
+  margin-bottom: 14px;
+  max-width: 56ch;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
+}
+.cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  font-size: var(--type-medium);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.btn-primary { background: var(--gold); color: var(--navy); border: 1px solid var(--gold); }
+.btn-primary:hover { background: var(--gold-dim); color: var(--white); border-color: var(--gold-dim); }
+.btn-secondary { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.4); }
+.btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.06); }
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. This rule is intentionally removed from inline style. */
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE LAYER — applies only at < 768 px.
+   Cancels the fixed-canvas scale transform; reflows content as
+   a centered flex column that fits exactly one viewport with
+   NO vertical scroll and NO horizontal overflow.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock height to viewport, no scroll */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Cancel fixed canvas; become a flex column filling the pane */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: compact single row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  .brand-left {
+    display: none !important;
+  }
+
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact title, single-column byline */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 12px 16px 8px !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 6.5vw, 36px) !important;
+    margin-bottom: 10px !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    text-align: center !important;
+  }
+
+  /* Byline: switch from 2-column grid to single stacked column */
+  .byline {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    padding-top: 12px !important;
+    text-align: center !important;
+  }
+
+  .byline-name {
+    font-size: clamp(16px, 5vw, 22px) !important;
+    text-align: center !important;
+  }
+
+  .byline-name .role {
+    font-size: clamp(13px, 3.8vw, 17px) !important;
+    margin-top: 4px !important;
+  }
+
+  .credentials {
+    gap: 6px !important;
+    align-items: center !important;
+  }
+
+  .credentials li {
+    font-size: clamp(12px, 3.2vw, 15px) !important;
+    line-height: 1.35 !important;
+    padding-left: 22px !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    text-align: left !important;
+    width: max-content !important;
+    max-width: 100% !important;
+  }
+
+  /* 4 ── Navy CTA band: compact, stacked full-width buttons */
+
+  .cta {
+    flex-shrink: 0 !important;
+    padding: 12px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .cta-block {
+    max-width: 100% !important;
+  }
+
+  .cta h3 {
+    font-size: clamp(16px, 5vw, 22px) !important;
+    margin-bottom: 6px !important;
+  }
+
+  .cta-sub {
+    font-size: clamp(12px, 3.5vw, 15px) !important;
+    margin-bottom: 10px !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  .cta-buttons {
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+
+  .btn {
+    padding: 11px 16px !important;
+    font-size: clamp(12px, 3.5vw, 15px) !important;
+    text-align: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 5 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE TRUE-REFLOW — why slide ══════════════════════════════
+   Shared chassis (html/body/grid, brandbar/deck-nav compaction,
+   .slide-pane safe-area + overflow:hidden, .slide-stage transform:none
+   + height:100%) is handled once by the shared.css landscape block.
+   Per-page: override .slide-stage to 2-column row composition mirroring
+   desktop (hero left | CTA navy band right). Consume --landscape-*
+   tokens only. AC10: no overflow-y:auto, no hardcoded sub-14px font.   */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* ── slide-stage → 2-column row (hero left | CTA right) ─────────── */
+  .slide-stage {
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+  }
+
+  /* ── Left column: hero (H1 + 2-col byline) ──────────────────────── */
+  /* Title + byline are ONE tight centered group (was space-between, which
+     stranded a void in the middle at tall heights). The title is sized off
+     viewport HEIGHT so it grows to FILL the column on taller phones instead
+     of leaving slack. Dom 2026-06-30: "fill the space, don't center the gap." */
+  .hero {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: var(--landscape-pane-pad-block) clamp(20px, 4vw, 48px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: clamp(8px, 2.4vh, 20px) !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(22px, 7.5vh, 40px) !important;   /* HEIGHT-based: fills the column on tall phones */
+    line-height: 1.2 !important;
+    margin-bottom: 0 !important;
+    text-align: center !important;
+    max-width: 26ch !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* Byline: preserve desktop 2-col grid (name left | credentials right) */
+  .byline {
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    gap: 16px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid var(--gold-line) !important;
+    width: 100% !important;
+    align-items: start !important;
+    box-sizing: border-box !important;
+  }
+
+  .byline-name {
+    font-size: var(--landscape-body) !important;   /* 14px */
+    text-align: center !important;
+    line-height: 1.3 !important;
+  }
+
+  .byline-name .role {
+    font-size: var(--landscape-body) !important;   /* 14px */
+    margin-top: 2px !important;
+    line-height: 1.3 !important;
+  }
+
+  .credentials {
+    gap: 4px !important;
+    align-items: flex-start !important;
+  }
+
+  .credentials li {
+    font-size: var(--landscape-body) !important;   /* 14px */
+    line-height: 1.3 !important;
+    padding-left: 18px !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    width: auto !important;
+    max-width: 100% !important;
+  }
+
+  /* ── Right column: CTA (full-height navy band) ───────────────────── */
+  .cta {
+    flex: 0 0 38% !important;
+    min-width: 0 !important;
+    align-self: stretch !important;
+    padding: var(--landscape-pane-pad-block) 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .cta-block {
+    max-width: 100% !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .cta h3 {
+    font-size: var(--landscape-body) !important;   /* 14px */
+    margin-bottom: 4px !important;
+    line-height: 1.2 !important;
+  }
+
+  .cta-sub {
+    font-size: var(--landscape-body) !important;   /* 14px */
+    margin-bottom: 8px !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    line-height: 1.3 !important;
+  }
+
+  .cta-buttons {
+    flex-direction: column !important;
+    gap: 6px !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .btn {
+    padding: 7px 12px !important;
+    font-size: var(--landscape-body) !important;   /* 14px */
+    text-align: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    overflow: visible !important;
+  }
+
+  /* ── Brandbar: allow auto height so scrollHeight == clientHeight ──── */
+  /* shared.css forces height:32px which clips at 325px viewport.        */
+  .brandbar {
+    height: auto !important;
+    min-height: var(--landscape-brandbar-h) !important;
+  }
+
+} /* end @media (orientation: landscape) and (max-height: 500px) */
+</style>
+</head>
+<body>
+
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<div class="slide-pane">
+<div class="slide-stage">
+
+<section class="hero">
+  <h1>What if you could protect your business <span class="accent">and</span> keep more of your money?</h1>
+
+  <div class="byline">
+    <div class="byline-name">
+      Jason A. Monczka
+      <span class="role">
+        <span class="role-line">Head Honcho, Jr.</span>
+        <span class="role-line">(Rainmaker)</span>
+      </span>
+    </div>
+    <ul class="credentials">
+      <li>Subject matter expert on Micro&nbsp;Captives</li>
+      <li>20+ Years as a business owner</li>
+      <li>Built &amp; exited a company</li>
+    </ul>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="cta-block">
+    <h3>30 Minutes. Your numbers.</h3>
+    <p class="cta-sub">A direct call. No slides, no pitch deck. Just whether the math works for your business.</p>
+    <div class="cta-buttons">
+      <a class="btn btn-primary" href="mailto:jason.monczka@pomeroygroup.com?subject=Discovery%20call%20%E2%80%93%20Micro%20Captive">Schedule a discovery call</a>
+      <a class="btn btn-secondary" href="tel:+16027391189">Call Jason &middot; (602) 739-1189</a>
+    </div>
+  </div>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows" aria-label="Slide navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/" aria-label="Previous slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">2 of 9</span>
+  <a class="deck-arrow deck-arrow-next" href="/microcaptive-deck-1/slides/4-options" aria-label="Next slide"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></span></a>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>The Flow &middot; Six Steps &middot; 831(b) Micro Captive &middot; Pomeroy Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+/* ── Design tokens (verbatim from the-flow) ──────────────────────── */
+:root {
+  --navy:       #0E1B3D;
+  --navy-dim:   #1F2C50;
+  --navy-bg:    #EEF1F7;
+  --text:       #111827;
+  --text-mute:  #4B5563;
+  --text-dim:   #9CA3AF;
+  --white:      #FFFFFF;
+  --border:     #E5E7EB;
+  --border-2:   #D1D5DB;
+  --bg-soft:    #F7F8FA;
+  --gold:       #B08D3D;
+  --gold-dim:   #8C6F2D;
+  --gold-bg:    #F8F4EC;
+  --gold-line:  rgba(176, 141, 61, 0.30);
+  --gold-line-on-navy: rgba(176, 141, 61, 0.40);
+  --white-soft: rgba(255, 255, 255, 0.88);
+  --white-mute: rgba(255, 255, 255, 0.70);
+  --white-dim:  rgba(255, 255, 255, 0.60);
+  --green:      #1F7A3A;
+  --green-bg:   #EEF7F1;
+
+  /* r9 chassis vars (--slide-w, --slide-h, --scale) now live in shared.css */
+}
+
+/* ── Body: slide-specific appearance only (chassis grid comes from shared.css) ── */
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: var(--weight-regular);
+  font-size: var(--type-medium);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: var(--weight-bold);
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+
+/* ── Brand bar ────────────────────────────────────────────────────── */
+.brand-nav {
+  display: flex;
+  align-items: center;
+  font-size: var(--type-small);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.brand-nav a {
+  padding: 4px 2px;
+  color: var(--text-dim);
+  transition: color 0.18s;
+}
+.brand-nav .sep {
+  color: var(--gold-dim);
+  margin: 0 14px;
+  font-weight: var(--weight-regular);
+}
+
+/* .slide-pane, .slide-stage chassis now come from shared.css */
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(24px, 4cqb, 48px) clamp(20px, 5cqi, 64px) clamp(16px, 2cqb, 24px);
+}
+.hero h1 {
+  text-align: center;
+  align-self: center;
+  font-size: var(--type-large);
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.hero h1 .accent {
+  font-style: italic;
+  color: var(--gold-dim);
+  font-weight: var(--weight-italic);
+}
+.hero .lede {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-subhead);
+  line-height: 1.4;
+  color: var(--text-mute);
+  max-width: 42em;
+}
+
+/* ── Flow diagram ─────────────────────────────────────────────────── */
+.flow-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 8px auto 8px;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.flow-diagram {
+  background: var(--navy);
+  color: var(--white);
+  padding: clamp(24px, 3.2cqi, 36px) clamp(18px, 2.6cqi, 32px);
+}
+.flow-diagram .nodes {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+.flow-node {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--gold-line-on-navy);
+  padding: 20px 12px;
+  text-align: center;
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+}
+.flow-node:hover {
+  background: rgba(176, 141, 61, 0.15);
+  border-color: var(--gold);
+}
+.flow-node .flow-num {
+  font-family: 'Playfair Display', serif;
+  font-style: normal;
+  font-weight: var(--weight-bold);
+  font-size: var(--type-subhead);
+  color: var(--gold);
+}
+.flow-node + .flow-node::before {
+  content: '\2192';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-size: var(--type-medium);
+  font-weight: var(--weight-regular);
+}
+.flow-detail {
+  margin: 20px auto 0;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: var(--weight-italic);
+  font-size: var(--type-medium);
+  color: var(--white-soft);
+  line-height: 1.55;
+  max-width: 68ch;
+  text-align: center;
+}
+
+/* ── Step breakdown grid (the explanatory body) ──────────────────── */
+.steps-wrap {
+  max-width: var(--content-w);
+  width: 100%;
+  margin: 8px auto 8px;
+  padding: 0 clamp(20px, 5cqi, 64px);
+}
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.step-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+}
+.step-card .step-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.step-card .step-num {
+  font-family: 'Playfair Display', serif;
+  font-style: normal;
+  font-weight: var(--weight-bold);
+  color: var(--gold-dim);
+  font-size: var(--type-medium);
+  letter-spacing: 0;
+}
+.step-card h3 {
+  font-size: var(--type-medium);
+  line-height: 1.2;
+}
+.step-card h3 .accent {
+  font-style: italic;
+  color: var(--gold-dim);
+  font-weight: var(--weight-italic);
+}
+.step-card .step-body {
+  font-size: var(--type-medium);
+  line-height: 1.45;
+  color: var(--text-mute);
+}
+
+/* .deck-nav chassis (grid-template-columns, background, line-height, border-top)
+   now comes from shared.css. This rule is intentionally removed from inline style. */
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE LAYER  @media (max-width: 768px)
+   Cancels the fixed-canvas scale transform and reflows all
+   content into a single column that fits exactly 100svh with
+   NO vertical scroll at 320×568 and larger.
+   Desktop (≥768px) is byte-for-byte unchanged.
+   ══════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* 1 ── Chassis: lock to viewport height */
+
+  html, body {
+    height: 100svh !important;
+    overflow: hidden !important;
+  }
+
+  /* Keep 3-row grid: brandbar(auto) / pane(1fr) / deck-nav(auto) */
+  body {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+  }
+
+  /* Slide pane fills middle row */
+  .slide-pane {
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Slide stage: cancel fixed canvas; become a normal flex column
+     centered vertically, filling the pane. container-type:normal
+     disables cqi/cqb so desktop clamp() tokens don't misfire. */
+  .slide-stage {
+    transform: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    container-type: normal !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* 2 ── Brandbar: compact single row */
+
+  .brandbar {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+
+  .brand-left {
+    display: none !important;
+  }
+
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .brand-nav .sep {
+    margin: 0 8px !important;
+  }
+
+  /* 3 ── Hero: compact padding + mobile-tuned type */
+
+  .hero {
+    max-width: 100% !important;
+    padding: 8px 14px 5px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(20px, 6.5vw, 32px) !important;
+    margin-bottom: 3px !important;
+  }
+
+  .hero .lede {
+    font-size: clamp(11px, 3.2vw, 14px) !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    line-height: 1.35 !important;
+  }
+
+  /* 4 ── Flow diagram: hide on mobile — redundant with the step cards
+     and its 6-column layout cannot reflow legibly at 320px */
+
+  .flow-wrap {
+    display: none !important;
+  }
+
+  /* 5 ── Step cards: single-column, natural height, compressed */
+
+  .steps-wrap {
+    max-width: 100% !important;
+    padding: 0 10px 6px !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+  }
+
+  .steps-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 4px !important;
+  }
+
+  .step-card {
+    width: 100% !important;
+    padding: 5px 10px !important;
+    flex: none !important;
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }
+
+  .step-card .step-head {
+    margin-bottom: 2px !important;
+    gap: 6px !important;
+    display: flex !important;
+    align-items: baseline !important;
+  }
+
+  .step-card .step-num {
+    font-size: clamp(12px, 3.5vw, 15px) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .step-card h3 {
+    font-size: clamp(12px, 3.5vw, 15px) !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+  }
+
+  .step-card .step-body {
+    font-size: clamp(10px, 2.8vw, 12px) !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  /* 6 ── Deck nav: compact, no overflow */
+
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .deck-nav-link {
+    padding: 5px 12px !important;
+    min-width: 0 !important;
+  }
+
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+} /* end @media (max-width: 768px) */
+
+/* ══ LANDSCAPE TRUE-REFLOW (the-flow-six-steps) ══════════════════
+   Short-height landscape phones (orientation:landscape, max-height:500px).
+   shared.css already provides the chassis layer for this query:
+     • html/body height + overflow
+     • body 3-row grid
+     • brandbar compaction (32px fixed)
+     • deck-nav compaction (34px fixed, mid hidden)
+     • .slide-pane: overflow:hidden, padding-inline with env() safe-area
+     • .slide-stage: transform:none, width/height 100%, overflow:hidden, flex-col
+   This per-page block adds ONLY content-specific layout.
+   Desktop (unmediated) and @media (max-width:768px) rules are untouched.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* At 667px width both max-width:768px (portrait block) and this block fire.  */
+  /* Portrait block .brandbar { padding:8px 14px !important } is declared later  */
+  /* in-page than shared.css landscape, so it wins there. Re-assert here (last   */
+  /* in <style>) so the 32px compact brandbar is correctly applied at 667×325.  */
+  .brandbar {
+    padding: 0 16px !important;
+    overflow: hidden !important;
+  }
+
+  /* Stage: hero takes natural height, steps-wrap fills the rest.    */
+  .slide-stage {
+    justify-content: flex-start !important;
+  }
+
+  /* Flow diagram: cannot reflow at ≤380px stage height; step cards  */
+  /* carry the same sequence information in the 3×2 grid below.      */
+  .flow-wrap {
+    display: none !important;
+  }
+
+  /* ── Hero: compact + centered (P2 fix: both title and lede centred) */
+  .hero {
+    max-width: 100% !important;
+    padding: 3px 0 2px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+  .hero h1 {
+    font-size: var(--landscape-h1) !important;  /* systemic R4: shared token, not ad-hoc clamp */
+    margin-bottom: 2px !important;
+    line-height: 1.1 !important;
+  }
+  .hero .lede {
+    font-size: var(--landscape-body) !important; /* 14px */
+    line-height: 1.25 !important;
+    max-width: 100% !important;
+    display: block !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  /* ── Steps: 3-col × 2-row grid, rows stretch to fill stage.         */
+  /* P0 fix: body descriptions visible at 14px (was display:none).    */
+  /* P1 fix: justify-content:center on each card centres the          */
+  /* heading+body block within the stretched row, eliminating the     */
+  /* ~130px dead space below text at 932×380 and 844×344.             */
+  /* flex:none on step-body lets the content block centre cleanly.    */
+  .steps-wrap {
+    max-width: 100% !important;
+    padding: 0 0 3px !important;
+    margin: 0 !important;           /* desktop has 8px auto 8px — cancel in landscape */
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .steps-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    grid-template-rows: 1fr 1fr !important;
+    gap: 5px !important;
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+  }
+  .step-card {
+    padding: 3px 8px !important;  /* was 5px; reduced 2px top+bottom to recover room lost to larger --landscape-h1 */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;  /* systemic R1: top-align content; equal-height cards via grid rows */
+    overflow: hidden !important;
+    min-height: 0 !important;
+  }
+  .step-card .step-head {
+    margin-bottom: 2px !important;
+    gap: 5px !important;
+    display: flex !important;
+    align-items: baseline !important;
+    flex-shrink: 0 !important;
+  }
+  .step-card .step-num {
+    font-size: var(--landscape-body) !important; /* 14px */
+    flex-shrink: 0 !important;
+    line-height: 1.2 !important;
+  }
+  .step-card h3 {
+    font-size: var(--landscape-body) !important; /* 14px */
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+  /* Body descriptions restored (P0). flex:none so the heading+body   */
+  /* block centres as a unit inside the card (P1 fix).                */
+  .step-card .step-body {
+    font-size: var(--landscape-body) !important; /* 14px — floor (AC6) */
+    line-height: 1.2 !important;
+    color: var(--text-mute) !important;
+    overflow: hidden !important;
+    flex: none !important;          /* P1: natural height so centre aligns cleanly */
+    margin: 0 !important;
+  }
+
+} /* end @media landscape phone */
+</style>
+</head>
+<body>
+
+<!-- ── Brand bar ───────────────────────────────────────────────────── -->
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/case-studies">Case Studies</a>
+    <span class="sep">&middot;</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) + slide stage (scaled to fit) ────────────── -->
+<div class="slide-pane">
+<div class="slide-stage">
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <h1>Six <span class="accent">steps.</span></h1>
+  <p class="lede">Ordinary income in. Long-term capital gains out. Where the money moves between.</p>
+</section>
+
+<!-- ── Step breakdown grid ────────────────────────────────────────── -->
+<section class="steps-wrap">
+  <div class="steps-grid">
+    <article class="step-card">
+      <div class="step-head">
+        <span class="step-num">1</span>
+        <h3>Your <span class="accent">Company.</span></h3>
+      </div>
+      <p class="step-body">Pre-tax dollars leave your company as a deductible expense, not ordinary income.</p>
+    </article>
+
+    <article class="step-card">
+      <div class="step-head">
+        <span class="step-num">2</span>
+        <h3><span class="accent">Micro&nbsp;Captive.</span></h3>
+      </div>
+      <p class="step-body">It holds your savings, up to $2.9 million per year, deductible to the company.</p>
+    </article>
+
+    <article class="step-card">
+      <div class="step-head">
+        <span class="step-num">3</span>
+        <h3>Increase <span class="accent">Savings.</span></h3>
+      </div>
+      <p class="step-body">Pre-tax dollars in your captive for unexpected expenses or long-term capital.</p>
+    </article>
+
+    <article class="step-card">
+      <div class="step-head">
+        <span class="step-num">4</span>
+        <h3><span class="accent">Investments.</span></h3>
+      </div>
+      <p class="step-body">Your captive invests your money in an entity that pays no tax on the principal.</p>
+    </article>
+
+    <article class="step-card">
+      <div class="step-head">
+        <span class="step-num">5</span>
+        <h3>Distributions <span class="accent">/ LTCG.</span></h3>
+      </div>
+      <p class="step-body">Distributions are taxed at capital gains rates, not ordinary income.</p>
+    </article>
+
+    <article class="step-card">
+      <div class="step-head">
+        <span class="step-num">6</span>
+        <h3><span class="accent">Wealth.</span></h3>
+      </div>
+      <p class="step-body">A deductible expense becomes capital you own. $919,903 on $1.5M over five years.</p>
+    </article>
+  </div>
+</section>
+
+</div><!-- /.slide-stage -->
+</div><!-- /.slide-pane -->
+
+<!-- ── Deck nav ────────────────────────────────────────────────────── -->
+<!-- Deck navigation: side arrows (desktop/landscape) / bottom strip (portrait) -->
+<nav class="deck-arrows is-ancillary" aria-label="Page navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/" aria-label="Back to deck"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">Back to deck</span>
+</nav>
+
+<!-- Centralized fit engine replaces the per-slide inline fit() IIFE -->
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>

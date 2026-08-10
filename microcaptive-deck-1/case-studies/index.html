@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Case Studies · Pomeroy Group</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/microcaptive-deck-1/shared.css">
+
+<style>
+:root {
+  --navy:        #0E1B3D;
+  --navy-dim:    #1F2C50;
+  --navy-bg:     #EEF1F7;
+  --text:        #111827;
+  --text-mute:   #4B5563;
+  --text-dim:    #9CA3AF;
+  --white:       #FFFFFF;
+  --border:      #E5E7EB;
+  --border-2:    #D1D5DB;
+  --bg-soft:     #F7F8FA;
+  --gold:        #B08D3D;
+  --gold-dim:    #8C6F2D;
+  --gold-bg:     #F8F4EC;
+  --gold-line:   rgba(176, 141, 61, 0.30);
+
+  /* r9 chassis: harmless on utility pages (scale transform not applied) */
+  --slide-w: 1280;
+  --slide-h: 680;
+  --scale: 1;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+html, body {
+  height: 100svh;
+  margin: 0;
+  overflow: hidden;          /* page itself never scrolls — only the middle pane */
+}
+@supports not (height: 100svh) {
+  html, body { height: 100vh; }
+}
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+h1, h2, h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+a { color: var(--gold-dim); text-decoration: none; }
+a:hover { color: var(--gold); }
+::selection { background: var(--gold-bg); color: var(--text); }
+
+/* Brand bar */
+/* Desktop-base top-bar chassis (.brandbar, .brand-left, .brand-nav a/.current
+   padding+border, :hover, .sep) now comes from /shared.css — the single source
+   of truth that keeps the bar pixel-identical across all 16 pages. Only the
+   .brand-nav box props shared.css does NOT cover (display/align-items/
+   font-weight/letter-spacing/text-transform — shared.css only sets font-size +
+   gap) plus the link color + transition are kept here. */
+.brand-nav { display: flex; align-items: center;
+  font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+.brand-nav a, .brand-nav .current { transition: color 0.18s; }
+.brand-nav a { color: var(--text-dim); }
+
+/* ── Slide pane (utility variant: internal scroll, no fixed stage) ──── */
+.slide-pane {
+  /* display:block restores the original block flow: shared.css's .slide-pane is
+     display:flex (fixed-stage centering) which this scroll-pane page must NOT use. */
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-2) transparent;
+}
+.slide-pane::-webkit-scrollbar { width: 8px; }
+.slide-pane::-webkit-scrollbar-track { background: transparent; }
+.slide-pane::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 4px; }
+
+/* Hero */
+.hero {
+  max-width: 1100px; margin: 0 auto;
+  padding: clamp(40px, 6vw, 72px) clamp(20px, 5vw, 64px) clamp(24px, 4vw, 40px);
+}
+.hero .eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-dim); margin-bottom: 16px;
+}
+.hero h1 {
+  font-size: clamp(36px, 5vw, 60px);
+  margin-bottom: 14px; letter-spacing: -0.02em;
+}
+.hero h1 .accent { font-style: italic; color: var(--gold-dim); font-weight: 500; font-size: 1.25em; line-height: 0.9; }
+.hero .lede {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(16px, 1.8vw, 20px);
+  color: var(--text-mute); line-height: 1.5; max-width: 64ch;
+}
+
+/* Grid */
+.grid {
+  max-width: 1200px; margin: 16px auto 88px;
+  padding: 0 clamp(20px, 5vw, 64px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.card {
+  position: relative; background: var(--white);
+  border: 1px solid var(--border); padding: 24px 22px;
+  cursor: pointer; transition: border-color 0.18s, transform 0.12s;
+  display: flex; flex-direction: column;
+}
+.card::before {
+  content: ''; position: absolute; left: -1px; top: -1px; bottom: -1px;
+  width: 2px; background: var(--gold-dim); opacity: 0; transition: opacity 0.18s;
+}
+.card:hover { border-color: var(--navy-dim); }
+.card:hover::before { opacity: 1; }
+.card .case-num {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 12px; color: var(--gold); letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+.card h3 {
+  font-size: 18px; margin-bottom: 10px; line-height: 1.22;
+  min-height: 2.6em;
+}
+.card .desc {
+  font-size: 13.5px; color: var(--text-mute); line-height: 1.5;
+  margin-bottom: 14px; flex: 1;
+}
+.card .foot {
+  margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: flex-end;
+}
+.card .cs-link {
+  font-size: 11px; font-weight: 600; color: var(--gold-dim);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.card:hover .cs-link { color: var(--gold); }
+
+@media (max-width: 980px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; }
+}
+
+/* ── Mobile responsive (<768px) ───────────────────────────────────── */
+@media (max-width: 768px) {
+  /* Prevent any horizontal overflow */
+  html, body { overflow-x: hidden; }
+  .slide-pane { overflow-x: hidden; }
+
+  /* Hero: let the big accent title wrap naturally; no hyphens */
+  .hero h1 {
+    overflow-wrap: break-word;
+    hyphens: none;
+  }
+  .hero h1 .accent {
+    /* Scale the large accent slightly on very small screens */
+    font-size: clamp(1.1em, 8vw, 1.25em);
+  }
+  .hero {
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
+  }
+
+  /* Cards: remove min-height constraint that wastes vertical space on mobile */
+  .card h3 { min-height: unset; }
+  .card { padding: 18px 16px; }
+
+  /* Grid: single column, full width, no side overflow */
+  .grid {
+    grid-template-columns: 1fr;
+    padding-left: clamp(16px, 4vw, 24px);
+    padding-right: clamp(16px, 4vw, 24px);
+    margin-bottom: 48px;
+  }
+
+  /* Brandbar: single compact row */
+  .brandbar {
+    padding: 8px 14px !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    align-items: center !important;
+  }
+  .brand-left {
+    display: none !important;
+  }
+  .brand-nav {
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    font-size: 9px !important;
+    letter-spacing: 0.10em !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .brand-nav .sep { margin: 0 8px !important; }
+
+  /* Deck nav: canonical portrait compaction (matches why) */
+  .deck-nav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .deck-nav-link {
+    padding: 6px 14px !important;
+    min-width: 0 !important;
+  }
+  .deck-nav .dn-label {
+    font-size: 9px !important;
+  }
+  .deck-nav .dn-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: clamp(11px, 3vw, 13px) !important;
+  }
+
+  /* Modal: ensure it stays within viewport width, with scrollable content */
+  .modal-backdrop {
+    padding: 16px 12px;
+  }
+  .modal {
+    padding: clamp(20px, 5vw, 32px) clamp(16px, 4vw, 28px);
+    max-width: 100%;
+    width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .modal h2 {
+    font-size: clamp(22px, 6vw, 32px);
+    padding-right: 32px; /* room for close button */
+  }
+  .modal-close {
+    top: 12px;
+    right: 12px;
+  }
+  .modal .m-desc {
+    font-size: 15px;
+  }
+  .modal .m-body {
+    font-size: 14px;
+  }
+}
+
+/* ── Landscape phone (<500px tall, any width) ─────────────────────── */
+/* AC9: consumes shared landscape tokens from shared.css; no hardcoded
+   one-off sizes. AC8: safe-area insets on .slide-pane + .modal-backdrop.
+   AC7: viewport meta above carries viewport-fit=cover. Internal scroll
+   is the accepted exception for this long-form utility page.             */
+@media (orientation: landscape) and (max-height: 500px) {
+
+  /* ── Brandbar: allow auto height to prevent truncation on narrow widths ── */
+  /* shared.css pins height:32px !important which can clip at 667px; switch  */
+  /* to min-height so the bar grows if font rendering needs slightly more.    */
+  .brandbar {
+    height: auto !important;
+    min-height: var(--landscape-brandbar-h) !important;
+  }
+
+  /* ── Scroll cue: hidden in landscape (fine-print, causes minFont dip) ── */
+  .scroll-cue { display: none !important; }
+
+  /* ── Slide pane: restore internal scroll + safe-area padding (AC8) ── */
+  /* shared.css landscape block sets overflow:hidden + display:flex —     */
+  /* override both to keep the long-form card grid scrollable.            */
+  .slide-pane {
+    display: block !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-inline: max(var(--landscape-pane-pad-inline),
+                        env(safe-area-inset-left),
+                        env(safe-area-inset-right)) !important;
+    /* Left gutter for the fixed back-to-deck arrow (env + 46px, additive) so
+       the 40px landscape arrow never overlaps the case grid (nav R2). */
+    padding-left: calc(env(safe-area-inset-left) + 46px) !important;
+    padding-top: max(0px, env(safe-area-inset-top)) !important;
+    padding-bottom: 16px !important;
+  }
+
+  /* ── Hero: tighter vertical padding, shared token typography ── */
+  .hero {
+    padding-top: 10px !important;
+    padding-bottom: 8px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: none !important;
+  }
+  .hero .eyebrow {
+    margin-bottom: 6px !important;
+    font-size: var(--landscape-body) !important;
+  }
+  .hero h1 {
+    font-size: var(--landscape-h1) !important;
+    margin-bottom: 4px !important;
+    text-align: left !important;
+  }
+  .hero .lede {
+    font-size: var(--landscape-body) !important;
+    max-width: none !important;
+    line-height: 1.35 !important;
+  }
+  .scroll-cue {
+    margin-top: 4px !important;
+    font-size: var(--landscape-fineprint) !important;
+  }
+
+  /* ── Grid: 2-col, no horizontal padding (slide-pane handles inset) ── */
+  .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    margin-bottom: 16px !important;
+    margin-top: 8px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    gap: 10px !important;
+    max-width: none !important;
+  }
+
+  /* ── Cards: compact, 14px body floor throughout ── */
+  .card { padding: 10px !important; }
+  .card .case-num {
+    margin-bottom: 3px !important;
+    font-size: var(--landscape-body) !important;
+  }
+  .card h3 {
+    min-height: unset !important;
+    font-size: var(--landscape-body) !important;
+    margin-bottom: 3px !important;
+  }
+  .card .desc {
+    font-size: var(--landscape-body) !important;
+    margin-bottom: 6px !important;
+    line-height: 1.35 !important;
+  }
+  .card .foot { padding-top: 6px !important; }
+  .card .cs-link { font-size: var(--landscape-body) !important; }
+
+  /* ── Modal: safe-area insets to clear iPhone notch in landscape ── */
+  /* position:fixed + inset:0 sits behind the notch on notched iPhones. */
+  /* max(pad, env()) pushes the white modal box into the safe area.      */
+  .modal-backdrop {
+    padding-top:    max(10px, env(safe-area-inset-top)) !important;
+    padding-left:   max(8px,  env(safe-area-inset-left)) !important;
+    padding-right:  max(8px,  env(safe-area-inset-right)) !important;
+    padding-bottom: 10px !important;
+  }
+  .modal {
+    padding: clamp(14px, 2.5vw, 20px) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+  .modal h2 {
+    font-size: var(--landscape-h1) !important;
+    padding-right: 32px !important;
+  }
+  .modal .m-desc {
+    font-size: var(--landscape-body) !important;
+    margin-bottom: 12px !important;
+  }
+  .modal .m-body { font-size: var(--landscape-body) !important; }
+  .modal-close { top: 8px !important; right: 10px !important; }
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(14, 27, 61, 0.7);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  z-index: 100; display: none; align-items: flex-start; justify-content: center;
+  padding: 56px 20px; overflow-y: auto;
+}
+.modal-backdrop.open { display: flex; }
+.modal {
+  background: var(--white); max-width: 760px; width: 100%;
+  border: 1px solid var(--border); padding: clamp(32px, 5vw, 56px);
+  position: relative; margin: auto 0;
+}
+.modal-close {
+  position: absolute; top: 18px; right: 22px;
+  background: none; border: none; font-size: 22px; color: var(--gold-dim);
+  cursor: pointer; font-family: inherit; padding: 4px 8px; line-height: 1;
+}
+.modal-close:hover { color: var(--gold); }
+.modal .m-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-dim); margin-bottom: 12px;
+}
+.modal h2 {
+  font-size: clamp(26px, 4vw, 36px); margin-bottom: 16px; line-height: 1.15;
+}
+.modal .m-desc {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 17px; color: var(--text-mute); line-height: 1.5; margin-bottom: 24px;
+}
+.modal hr {
+  border: 0; border-top: 1px solid var(--gold-line); margin: 24px 0;
+}
+.modal .m-section { margin-bottom: 22px; }
+.modal .m-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--gold-dim); margin-bottom: 8px;
+}
+.modal .m-body {
+  font-size: 14.5px; color: var(--text); line-height: 1.65;
+}
+
+/* Footer */
+/* ── Scroll cue (hero hint) ────────────────────────────────────────── */
+.scroll-cue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--gold-dim);
+  margin-top: clamp(16px, 2vh, 28px);
+  text-align: center;
+}
+.scroll-cue .arrow {
+  display: inline-block;
+  font-style: normal;
+  animation: scroll-bounce 1.8s ease-in-out infinite;
+}
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50%      { transform: translateY(4px); opacity: 1; }
+}
+
+/* ── Deck nav (replaces text footer) ─────────────────────────────── */
+.deck-nav {
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) minmax(0, auto) minmax(110px, 1fr);
+  background: var(--bg-soft);
+  line-height: 1.5;
+}
+.deck-nav > * + * { border-left: 1px solid var(--border); }
+.deck-nav-link {
+  padding: 10px clamp(20px, 5vw, 48px);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  justify-content: center;
+  transition: background .15s;
+  min-width: 0;
+}
+.deck-nav-mid {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  padding: 10px 16px;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  overflow: hidden;
+}
+/* ── Deck nav mobile: hide contact strip, split Prev/Next ───────────── */
+@media (max-width: 640px) {
+  .deck-nav-mid { display: none; }
+  .deck-nav { grid-template-columns: 1fr 1fr; }
+}
+.deck-nav-mid a { color: var(--gold-dim); }
+.deck-nav-mid a:hover { color: var(--gold); }
+.deck-nav-mid .dot { color: var(--gold-dim); margin: 0 8px; }
+.deck-nav-link:hover { background: var(--white); }
+.deck-nav-link.next { text-align: right; align-items: flex-end; }
+.deck-nav .dn-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+.deck-nav .dn-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--navy);
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+</style>
+</head>
+<body>
+
+<header class="brandbar">
+  <a class="brand-left" href="/microcaptive-deck-1/"></a>
+  <nav class="brand-nav">
+    <a href="/microcaptive-deck-1/">Home</a>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/faq">FAQ</a>
+    <span class="sep">·</span>
+    <span class="current">Case Studies</span>
+    <span class="sep">·</span>
+    <a href="/microcaptive-deck-1/contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ── Slide pane (row 2) — internal scroll for utility content ────── -->
+<div class="slide-pane">
+
+<section class="hero">
+  <div class="eyebrow">Case Study Library</div>
+  <h1><span class="accent">40+</span> Types of unexpected expenses.<br><span class="accent">40+</span> Different outcomes.</h1>
+  <p class="lede">Click on any card below to see the full Business, Event, Response, and Outcome.</p>
+  <div class="scroll-cue">scroll for more <span class="arrow">&darr;</span></div>
+</section>
+
+<main class="grid" id="grid"></main>
+
+</div><!-- /.slide-pane -->
+
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">×</button>
+    <div class="m-eyebrow" id="mEyebrow">Case Study</div>
+    <h2 id="mTitle"></h2>
+    <p class="m-desc" id="mDesc"></p>
+    <hr />
+    <div class="m-section">
+      <div class="m-label">The Business</div>
+      <div class="m-body" id="mBiz"></div>
+    </div>
+    <div class="m-section">
+      <div class="m-label">The Event</div>
+      <div class="m-body" id="mEvt"></div>
+    </div>
+    <div class="m-section">
+      <div class="m-label">The Response</div>
+      <div class="m-body" id="mRsp"></div>
+    </div>
+    <div class="m-section">
+      <div class="m-label">The Outcome</div>
+      <div class="m-body" id="mOut"></div>
+    </div>
+    <div class="m-section">
+      <div class="m-label">What This Covers</div>
+      <div class="m-body" id="mCov"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Back-to-deck arrow (replaces the old page-nav bar) -->
+<nav class="deck-arrows is-ancillary" aria-label="Page navigation">
+  <a class="deck-arrow deck-arrow-prev" href="/microcaptive-deck-1/" aria-label="Back to deck"><span class="deck-arrow-btn"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></span></a>
+  <span class="deck-arrow-page">Back to deck</span>
+</nav>
+
+<script>
+const CASES = [
+  {
+    "name": "Audit",
+    "desc": "Covers costs of legal, consulting, and professional support needed to respond to government or regulatory audits.",
+    "sub": "How a doctor group covered $210,000 in consulting and legal fees \"with JJD\" when they unexpectedly experienced a routine Medicare billing review escalate into a full federal audit.",
+    "biz": "LLC orthopedic surgery group, Southwest. ~$8M revenue, 30 employees. Primarily Medicare and private insurance billing.",
+    "evt": "2024, a routine Medicare billing review escalated into a full federal audit. The practice spent 11 months gathering records, responding to information requests, and working with healthcare billing consultants. Professional fees: $210,000.",
+    "rsp": "Audit Micro Captive policy covered $210,000 in consulting and legal fees across the audit period. Paid as invoices were submitted.",
+    "out": "Out-of-pocket: $0. No overpayment determination was made. The practice maintained full operations throughout."
+  },
+  {
+    "name": "Reputation Protection",
+    "desc": "Covers income loss from events that damage public perception, negative media, online reviews, or the loss of a key leader due to death, disability, or reputational harm.",
+    "sub": "How a boutique hotel covered $180,000 in income loss and reputational harm \"with JJD\" when they unexpectedly experienced a coordinated negative review campaign.",
+    "biz": "LLC independent boutique hotel, Mountain West. ~$3.5M revenue, 22 employees. Depends heavily on online reviews and direct bookings.",
+    "evt": "Summer 2024, a coordinated negative review campaign flooded the hotel's Google and TripAdvisor profiles over 6 weeks. Bookings dropped 28% during peak season; income loss: $140,000. PR and reputation management fees: $45,000. Total: $185,000.",
+    "rsp": "Reputation Protection Micro Captive policy covered $140,000 in income loss plus $45,000 in crisis response costs. Total paid: $185,000 within 60 days.",
+    "out": "Out-of-pocket: $0. The hotel restored its average rating within 3 months and recovered bookings to prior-year levels by the following quarter."
+  },
+  {
+    "name": "Credit Default",
+    "desc": "Covers losses from unpaid invoices, breached credit terms, or contract defaults when a customer, vendor, or partner fails to pay.",
+    "sub": "How a building materials distributor covered $280,000 in unpaid invoices \"with JJD\" after a developer filed bankruptcy.",
+    "biz": "S-Corp wholesale building materials distributor, Midwest. ~$16M revenue, 41 employees. Sells on net-60 terms to regional contractors and developers.",
+    "evt": "Spring 2024, a mid-size developer customer filed for Chapter 11 after a financing deal collapsed, leaving $280,000 in unpaid invoices. The distributor had no trade credit insurance and absorbed the full balance.",
+    "rsp": "Credit Default Micro Captive policy covered $280,000 in uncollected receivables within 45 days of the bankruptcy filing being confirmed.",
+    "out": "Out-of-pocket: $0. The distributor maintained payroll and supplier payments without drawing on its line of credit. A single customer failure that would have erased a quarter's margin was fully absorbed."
+  },
+  {
+    "name": "Business Interruption",
+    "desc": "Covers lost income and extra expenses when operations are disrupted by events like road closures, nearby fires, or other situations preventing access.",
+    "sub": "How a print shop saved $68,000 in business interruptions \"with JJD\" after a water main break triggered a 3-week road closure and utility disruption, cutting off customer access, and effectively causing a loss of revenue.",
+    "biz": "S-Corp commercial print shop, Mountain West. ~$2.8M revenue, 12 employees. Ground-floor location in a downtown commercial corridor.",
+    "evt": "Summer 2024, a water main break two blocks away triggered a 3-week road closure and utility disruption, cutting off customer access and disabling the building's water supply. Revenue lost: $68,000. No physical damage to the premises, disqualifying coverage under the standard property policy.",
+    "rsp": "Business Interruption Micro Captive policy covered the $68,000 income loss from the access disruption. Payment issued within 35 days.",
+    "out": "Out-of-pocket: $0. Payroll and lease obligations were met without taking on debt."
+  },
+  {
+    "name": "Insurance Deductibles",
+    "desc": "Fills the coverage gap caused by coinsurance (deductible) clauses across multiple policy lines.",
+    "sub": "How a specialty chemical manufacturer covered two deductibles totaling $150,000 from two separate policies \"with JJD\" when a loading dock accident triggered a commercial property loss ($90,000 deductible) and a general liability loss ($60,000 deductible).",
+    "biz": "S-Corp specialty chemical manufacturer, Southeast. ~$22M revenue, 78 employees. Carries multiple high-deductible policies across property, liability, and auto lines.",
+    "evt": "Fall 2023, a loading dock accident triggered simultaneous losses under two policies: a commercial property loss ($90,000 deductible) and a general liability loss ($60,000 deductible). Total deductible exposure: $150,000.",
+    "rsp": "Insurance Deductibles Micro Captive policy covered both deductibles, $150,000 total, within 50 days of both losses being confirmed.",
+    "out": "Out-of-pocket: $0. A simultaneous multi-policy event that looked catastrophic on paper cost the business nothing out-of-pocket."
+  },
+  {
+    "name": "Commercial Auto Deductible",
+    "desc": "Fills gaps in commercial auto coverage by reimbursing deductibles, SIRs, and certain exclusions like vandalism, underinsured collisions, and employee-related incidents.",
+    "sub": "How a HVAC installation and service contractor covered a commercial auto deductible worth $50,000 \"with JJD\" after a service van was rear-ended on the highway.",
+    "biz": "S-Corp HVAC installation and service contractor, Mid-Atlantic. ~$8M revenue, 28 employees. Operates 14 service vans.",
+    "evt": "Fall 2023, a service van was rear-ended on the highway, causing $95,000 in vehicle and equipment damage. The at-fault driver was underinsured. Commercial auto deductible: $50,000.",
+    "rsp": "Commercial Auto Deductible Micro Captive policy covered the $50,000 deductible within 3 weeks of the primary loss being filed.",
+    "out": "Primary carrier paid $45,000 after deductible. Micro Captive covered $50,000. Out-of-pocket: $0. The van was replaced and back on the road in two weeks."
+  },
+  {
+    "name": "Commercial General Liability Deductible",
+    "desc": "Fills gaps in general liability coverage by reimbursing deductibles, SIRs, and certain exclusions like bodily injury, property damage, and advertising injury.",
+    "sub": "How a commercial janitorial and facilities services company covered a $75,000 deductible \"with JJD\" from a client who alleged that improper floor cleaning caused a slip-and-fall injury to a building visitor.",
+    "biz": "LLC commercial janitorial and facilities services company, Southeast. ~$6M revenue, 85 employees. Services office buildings, medical facilities, and retail centers.",
+    "evt": "Mid-2023, a client alleged that improper floor cleaning caused a slip-and-fall injury to a building visitor, resulting in a $210,000 settlement. The company's general liability policy carried a $75,000 per-occurrence deductible.",
+    "rsp": "Commercial General Liability Deductible Micro Captive policy paid the $75,000 deductible within 45 days of the settlement being finalized.",
+    "out": "Primary carrier covered $135,000. Micro Captive covered $75,000. Out-of-pocket: $0. The owner avoided the deductible triggering a credit line draw during a high-growth quarter."
+  },
+  {
+    "name": "Commercial Property Deductible",
+    "desc": "Fills gaps in property coverage by reimbursing deductibles, coinsurance penalties, SIRs, and certain exclusions like off-premises assets and valuable papers.",
+    "sub": "How a plumbing supply distributor saved $100,000 \"with JJD\" on their deductible when a pipe burst overnight in the warehouse, flooding two storage bays and ultimately causing $340,000 in inventory and structural damage.",
+    "biz": "S-Corp plumbing supply distributor, Southeast. ~$11M revenue, 34 employees. Operates a 40,000 sq ft warehouse with temperature-sensitive inventory.",
+    "evt": "January 2024, a frozen pipe burst overnight in the warehouse roof, flooding two storage bays. $340,000 in inventory and structural damage. Commercial property deductible: $100,000.",
+    "rsp": "Commercial Property Deductible coverage was triggered on the loss. Documentation submitted, deductible verified, and $100,000 paid within 45 days.",
+    "out": "Primary carrier covered $240,000. Micro Captive covered $100,000. Out-of-pocket: $0. The owner avoided drawing on a winter-season credit line."
+  },
+  {
+    "name": "Contract Default",
+    "desc": "Covers losses incurred following a subcontractor's bankruptcy or when a vendor is unable to complete work.",
+    "sub": "How a general contractor covered $435,000 \"with JJD\" in completion costs and supplier obligations when a drywall subcontractor declared bankruptcy mid-project, leaving $340,000 in incomplete work and $95,000 in unpaid material suppliers.",
+    "biz": "S-Corp general contractor, Mountain West. ~$18M revenue, 62 employees. Manages commercial construction projects with multiple subcontractors.",
+    "evt": "Late 2023, a drywall subcontractor declared bankruptcy mid-project, leaving $340,000 in incomplete work and $95,000 in unpaid material suppliers. The GC was contractually obligated to complete the scope. Total exposure: $435,000.",
+    "rsp": "Contract Default Micro Captive policy covered $435,000 in completion costs and supplier obligations within 60 days of the bankruptcy filing being confirmed.",
+    "out": "Out-of-pocket: $0. The project was completed on time using a replacement subcontractor. The client relationship was preserved and the GC avoided a mechanic's lien dispute."
+  },
+  {
+    "name": "Contractor Default",
+    "desc": "Covers costs to replace a contractor, complete unfinished work, and address delays from non-performance, walk-offs, or poor workmanship.",
+    "sub": "How a real estate developer covered $580,000 in replacement and delay costs \"with JJD\" when the general contractor on a $4.2M retail build walked off the job after a payment dispute, leaving the project 60% complete.",
+    "biz": "LLC commercial real estate developer, Southwest. ~$35M in active projects, 24 employees. Oversees ground-up construction of retail and mixed-use properties.",
+    "evt": "Spring 2024, the general contractor on a $4.2M retail build walked off the job after a payment dispute, leaving the project 60% complete. Costs to replace the contractor, re-bid the remaining scope, and cover 8 weeks of project delays: $580,000.",
+    "rsp": "Contractor Default Micro Captive policy covered $580,000 in replacement and delay costs. Verified and paid within 75 days.",
+    "out": "Out-of-pocket: $0. The project was completed 9 weeks behind the original schedule but within budget. The developer avoided a construction loan default triggered by the delay."
+  },
+  {
+    "name": "Custom Warranty",
+    "desc": "Allows any business that manufactures, distributes, or sells a product to design a custom warranty program.",
+    "sub": "How a manufacturer of custom commercial HVAC units saved $290,000 in warranty expenses \"with JJD\" when a batch of sold units began experiencing compression failure outside the 1-year warranty window, requiring replacement compressors or full unit swaps.",
+    "biz": "S-Corp manufacturer of custom commercial HVAC units, Midwest. ~$14M revenue, 52 employees. Sells direct to commercial contractors and building owners.",
+    "evt": "2024, a batch of units sold in 2022 began experiencing compressor failures outside the standard 1-year warranty window. 34 units required replacement compressors or full unit swaps. Total warranty fulfillment cost: $290,000.",
+    "rsp": "Custom Warranty Micro Captive policy, structured to cover extended warranty obligations, paid $290,000 in warranty expenses as they were processed over 6 months.",
+    "out": "Out-of-pocket: $0. The manufacturer honored every warranty request without delay. Customer relationships were preserved and no litigation resulted."
+  },
+  {
+    "name": "Data Breach",
+    "desc": "Covers lost income, legal fees, regulatory fines, lawsuits, and fraud losses from a cyber attack or data breach, including intentional and unintentional employee acts.",
+    "sub": "How a regional accounting firm covered a $100,000 deductible \"with JJD\" when a ransomware locked the firm's client files and internal systems for 9 days causing $185,000 in IT remediation, mandatory breach notifications, and regulatory compliance costs.",
+    "biz": "LLC regional accounting firm, Midwest. ~$4M revenue, 19 employees. Handles tax and advisory services for 300+ business clients.",
+    "evt": "February 2024, ransomware locked the firm's client files and internal systems for 9 days. Total losses: $185,000 in IT remediation, mandatory breach notifications, and regulatory compliance costs. Cyber policy deductible: $100,000.",
+    "rsp": "Data Breach Micro Captive policy paid the $100,000 deductible within 45 days of the primary loss being filed. Primary cyber carrier covered the remaining $85,000.",
+    "out": "Out-of-pocket: $0. The firm avoided pulling from partner distributions mid-tax season and resumed normal operations within two weeks."
+  },
+  {
+    "name": "Deductible Reimbursement",
+    "desc": "Reimburses deductible or self-insured retention costs from losses covered under another insurance policy.",
+    "sub": "How a regional insurance brokerage covered a $100,000 deductible \"with JJD\" caused by a client suing the brokerage for alleged errors in a policy recommendation that resulted in a coverage gap during a flood event.",
+    "biz": "S-Corp regional insurance brokerage, Mid-Atlantic. ~$8M revenue, 31 employees. Advises mid-market businesses on risk and insurance strategy.",
+    "evt": "2023, a client sued the brokerage for alleged errors in a policy recommendation that resulted in a coverage gap during a flood event. The E&O matter settled for $320,000. The brokerage's primary E&O deductible: $100,000.",
+    "rsp": "Deductible Reimbursement Micro Captive policy covered the $100,000 deductible within 50 days of the settlement being finalized.",
+    "out": "Primary E&O covered $220,000. Micro Captive covered $100,000. Out-of-pocket: $0. The firm avoided a cash flow disruption in a low-volume quarter."
+  },
+  {
+    "name": "Dental Protection Plan",
+    "desc": "Covers defined dental warranties for crowns, implants, retainers, and other appliances, fully customizable to practice needs.",
+    "sub": "How a multi-location orthodontic practice covered $85,000 in warranty expenses \"with JJD\" when 22 patients experienced bracket bond failures and retainer breakage within the post-treatment warranty window.",
+    "biz": "S-Corp multi-location orthodontic practice, Southwest. ~$4.5M revenue, 28 employees across three offices. Average treatment length 18–24 months.",
+    "evt": "2024, 22 patients experienced bracket bond failures and retainer breakage within the post-treatment warranty window. Total replacement and re-treatment costs: $85,000. The practice had no formal warranty reserve or program.",
+    "rsp": "Dental Protection Plan Micro Captive policy covered $85,000 in warranty expenses as they were processed through the year.",
+    "out": "Out-of-pocket: $0. All 22 patients received corrective treatment at no charge. Patient retention improved and no negative reviews cited warranty issues."
+  },
+  {
+    "name": "Legal Defense for Directors and Officers",
+    "desc": "Covers legal defense, settlements, and judgments for business leaders facing allegations of mismanagement, breach of fiduciary duty, or regulatory violations.",
+    "sub": "How a regional community bank holding company covered $605,000 across legal defense and settlement \"with JJD\" when a group of minority shareholders filed suit alleging that board decisions regarding a failed acquisition constituted breach of fiduciary duty.",
+    "biz": "S-Corp regional community bank holding company, Southeast. ~$180M in assets, 12 board members and executive officers.",
+    "evt": "2023, a group of minority shareholders filed suit alleging that board decisions regarding a failed acquisition constituted breach of fiduciary duty. Legal defense costs over 18 months: $430,000. Settlement: $175,000. Total: $605,000.",
+    "rsp": "Legal Defense for Directors and Officers Micro Captive policy covered $605,000 across legal defense and settlement, paid in stages as costs were incurred.",
+    "out": "Out-of-pocket: $0. No director or officer was personally liable. The bank retained its full leadership team and avoided the reputational damage of publicized personal financial losses."
+  },
+  {
+    "name": "Legal Disputes",
+    "desc": "Covers legal, consulting, and settlement costs for disputes with vendors, customers, or third parties.",
+    "sub": "How a general contractor saved $160,000 in legal and arbitration costs \"with JJD\" when a material supplier delivered defective structural components on a $2.1M project, triggering a client penalty clause and a 6-week delay.",
+    "biz": "S-Corp general contractor, Southeast. ~$15M revenue, 45 employees. Primarily commercial tenant improvement and light industrial projects.",
+    "evt": "2023, a material supplier delivered defective structural components on a $2.1M project, triggering a client penalty clause and a 6-week delay. The contractor pursued arbitration against the supplier. Legal and consulting fees over 14 months: $160,000.",
+    "rsp": "Legal Disputes Micro Captive policy covered $160,000 in legal and arbitration costs. Payments issued quarterly as invoices were submitted.",
+    "out": "Out-of-pocket: $0. The contractor pursued the matter fully rather than settling early, and ultimately recovered damages from the supplier."
+  },
+  {
+    "name": "Employer Liability",
+    "desc": "Covers legal costs, settlements, and losses from allegations like wrongful termination, discrimination, or retaliation, beyond standard EPLI coverage.",
+    "sub": "How a light industrial staffing agency filled a $70,000 gap in an employer liability policy \"with JJD\" when a former internal employee filed a wrongful termination and retaliation complaint following a performance-based dismissal.",
+    "biz": "S-Corp light industrial staffing agency, Midwest. ~$12M revenue, 18 internal employees, 150+ placed workers.",
+    "evt": "Early 2024, a former internal employee filed a wrongful termination and retaliation complaint following a performance-based dismissal. Legal defense, HR consulting, and settlement totaled $190,000. The company's EPLI policy covered $120,000; $70,000 fell outside coverage terms.",
+    "rsp": "Employer Liability Micro Captive policy covered the $70,000 gap within 50 days of the resolution.",
+    "out": "Out-of-pocket: $0 on the gap. Leadership focused on operations rather than scrambling to fund a settlement."
+  },
+  {
+    "name": "Food Borne Illness",
+    "desc": "Covers liability and income loss from contamination, tampering, or product extortion, plus costs to manage reputational harm from food safety incidents.",
+    "sub": "How a regional catering company covered $310,000 in public health investigation, legal defense, a class-action settlement, and crisis PR costs \"with JJD\" when 47 guests reported illness linked to salmonella contamination at a corporate event.",
+    "biz": "LLC regional catering company, Mid-Atlantic. ~$3.2M revenue, 19 employees. Serves corporate events, weddings, and university dining contracts.",
+    "evt": "Fall 2023, 47 guests at a corporate event reported illness linked to a salmonella contamination in a catered dish. Public health investigation, legal defense, a class-action settlement, and crisis PR costs totaled $310,000.",
+    "rsp": "Food Borne Illness Micro Captive policy covered $310,000 in liability, legal, and crisis response costs. Paid across three installments over 90 days.",
+    "out": "Out-of-pocket: $0. The catering company retained its university contract and resumed operations under a revised food safety protocol within 6 weeks."
+  },
+  {
+    "name": "Crop Insurance",
+    "desc": "Fills gaps in crop insurance by reimbursing deductibles, yield or revenue shortfalls, and exclusions that leave growers exposed during unpredictable seasons.",
+    "sub": "How a family-owned corn and soybean crop operation filled a $195,000 crop insurance gap \"with JJD\" when a late-season drought followed by a hail event reduced corn yield by 38% across 900 acres.",
+    "biz": "Family-owned row crop operation, Midwest. ~$4.8M in annual revenue. 2,400 acres in corn and soybeans.",
+    "evt": "Summer 2024, a late-season drought followed by a hail event reduced corn yield by 38% across 900 acres. Federal crop insurance paid out based on county averages, well below the operation's actual per-acre loss. Uncovered yield shortfall: $195,000.",
+    "rsp": "Crop Insurance Micro Captive policy covered the $195,000 gap between the federal payout and the actual field-level loss. Verified and paid within 60 days of harvest.",
+    "out": "Out-of-pocket: $0 on the gap. The operation met its operating loan obligations for the season without renegotiating terms with the lender."
+  },
+  {
+    "name": "Equipment, Tools, and Valuables in Transit",
+    "desc": "Fills gaps in inland marine coverage by reimbursing deductibles, theft exclusions, losses above sub-limits, and certain off-site or in-transit losses.",
+    "sub": "How a specialty audio-visual event production company covered a $125,000 inland marine gap \"with JJD\" after a cargo van rollover destroyed $175,000 of in-transit AV equipment.",
+    "biz": "S-Corp specialty audio-visual and event production company, Southwest. ~$5M revenue, 22 employees. Transports high-value staging, lighting, and audio equipment to events across the region.",
+    "evt": "March 2024, a cargo van was involved in a highway rollover en route to a major venue. $175,000 in AV equipment was destroyed. The primary inland marine policy had a $50,000 sub-limit for in-transit losses and excluded employee-caused accidents.",
+    "rsp": "Equipment, Tools, and Valuables in Transit Micro Captive policy covered the $125,000 gap above the sub-limit within 40 days.",
+    "out": "Out-of-pocket: $0 on the gap. Replacement equipment was sourced, the event was fulfilled using rented gear, and the company avoided a six-figure loss becoming a liquidity event."
+  },
+  {
+    "name": "Customer Default",
+    "desc": "Covers losses when a major customer can't fulfill obligations due to insolvency, regulatory shutdowns, force majeure events, or the loss of a key decision-maker.",
+    "sub": "How a commercial printing and packaging company covered $420,000 in unrecovered receivables \"with JJD\" when its largest customer was acquired and the acquirer refused to honor outstanding invoices, citing a contract dispute.",
+    "biz": "LLC commercial printing and packaging company, Midwest. ~$11M revenue, 44 employees. Serves regional retailers and CPG brands on a net-45 billing cycle.",
+    "evt": "Late 2023, the company's largest customer (28% of annual revenue) was acquired and the acquirer refused to honor outstanding invoices, citing a contract dispute. $420,000 in receivables went uncollected for 7 months while litigation proceeded.",
+    "rsp": "Customer Default Micro Captive policy covered $420,000 in unrecovered receivables within 60 days of a formal non-payment determination.",
+    "out": "Out-of-pocket: $0. The company replaced the lost revenue with two new accounts over the following year and maintained payroll and operations without interruption."
+  },
+  {
+    "name": "Employee Accident & Critical Illness",
+    "desc": "Covers income loss, temporary staffing, and replacement costs when a full-time employee is unable to work due to a serious illness or accident.",
+    "sub": "How a structural engineering firm covered $375,000 in income lost from delayed and undelivered projects \"with JJD\" when its lead engineer was diagnosed with cancer and was unable to work for 14 months.",
+    "biz": "S-Corp structural engineering firm, Pacific Northwest. ~$7M revenue, 26 employees. Relies on a small team of licensed engineers for project delivery.",
+    "evt": "Mid-2023, the firm's lead structural engineer was diagnosed with stage III cancer and was unable to work for 14 months. Income lost from delayed and undelivered projects: $290,000. Temporary replacement consultant costs: $85,000. Total: $375,000.",
+    "rsp": "Employee Accident & Critical Illness Micro Captive policy covered $375,000 in combined income loss and replacement costs over the 14-month period. Expenses submitted quarterly.",
+    "out": "Out-of-pocket: $0. The firm completed all active projects using the replacement consultant and retained its full client roster."
+  },
+  {
+    "name": "Livestock Death",
+    "desc": "Covers financial loss from livestock deaths caused by disease, injury, predators, theft, or natural disasters.",
+    "sub": "How a family-owned cattle operation covered $145,000 in replacement value and treatment costs \"with JJD\" when a bovine respiratory disease outbreak killed 34 animals and required extended veterinary care for 18 more.",
+    "biz": "Family-owned cattle operation, Texas. ~$3.1M in annual revenue. 800-head commercial cow-calf operation.",
+    "evt": "Winter 2023, an outbreak of bovine respiratory disease swept through a recently purchased group of 120 stockers. 34 animals died; 18 more required extended veterinary treatment. Total replacement value and treatment cost: $145,000.",
+    "rsp": "Livestock Death Micro Captive policy covered $145,000 in replacement value and treatment costs within 45 days of the loss being documented by the ranch veterinarian.",
+    "out": "Out-of-pocket: $0. The operation restocked before spring grazing season and met all cattle supply commitments. The loss was contained before it cascaded into the following year's production cycle."
+  },
+  {
+    "name": "Mechanical Breakdown",
+    "desc": "Covers sudden equipment failures to boilers, motors, electrical systems, and production machinery, including repair costs, expedited parts, and business income loss.",
+    "sub": "How a cold storage and logistics company covered $270,000 in equipment repair and replacement costs in addition to lost income \"with JJD\" when the primary compressor system in its largest refrigerated warehouse failed without warning.",
+    "biz": "LLC cold storage and logistics company, Midwest. ~$7M revenue, 28 employees. Operates three refrigerated warehouses serving food and pharmaceutical clients.",
+    "evt": "August 2024, the primary compressor system in the largest building failed without warning. Repair and replacement costs: $190,000. Business income loss during the 12-day repair period: $80,000. Total: $270,000.",
+    "rsp": "Mechanical Breakdown Micro Captive policy covered $270,000 in combined repair and income loss. Paid in two installments over 45 days.",
+    "out": "Out-of-pocket: $0. No client contracts were lost and the facility returned to full capacity within two weeks."
+  },
+  {
+    "name": "Self-Funded Health Insurance",
+    "desc": "Covers the gap between expected expenses and maximum expected expenses for self-funded health plans, reimbursing mid-range losses in the uncovered-expense corridor.",
+    "sub": "How a regional trucking company covered $200,000 in self-funded health plan corridor expenses \"with JJD\" after two catastrophic medical claims pushed annual plan expenses $700,000 above expected expenses.",
+    "biz": "S-Corp regional trucking company, Mountain West. ~$28M revenue, 145 employees. Self-funds employee health benefits under a third-party administrator.",
+    "evt": "2023 plan year, two catastrophic loss events (one cardiac surgery, one premature birth with NICU stay) pushed total expenses from a projected $1.4M to $2.1M, $700,000 above expectations. Stop-loss insurance covered above the $500,000 aggregate attachment point; $200,000 fell in the uncovered-expense corridor.",
+    "rsp": "Self-Funded Health Insurance Micro Captive policy covered $200,000 in mid-range corridor losses within 60 days of the plan year closing.",
+    "out": "Out-of-pocket: $0. The company maintained employee benefits without changing plan design or shifting costs to employees. The self-funded structure was preserved going into the following plan year."
+  },
+  {
+    "name": "Political Uncertainty",
+    "desc": "Covers income loss from government actions or civil unrest, shutdowns, revoked permits, strikes, or regulatory changes that prevent normal operations.",
+    "sub": "How a solar installation company covered $380,000 in income loss \"with JJD\" when a federal tax credit rule change made 40% of its booked residential project pipeline economically unviable.",
+    "biz": "LLC solar panel installation and service company, Southwest. ~$9M revenue, 38 employees. Heavily reliant on federal and state tax credit programs for project economics.",
+    "evt": "Early 2024, a federal rule change eliminated a key investment tax credit tier for residential solar projects mid-year, making 40% of the company's booked project pipeline economically unviable. $380,000 in contracted revenue was cancelled or renegotiated at a loss.",
+    "rsp": "Political Uncertainty Micro Captive policy covered $380,000 in income loss resulting from the regulatory change. Verified and paid within 75 days.",
+    "out": "Out-of-pocket: $0. The company pivoted to commercial projects and maintained payroll through the transition without layoffs or debt."
+  },
+  {
+    "name": "Product Recall",
+    "desc": "Covers costs for disposal, business interruption, crisis response, and customer notification after a recall caused by contamination, mislabeling, or defects.",
+    "sub": "How a specialty food manufacturer covered $440,000 in retrieval, disposal, consumer notification, retailer credits, and crisis PR totaled \"with JJD\" when undeclared allergens were found in 14,000 units already distributed to retail shelves across 8 states.",
+    "biz": "S-Corp specialty food manufacturer, Midwest. ~$12M revenue, 48 employees. Produces packaged sauces and condiments distributed nationally through grocery chains.",
+    "evt": "Spring 2024, a third-party lab test flagged undeclared allergens in a batch of 14,000 units already distributed to retail shelves across 8 states. Retrieval, disposal, consumer notification, retailer credits, and crisis PR totaled $440,000.",
+    "rsp": "Product Recall Micro Captive policy covered $440,000 in recall costs within 60 days of the recall being initiated.",
+    "out": "Out-of-pocket: $0. All affected product was retrieved within 12 days. No personal injury suits were filed. The company relaunched the SKU 10 weeks later."
+  },
+  {
+    "name": "Product Warranty",
+    "desc": "Covers costs to honor warranty obligations on manufactured or sold goods, protecting against allegations for defects, failures, or performance issues.",
+    "sub": "How a commercial outdoor furniture manufacturer covered $320,000 in warranty costs \"with JJD\" when a powder coat adhesion defect triggered 180 replacement and refinishing requests.",
+    "biz": "LLC manufacturer of commercial-grade outdoor furniture, Southeast. ~$8M revenue, 34 employees. Sells direct to hospitality and commercial property clients with a 5-year structural warranty.",
+    "evt": "2024, a powder coat adhesion defect was identified across 3 product lines sold in 2021–2022. 180 warranty requests were filed for replacement or refinishing. Total cost to honor obligations: $320,000.",
+    "rsp": "Product Warranty Micro Captive policy covered $320,000 in warranty fulfillment costs as expenses were processed over 8 months.",
+    "out": "Out-of-pocket: $0. Every warranty request was honored. No accounts were lost. The manufacturer improved its process and saw a measurable decline in warranty filings the following year."
+  },
+  {
+    "name": "Professional Liability",
+    "desc": "Covers legal defense, consultant fees, and damages from allegations of negligence, errors, omissions, or breach of duty in professional services.",
+    "sub": "How a civil engineering firm filled a $120,000 professional liability gap \"with JJD\" when a drainage design error delayed a commercial development project and caused a $320,000 client loss.",
+    "biz": "S-Corp civil engineering firm, Pacific Northwest. ~$6M revenue, 22 engineers and support staff. Commercial and municipal project focus.",
+    "evt": "2023, a drainage design error on a commercial development project caused flooding during construction, delaying the project 4 months and triggering a $320,000 client loss. The firm's E&O policy covered $200,000; $120,000 fell outside coverage limits.",
+    "rsp": "Professional Liability Micro Captive policy covered the $120,000 gap within 60 days of the primary loss resolving.",
+    "out": "Out-of-pocket: $0 on the gap. The client relationship was preserved and the firm continued on the project through completion."
+  },
+  {
+    "name": "Contract Representations",
+    "desc": "Covers losses arising from a breach of representations and warranties within a selling agreement.",
+    "sub": "How a regional manufacturer covered $520,000 in remediation and legal costs \"with JJD\" after discovering undisclosed environmental obligations that breached seller representations in an acquisition.",
+    "biz": "S-Corp regional manufacturing company, Midwest. ~$25M revenue, 95 employees. Acquired a smaller competitor through an asset purchase agreement.",
+    "evt": "12 months post-close, the acquirer discovered undisclosed environmental remediation obligations at the acquired facility, a direct breach of seller representations. Remediation and legal costs: $520,000.",
+    "rsp": "Contract Representations Micro Captive policy covered $520,000 in remediation and legal costs arising from the breach. Paid within 75 days of the determination.",
+    "out": "Out-of-pocket: $0. The facility was remediated and brought into compliance. The acquisition remained accretive despite the post-close discovery."
+  },
+  {
+    "name": "Service Warranty",
+    "desc": "Covers the cost to honor service guarantees or maintenance plans, protecting against allegations of incomplete or delayed service due to covered causes.",
+    "sub": "How a commercial HVAC maintenance company covered $185,000 in service warranty obligations \"with JJD\" when three large accounts exceeded guaranteed uptime thresholds under annual service contracts.",
+    "biz": "LLC commercial HVAC maintenance company, Southeast. ~$6M revenue, 29 employees. Offers annual service contracts with performance guarantees to commercial building owners.",
+    "evt": "2023–2024 contract year, equipment failures in three large commercial accounts exceeded the guaranteed uptime thresholds in the service contracts. Total cost to fulfill remediation, parts, and compensation obligations: $185,000.",
+    "rsp": "Service Warranty Micro Captive policy covered $185,000 in contract fulfillment costs as expenses were resolved over 5 months.",
+    "out": "Out-of-pocket: $0. All three accounts renewed for the following year. The company avoided warranty payouts creating a cash flow gap in the second half of the fiscal year."
+  },
+  {
+    "name": "Loss of Perishable Goods",
+    "desc": "Covers loss of perishable goods caused by refrigeration failure, power outages, or transport delays that compromise product quality.",
+    "sub": "How a specialty produce importer covered $190,000 in spoiled inventory \"with JJD\" when a refrigeration unit failed over a holiday weekend and the primary policies denied the loss.",
+    "biz": "LLC specialty produce importer, Pacific Northwest. ~$8M revenue, 18 employees. Imports high-value tropical and specialty produce for regional grocery and restaurant accounts.",
+    "evt": "Summer 2024, a refrigeration unit failed in the company's leased warehouse over a 3-day holiday weekend. $190,000 in tropical fruits and specialty vegetables were condemned. The landlord's insurance denied coverage; the company's inland marine policy excluded refrigeration failure.",
+    "rsp": "Loss of Perishable Goods Micro Captive policy covered $190,000 in spoiled inventory within 35 days of the loss being documented.",
+    "out": "Out-of-pocket: $0. The importer fulfilled most client orders using emergency sourcing and retained all accounts."
+  },
+  {
+    "name": "Loss of Property",
+    "desc": "Covers losses for self-storage operators offering their own protection plan, including damage or loss to stored property from covered causes.",
+    "sub": "How a self-storage operator covered $165,000 in tenant property expenses \"with JJD\" after a burst pipe damaged stored contents in 22 units at one facility.",
+    "biz": "LLC self-storage operator, Mountain West. ~$3.5M revenue, 9 employees. Operates 4 facilities with 1,400 units. Offers an in-house protection plan to tenants in place of third-party renters insurance.",
+    "evt": "2024, a burst pipe caused water damage to stored contents in 22 units at one facility. Total tenant expenses under the protection plan: $165,000 in replacement value for furniture, electronics, and personal property.",
+    "rsp": "Loss of Property Micro Captive policy covered $165,000 in tenant expenses as they were processed over 6 weeks.",
+    "out": "Out-of-pocket: $0. All tenant expenses were paid and resolved without litigation. The operator retained 90% of protection plan revenue and paid no third-party commissions on the coverage."
+  },
+  {
+    "name": "Supply Chain Interruption",
+    "desc": "Covers income loss from delays, cancellations, or shortages caused by disruptions to key suppliers, manufacturers, or logistics partners.",
+    "sub": "How a custom cabinet manufacturer covered $220,000 in lost revenue from delayed client deliveries and paid rush order premiums \"with JJD\" when a factory fire at its primary overseas supplier caused a 7-week production delay.",
+    "biz": "S-Corp custom cabinet manufacturer, Mountain West. ~$9M revenue, 38 employees. Relies on two overseas suppliers for hardware and specialty finishes.",
+    "evt": "Spring 2024, a factory fire at the primary overseas hardware supplier caused a 7-week production delay. The manufacturer lost $220,000 in revenue from delayed client deliveries and paid rush-order premiums from an alternate supplier.",
+    "rsp": "Supply Chain Interruption Micro Captive policy covered $220,000 in income loss and excess procurement costs. Filed and paid within 60 days.",
+    "out": "Out-of-pocket: $0. The manufacturer fulfilled all delayed contracts, late but intact, without layoffs or client losses."
+  },
+  {
+    "name": "CPA Audit Fees",
+    "desc": "Allows CPA firms to waive fees resulting from an audit, inquiry, or investigation conducted by the IRS or other government agencies.",
+    "sub": "How a regional CPA firm covered $130,000 in additional cost from 340 hours of staff time, audit support, documentation and representation under the firm's client protection plan \"with JJD\" when three business clients were simultaneously selected for IRS audits.",
+    "biz": "S-Corp regional CPA firm, Midwest. ~$5M revenue, 24 staff. Provides tax preparation and advisory services to individuals and small businesses.",
+    "evt": "2024, three business clients were simultaneously selected for IRS audits, requiring the firm to devote 340 hours of staff time to audit support, documentation, and representation. Under the firm's client protection plan, these fees were waived. Total cost to the firm: $130,000.",
+    "rsp": "CPA Audit Fees Micro Captive policy covered $130,000 in waived audit support fees within 45 days of the audits closing.",
+    "out": "Out-of-pocket: $0. All three clients were retained. The firm's audit protection offering became a competitive differentiator in new client proposals."
+  },
+  {
+    "name": "Accidental Damages",
+    "desc": "Covers accidental tenant-caused property damage through an in-house Accidental Damage Waiver, replacing the need for third-party renters insurance.",
+    "sub": "How a residential property management company covered $210,000 in tenant-caused accidental damage expenses \"with JJD\" through its in-house accidental damage waiver program.",
+    "biz": "LLC residential property management company, Southwest. ~$4M revenue, 14 employees. Manages 380 single-family rental units using an in-house accidental damage waiver program.",
+    "evt": "2024, tenant-caused accidental damage expenses across the portfolio totaled $210,000: broken appliances, damaged flooring, patched walls, and one garage door collision. The management company was responsible for fulfilling all expenses under its in-house waiver program.",
+    "rsp": "Accidental Damages Micro Captive policy covered $210,000 in tenant-caused damage expenses over the calendar year, processed as expenses were closed.",
+    "out": "Out-of-pocket: $0. The company retained 90% of waiver fee revenue and paid no third-party insurance commissions. Tenants received faster resolution than under a third-party program."
+  },
+  {
+    "name": "Loss of Rent",
+    "desc": "Covers losses when a tenant cannot pay rent due to a qualifying event.",
+    "sub": "How a commercial real estate owner covered $252,000 in lost rental income \"with JJD\" when a fire forced an anchor tenant to vacate for 9 months during repairs.",
+    "biz": "S-Corp commercial real estate owner, Midwest. ~$6M in annual rental income, 8 employees. Owns and manages 12 light industrial and flex-commercial properties.",
+    "evt": "Late 2023, a fire at one property forced the anchor tenant (responsible for $28,000/month) to vacate for 9 months during repairs. Lost rent: $252,000. The primary property policy covered the physical damage but excluded rental income loss beyond 6 months.",
+    "rsp": "Loss of Rent Micro Captive policy covered $252,000 in lost rental income across the 9-month vacancy. Payments issued monthly as the vacancy continued.",
+    "out": "Out-of-pocket: $0. The owner met mortgage obligations on the property without drawing on reserves. The tenant returned after repairs and extended its lease."
+  },
+  {
+    "name": "Third Party Business Interruption",
+    "desc": "Covers income loss when a vendor, utility, or software provider experiences a disruption that prevents your business from operating.",
+    "sub": "How an e-commerce fulfillment center covered $310,000 in lost revenue \"with JJD\" when its third-party warehouse management software vendor went offline for 8 days during a peak promotional period and could not process orders.",
+    "biz": "LLC e-commerce fulfillment center, Southeast. ~$14M revenue, 58 employees. Relies on a single third-party warehouse management software vendor for all order processing.",
+    "evt": "March 2024, the WMS vendor experienced a catastrophic server failure that took their platform offline for 8 days. The fulfillment center could not process orders and lost $310,000 in revenue during a peak promotional period.",
+    "rsp": "Third Party Business Interruption Micro Captive policy covered $310,000 in income loss caused by the vendor outage. Paid within 45 days of the loss being filed.",
+    "out": "Out-of-pocket: $0. The center fulfilled all backlogged orders within 5 days of the system coming back online. The incident accelerated a vendor diversification initiative."
+  },
+  {
+    "name": "Workers' Compensation Deductible",
+    "desc": "Fills gaps in workers' comp coverage by reimbursing deductibles, excess employer's liability, and excluded occupational-disease losses.",
+    "sub": "How a warehouse and distribution company covered a $150,000 workers' compensation deductible \"with JJD\" after a forklift incident caused $380,000 in medical costs and lost wages to warehouse worker.",
+    "biz": "S-Corp warehouse and distribution company, Midwest. ~$20M revenue, 110 employees. High-frequency forklift and heavy-load operations.",
+    "evt": "2023, a warehouse associate suffered a serious back injury in a forklift incident. Total workers' comp expense: $380,000 in medical costs and lost wages over 14 months. Workers' comp deductible: $150,000.",
+    "rsp": "Workers' Compensation Deductible Micro Captive policy covered the $150,000 deductible. Verified and paid within 60 days of the deductible obligation triggering.",
+    "out": "Primary carrier covered $230,000. Micro Captive covered $150,000. Out-of-pocket: $0. No impact on payroll or operations."
+  },
+  {
+    "name": "Workforce Reduction",
+    "desc": "Covers costs to recruit replacements, pay retention bonuses, hire temporary staff, and manage losses from delays when a defined portion of a team departs unexpectedly.",
+    "sub": "How a regional IT managed services provider covered $550,000 in replacement, retention, and delay-related costs \"with JJD\" when 9 senior engineers and project leads resigned within a 60-day window.",
+    "biz": "S-Corp regional IT managed services provider, Mid-Atlantic. ~$18M revenue, 72 employees. Serves mid-market businesses across healthcare, financial services, and government contracting.",
+    "evt": "Mid-2024, 9 senior engineers and project leads resigned within a 60-day window, largely poached by a competitor. Recruitment, temporary staffing, and retention bonus costs: $420,000. Project delays and client SLA penalties: $130,000. Total: $550,000.",
+    "rsp": "Workforce Reduction Micro Captive policy covered $550,000 in replacement, retention, and delay-related costs within 75 days of the departure event being documented.",
+    "out": "Out-of-pocket: $0. The company rebuilt the team within 4 months, retained all major accounts, and instituted a structured retention program to reduce future attrition risk."
+  }
+];
+
+function renderCards() {
+  const grid = document.getElementById('grid');
+  CASES.forEach((c, i) => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.dataset.idx = i;
+    card.innerHTML = `
+      <div class="case-num">${String(i+1).padStart(2,'0')}</div>
+      <h3>${escapeHTML(c.name)}</h3>
+      <p class="desc">${escapeHTML(c.sub)}</p>
+      <div class="foot"><span class="cs-link">Read case →</span></div>
+    `;
+    card.addEventListener('click', () => openModal(i));
+    grid.appendChild(card);
+  });
+}
+
+function openModal(i) {
+  const c = CASES[i];
+  document.getElementById('mEyebrow').textContent = `Case Study ${String(i+1).padStart(2,'0')}`;
+  document.getElementById('mTitle').textContent = c.name;
+  document.getElementById('mDesc').textContent = c.sub;
+  document.getElementById('mBiz').textContent = c.biz;
+  document.getElementById('mEvt').textContent = c.evt;
+  document.getElementById('mRsp').textContent = c.rsp;
+  document.getElementById('mOut').textContent = c.out;
+  document.getElementById('mCov').textContent = c.desc;
+  const bd = document.getElementById('modalBackdrop');
+  bd.classList.add('open');
+  bd.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+  bd.scrollTop = 0;
+}
+function closeModal() {
+  const bd = document.getElementById('modalBackdrop');
+  bd.classList.remove('open');
+  bd.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modalBackdrop')) closeModal();
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+function escapeHTML(s) {
+  const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML;
+}
+
+renderCards();
+</script>
+
+<script src="/microcaptive-deck-1/deck-fit.js"></script>
+
+</body>
+</html>
